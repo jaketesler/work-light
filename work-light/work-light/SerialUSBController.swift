@@ -11,3 +11,7 @@ import IOKit
 import IOKit.usb
 import IOKit.usb.IOUSBLib
 import IOKit.serial
+
+class SerialController {
+    
+}

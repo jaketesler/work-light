@@ -10,7 +10,35 @@ import SwiftUI
 
 class PopoverViewController: NSViewController {
     
+    @IBOutlet weak var pushButton: NSButton!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        pushButton.showsBorderOnlyWhileMouseInside = true
+    }
+    
+    
+    @IBAction func pushButtonPushed(_ sender: Any) {
+        
+    }
 }
+
+
+
+//extension PopoverViewController {
+//    func setupMenu() -> NSMenu {
+//        let menu = NSMenu()
+//
+//        menu.addItem(withTitle: "HIE", action: #selector(moo(sender:)), keyEquivalent: "")
+//
+//        return menu
+//    }
+//
+//    @objc func moo(sender: AnyObject?) {
+//
+//    }
+//}
 
 
 extension PopoverViewController {

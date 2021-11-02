@@ -13,12 +13,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         print("AD init")
     }
     
-    var window: NSWindow!
+//    var window: NSWindow!
 
     var statusBar: StatusBarController!
     var popover = NSPopover.init()
 
-    func applicationWillResignActive(_ notification: Notification) {
+    func applicationWillResignActive(_ notification: Notification) { // Called on navigate away
         print("resign active")
     }
 
@@ -30,7 +30,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         print("applicationDidFinishLaunching")
 
 //        let contentView = ContentView()
-//
 //        popover.contentSize = NSSize(width: 360, height: 360)
 //        popover.contentViewController = NSHostingController(rootView: contentView)
 
