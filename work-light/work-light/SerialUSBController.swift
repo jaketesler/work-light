@@ -87,6 +87,11 @@ class SerialController: NSObject {
     //MARK: - Public Functions
 
     public func changeColorTo(_ color: LEDColor) {
+        if _ledPower == .off { // if power is off and we want to turn on a color, switch system on
+            _ledPower = .on
+            _ledState = .on
+        }
+
         self.ledColor = [color]
     }
 
