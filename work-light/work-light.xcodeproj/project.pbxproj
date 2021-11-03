@@ -15,7 +15,6 @@
 		E0FB09FF2731C6F70073C76F /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB09FE2731C6F70073C76F /* StatusBarController.swift */; };
 		E0FB0A012731C7460073C76F /* SerialUSBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB0A002731C7460073C76F /* SerialUSBController.swift */; };
 		E0FB0A052731C9BD0073C76F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB0A042731C9BD0073C76F /* AppDelegate.swift */; };
-		E0FB0A072731CA0F0073C76F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB0A062731CA0F0073C76F /* ContentView.swift */; };
 		E0FB0A0D2731CD4B0073C76F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0FB0A0C2731CD4B0073C76F /* Info.plist */; };
 		E0FB0A122731D26B0073C76F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0FB0A112731D26B0073C76F /* Main.storyboard */; };
 		E0FB0A142731D8F80073C76F /* ButtonPopover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0FB0A132731D8F80073C76F /* ButtonPopover.storyboard */; };
@@ -38,7 +37,6 @@
 		E0FB09FE2731C6F70073C76F /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		E0FB0A002731C7460073C76F /* SerialUSBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialUSBController.swift; sourceTree = "<group>"; };
 		E0FB0A042731C9BD0073C76F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E0FB0A062731CA0F0073C76F /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E0FB0A0C2731CD4B0073C76F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E0FB0A112731D26B0073C76F /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E0FB0A132731D8F80073C76F /* ButtonPopover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ButtonPopover.storyboard; sourceTree = "<group>"; };
@@ -111,7 +109,6 @@
 				E0FB0A1A2731F0450073C76F /* Podfile */,
 				E0284F4D27321A5E009D8650 /* ORSSerialPort+Attributes.h */,
 				E0284F4B273219E0009D8650 /* ORSSerialPort+Attributes.m */,
-				E0FB0A192731E1580073C76F /* Old */,
 				E0FB0A0E2731CD550073C76F /* Assets */,
 				E0FB09F52731C6740073C76F /* Preview Content */,
 				E0284F4A273219DF009D8650 /* work-light-Bridging-Header.h */,
@@ -132,14 +129,6 @@
 			children = (
 			);
 			path = Assets;
-			sourceTree = "<group>";
-		};
-		E0FB0A192731E1580073C76F /* Old */ = {
-			isa = PBXGroup;
-			children = (
-				E0FB0A062731CA0F0073C76F /* ContentView.swift */,
-			);
-			path = Old;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,7 +255,6 @@
 				E0284F4F273244B8009D8650 /* Types.swift in Sources */,
 				E0FB09FF2731C6F70073C76F /* StatusBarController.swift in Sources */,
 				E0284F4C273219E0009D8650 /* ORSSerialPort+Attributes.m in Sources */,
-				E0FB0A072731CA0F0073C76F /* ContentView.swift in Sources */,
 				E0FB0A012731C7460073C76F /* SerialUSBController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

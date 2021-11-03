@@ -22,19 +22,15 @@ class StatusBarController {
         self.menu = StatusBarMenuView()
         self.menu.setup()
 
-//        statusBar = NSStatusBar.init()
-        statusBar = NSStatusBar.system
-//        statusItem = statusBar.statusItem(withLength: 28.0)
-        statusItem = statusBar.statusItem(withLength: NSStatusItem.squareLength)
+        self.statusBar = NSStatusBar.system
+        self.statusItem = statusBar.statusItem(withLength: NSStatusItem.squareLength)
 
-        guard let statusBarButton = statusItem.button else {
-            print("error")
-            exit(1)
+        guard let statusBarButton = self.statusItem.button else {
+            fatalError("Unable to acquire Status Bar Button")
         }
 
         statusBarButton.image = NSImage(named: NSImage.Name("sun"))
         statusBarButton.image?.size = NSSize(width: 18.0, height: 18.0)
-//        statusBarButton.image?.isTemplate = true
 
         statusBarButton.action = #selector(togglePopover(sender:))
         statusBarButton.target = self
@@ -42,7 +38,7 @@ class StatusBarController {
         statusBarButton.menu = self.menu // Right-click menu
 
         self.popover.contentViewController = PopoverViewController.newInstance()
-//        self.popover.animates = false
+        // self.popover.animates = false
     }
 
     @objc func togglePopover(sender: AnyObject) {

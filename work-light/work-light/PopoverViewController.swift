@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class PopoverViewController: NSViewController {
-
+    // MARK: - UI Elements
     @IBOutlet weak var changeToGreen: NSButton!
     @IBOutlet weak var changeToAmber: NSButton!
     @IBOutlet weak var changeToRed: NSButton!
@@ -24,8 +24,6 @@ class PopoverViewController: NSViewController {
 
     @IBOutlet weak var switchBlink: NSSwitch!
 
-    var ledController = SerialController.shared
-
     @IBAction func greenButtonPushed(_ sender: Any) { ledController.changeColorTo(.green) }
     @IBAction func amberButtonPushed(_ sender: Any) { ledController.changeColorTo(.amber) }
     @IBAction func redButtonPushed(_ sender: Any)   { ledController.changeColorTo(.red) }
@@ -37,6 +35,10 @@ class PopoverViewController: NSViewController {
     @IBAction func switchOnOffToggled(_ sender: NSSwitch) { ledController.setOnOffState(sender.state == .off ? .off : .on) }
     @IBAction func switchBlinkToggled(_ sender: NSSwitch) { ledController.setBlink(sender.state == .on) }
 
+    // MARK: - Variables
+    private var ledController = SerialController.shared
+
+    // MARK: - ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,7 +53,8 @@ class PopoverViewController: NSViewController {
         update()
     }
 
-    func setupView() {
+    // MARK: - UI Helpers
+    private func setupView() {
         changeToGreen.showsBorderOnlyWhileMouseInside = true
         changeToAmber.showsBorderOnlyWhileMouseInside = true
         changeToRed.showsBorderOnlyWhileMouseInside = true
@@ -63,9 +66,9 @@ class PopoverViewController: NSViewController {
     }
 
     func update() {
-        print("Updating")
         switchOnOff.animator().state = ledController.power == .off ? .off : .on
         switchBlink.animator().state = ledController.isBlinking ? .on : .off
+
         colorDot.layer?.backgroundColor = ledColorToSystemColor(ledController.color)
 
         redToggle.animator().state = ledController.color.contains(.red) ? .on : .off
@@ -73,8 +76,8 @@ class PopoverViewController: NSViewController {
         amberToggle.animator().state = ledController.color.contains(.amber) ? .on : .off
     }
 
+    // MARK: - Utilities
     func ledColorToSystemColor(_ ledColor: [LEDColor]) -> CGColor {
-        print(ledColor)
         switch ledColor {
             case [.red]:   return NSColor.systemRed.cgColor
             case [.amber]: return NSColor.systemOrange.cgColor
@@ -95,28 +98,30 @@ class PopoverViewController: NSViewController {
               let colB = colorB.usingColorSpace(.sRGB)
               else { return .black }
 
-        let cAr = colA.redComponent
-        let cAg = colA.greenComponent
-        let cAb = colA.blueComponent
+        let cAr = colA.redComponent,
+            cAg = colA.greenComponent,
+            cAb = colA.blueComponent
 
-        let cBr = colB.redComponent
-        let cBg = colB.greenComponent
-        let cBb = colB.blueComponent
+        let cBr = colB.redComponent,
+            cBg = colB.greenComponent,
+            cBb = colB.blueComponent
 
-        let cOr = weightA * cAr + (1.0 - weightA) * cBr
-        let cOg = weightA * cAg + (1.0 - weightA) * cBg
-        let cOb = weightA * cAb + (1.0 - weightA) * cBb
+        let cOr = weightA * cAr + (1.0 - weightA) * cBr,
+            cOg = weightA * cAg + (1.0 - weightA) * cBg,
+            cOb = weightA * cAb + (1.0 - weightA) * cBb
 
         return NSColor(red: cOr, green: cOg, blue: cOb, alpha: 1.0)
     }
 }
 
+// MARK: - SerialControllerDelegate
 extension PopoverViewController: SerialControllerDelegate {
     func serialControllerDelegate(statusDidChange state: LEDPower, ledColor: [LEDColor]) {
         update()
     }
 }
 
+// MARK: - Storyboard
 extension PopoverViewController {
     static func newInstance() -> PopoverViewController {
         let storyboard = NSStoryboard(name: NSStoryboard.Name("ButtonPopover"), bundle: nil)

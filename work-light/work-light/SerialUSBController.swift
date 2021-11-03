@@ -12,7 +12,7 @@ import ORSSerial
 
 class SerialController: NSObject {
     //MARK: - ORSSerialPortManager
-    @objc dynamic var portManager = ORSSerialPortManager.shared()
+    @objc dynamic private var portManager = ORSSerialPortManager.shared()
     private var observation: NSKeyValueObservation?
 
     private var port: ORSSerialPort? {
@@ -47,7 +47,6 @@ class SerialController: NSObject {
         get { return _ledColor.sorted() }
         set {
             _ledColor = newValue.sorted()
-            print(_ledColor)
             turnOff()
             if ledPower == .on {
                 sendData(Data([bitwise_or(newValue) | ledState.rawValue] as [UInt8]))
@@ -81,6 +80,7 @@ class SerialController: NSObject {
         connect()
         status()
 
+        // Set up serial port change KVO
         observation = observe(\.portManager.availablePorts, options: [.new], changeHandler: serialPortsChanged)
     }
 
@@ -96,8 +96,6 @@ class SerialController: NSObject {
     }
 
     public func setColor(_ color: LEDColor, state: Bool) {
-        print("setColor")
-        print(_ledPower, _ledState)
         if _ledPower == .off && state { // if power is off and we want to turn on a color, switch system on
             _ledPower = .on
             _ledState = .on
@@ -114,7 +112,6 @@ class SerialController: NSObject {
 
     public func setOnOffState(_ state: LEDPower) {
         if state == .off {
-            print("->off", ledColor)
             if ledColor != [] { _prevLEDColorState = _ledColor } // store color
             _prevLEDBlinkState = _ledState == .blink
         } else {
@@ -130,7 +127,7 @@ class SerialController: NSObject {
         if blink {
             ledState = .blink
         } else {
-            ledState = ledPower == .off ? .off : .on
+            ledState = (ledPower == .off) ? .off : .on
         }
     }
 
@@ -146,16 +143,14 @@ class SerialController: NSObject {
     }
 
     private func updateDelegates() {
-        for delegate in delegates {
-            delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor)
-        }
+        delegates.forEach({ $0.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) })
     }
 
     private func turnOff() {
         var rawData: [UInt8] = []
         for color in LEDColor.allCases {
-            let bit = (color.rawValue | LEDState.off.rawValue)
-            rawData.append(bit)
+            let stateByte = (color.rawValue | LEDState.off.rawValue)
+            rawData.append(stateByte)
         }
         sendData(Data(rawData))
     }
@@ -207,8 +202,6 @@ class SerialController: NSObject {
         guard let serialport = self.port else { return }
         if !serialport.isOpen { serialport.open() }
         serialport.send(data)
-        print("Data sent!")
-//        serialport.close()
     }
 }
 
@@ -219,23 +212,18 @@ extension SerialController: ORSSerialPortDelegate {
 
     func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
         let string = String(data: data, encoding: .utf8)
-//        print("Got \(string) from the serial port!")
-
         for element in (string ?? "").unicodeScalars {
-            if let value = element.value as? UInt32 {
-                updateDriverState(rawData: value)
-            }
+            let value = element.value as UInt32
+            updateDriverState(rawData: value)
         }
     }
 
     func updateDriverState(rawData: UInt32) {
-        print("Status update received")
+        // print("Status update received")
         switch rawData {
             case 0x00:
-                print("Off state")
                 _ledPower = .off
                 _ledState = .off
-    //            if _ledColor != [] { _prevLEDColorState = _ledColor }
                 _ledColor = []
 
             case 0x01:
@@ -306,8 +294,7 @@ extension SerialController: ORSSerialPortDelegate {
                 _ledColor = [.red, .amber, .green]
 
             default:
-                print(String(rawData))
-                print("boooo unknown response :(")
+                print("boooo unknown status response :( - \(String(rawData))")
         }
     }
 }

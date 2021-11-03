@@ -13,16 +13,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var popover = NSPopover.init()
 
     func applicationWillResignActive(_ notification: Notification) { // Called on navigate away
-        //print("resign active")
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        print("applicationDidFinishLaunching")
-
-//        let contentView = ContentView()
-//        popover.contentSize = NSSize(width: 360, height: 360)
-//        popover.contentViewController = NSHostingController(rootView: contentView)
-
         statusBar = StatusBarController.init(popover)
     }
 
@@ -30,15 +23,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         SerialController.shared.disconnect()
     }
 }
-
-//class MainViewController: NSViewController {
-//    var statusBarController: StatusBarController?
-//    lazy private var popover = NSPopover.init()
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        self.view.isHidden = true
-//
-//        statusBarController = StatusBarController(popover)
-//    }
-//}
