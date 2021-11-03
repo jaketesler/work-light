@@ -34,11 +34,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //class MainViewController: NSViewController {
 //    var statusBarController: StatusBarController?
 //    lazy private var popover = NSPopover.init()
-//    
+//
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
 //        self.view.isHidden = true
-//        
+//
 //        statusBarController = StatusBarController(popover)
 //    }
 //}

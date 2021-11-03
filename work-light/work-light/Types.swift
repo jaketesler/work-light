@@ -9,7 +9,7 @@ import Foundation
 
 enum LEDColor: UInt8, CaseIterable, Comparable {
     static func < (lhs: LEDColor, rhs: LEDColor) -> Bool { return lhs.rawValue < rhs.rawValue }
-    
+
     case red = 0x01
     case amber = 0x02
     case green = 0x04

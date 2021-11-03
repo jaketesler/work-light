@@ -14,14 +14,14 @@ class StatusBarController {
     private var statusItem: NSStatusItem
     private var popover: NSPopover
     private var menu: StatusBarMenuView
-    
+
     init(_ popover: NSPopover) {
         self.popover = popover
         self.popover.behavior = .transient
-        
+
         self.menu = StatusBarMenuView()
         self.menu.setup()
-        
+
 //        statusBar = NSStatusBar.init()
         statusBar = NSStatusBar.system
 //        statusItem = statusBar.statusItem(withLength: 28.0)
@@ -31,16 +31,16 @@ class StatusBarController {
             print("error")
             exit(1)
         }
-        
+
         statusBarButton.image = NSImage(named: NSImage.Name("sun"))
         statusBarButton.image?.size = NSSize(width: 18.0, height: 18.0)
 //        statusBarButton.image?.isTemplate = true
-        
+
         statusBarButton.action = #selector(togglePopover(sender:))
         statusBarButton.target = self
 
         statusBarButton.menu = self.menu // Right-click menu
-        
+
         self.popover.contentViewController = PopoverViewController.newInstance()
 //        self.popover.animates = false
     }
@@ -62,16 +62,16 @@ class StatusBarController {
     func hidePopover(_ sender: AnyObject) {
         popover.performClose(sender)
     }
-    
+
 }
 
 class StatusBarMenuView: NSMenu {
     @IBOutlet weak var topItem: NSMenuItem!
-    
+
     func setup() {
         self.addItem(withTitle: "El Menu", action: #selector(elMenuItem(sender:)), keyEquivalent: "")
     }
-    
+
     @objc func elMenuItem(sender: AnyObject) {
     }
 }

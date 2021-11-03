@@ -14,7 +14,7 @@ class SerialController: NSObject {
     //MARK: - ORSSerialPortManager
     @objc dynamic var portManager = ORSSerialPortManager.shared()
     private var observation: NSKeyValueObservation?
-    
+
     private var port: ORSSerialPort? {
         didSet {
             if port == nil {
@@ -24,10 +24,10 @@ class SerialController: NSObject {
             updateDelegates()
         }
     }
-    
+
     //MARK: - Delegates
     private var delegates: [SerialControllerDelegate] = []
-    
+
     // MARK: - State Tracking
     private var _ledState : LEDState = .off { didSet { updateDelegates() } }
     private var ledState: LEDState {
@@ -41,7 +41,7 @@ class SerialController: NSObject {
         }
     }
     private var _prevLEDBlinkState: Bool = false
-    
+
     private var _ledColor: [LEDColor] = [] { didSet { updateDelegates() } }
     private var ledColor: [LEDColor] {
         get { return _ledColor.sorted() }
@@ -56,7 +56,7 @@ class SerialController: NSObject {
         }
     }
     private var _prevLEDColorState: [LEDColor] = [.green]
-    
+
     private var _ledPower: LEDPower = .off { didSet { updateDelegates() } }
     private var ledPower: LEDPower {
         get { return _ledPower }
@@ -72,24 +72,24 @@ class SerialController: NSObject {
             updateDelegates() // does this need newValue?
         }
     }
-    
+
     //MARK: - Initialization
-    
+
     override init() {
         super.init()
-        
+
         connect()
         status()
 
         observation = observe(\.portManager.availablePorts, options: [.new], changeHandler: serialPortsChanged)
     }
-    
+
     //MARK: - Public Functions
-    
+
     public func changeColorTo(_ color: LEDColor) {
         self.ledColor = [color]
     }
-    
+
     public func setColor(_ color: LEDColor, state: Bool) {
         print("setColor")
         print(_ledPower, _ledState)
@@ -97,7 +97,7 @@ class SerialController: NSObject {
             _ledPower = .on
             _ledState = .on
         }
-        
+
         if state {
             if ledColor.contains(color) { return }
             ledColor.append(color)
@@ -106,21 +106,21 @@ class SerialController: NSObject {
             ledColor = ledColor.filter({ $0 != color })
         }
     }
-    
+
     public func setOnOffState(_ state: LEDPower) {
         if state == .off {
             print("->off", ledColor)
-            if ledColor != [] { _prevLEDColorState = _ledColor } // store color 
+            if ledColor != [] { _prevLEDColorState = _ledColor } // store color
             _prevLEDBlinkState = _ledState == .blink
         } else {
             if self.ledState == .off { // coundn't be blinking(True) in this state
                 self.ledState = .on // refresh ledState to ON
             }
         }
-        
+
         self.ledPower = state
     }
-    
+
     public func setBlink(_ blink: Bool) {
         if blink {
             ledState = .blink
@@ -128,24 +128,24 @@ class SerialController: NSObject {
             ledState = ledPower == .off ? .off : .on
         }
     }
-    
+
     // MARK: - Private functions
     private func status() {
         let status_byte: UInt8 = 0x30
         sendData(Data([status_byte] as [UInt8]))
     }
-    
+
     // KVO
     private func serialPortsChanged(_ obj: _KeyValueCodingAndObserving, _ value: NSKeyValueObservedChange<[ORSSerialPort]>) -> Void {
         connect()
     }
-    
+
     private func updateDelegates() {
         for delegate in delegates {
             delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor)
         }
     }
-    
+
     private func turnOff() {
         var rawData: [UInt8] = []
         for color in LEDColor.allCases {
@@ -154,18 +154,18 @@ class SerialController: NSObject {
         }
         sendData(Data(rawData))
     }
-    
+
     // MARK: - Utilities
     func bitwise_or(_ arr: [UInt8]) -> UInt8 {
         var result: UInt8 = 0x0
         arr.forEach { result |= $0 }
         return result
     }
-    
+
     func bitwise_or(_ arr: [LEDColor]) -> UInt8 {
         return bitwise_or(arr.map { $0.rawValue })
     }
-    
+
     // MARK: - Serial comms
     func connect() {
         if let curPort = self.port {
@@ -184,20 +184,20 @@ class SerialController: NSObject {
                 break
             }
         }
-        
+
         guard let serialport = self.port else { return }
-        
+
         serialport.baudRate = 9600
-        
+
         print("Baud rate set to \(serialport.baudRate)")
         serialport.delegate = self
         serialport.open()
     }
-    
+
     public func disconnect() {
         self.port = nil
     }
-    
+
     private func sendData(_ data: Data) {
         guard let serialport = self.port else { return }
         if !serialport.isOpen { serialport.open() }
@@ -215,94 +215,94 @@ extension SerialController: ORSSerialPortDelegate {
     func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
         let string = String(data: data, encoding: .utf8)
 //        print("Got \(string) from the serial port!")
-        
+
         for element in (string ?? "").unicodeScalars {
             if let value = element.value as? UInt32 {
                 updateDriverState(rawData: value)
             }
         }
     }
-    
+
     func updateDriverState(rawData: UInt32) {
         print("Status update received")
         switch rawData {
-        case 0x00:
-            print("Off state")
-            _ledPower = .off
-            _ledState = .off
-//            if _ledColor != [] { _prevLEDColorState = _ledColor }
-            _ledColor = []
-        
-        case 0x01:
-            _ledPower = .on
-            _ledState = .on
-            _ledColor = [.red]
-        case 0x10, 0x11:
-            _ledPower = .on
-            _ledState = .blink
-            _ledColor = [.red]
-        
-        case 0x02:
-            _ledPower = .on
-            _ledState = .on
-            _ledColor = [.amber]
-        case 0x20, 0x22:
-            _ledPower = .on
-            _ledState = .blink
-            _ledColor = [.amber]
-        
-        case 0x04:
-            _ledPower = .on
-            _ledState = .on
-            _ledColor = [.green]
-        case 0x40, 0x44:
-            _ledPower = .on
-            _ledState = .blink
-            _ledColor = [.green]
-            
-        case 0x03:
-            _ledPower = .on
-            _ledState = .on
-            _ledColor = [.red, .amber]
-            
-        case 0x05:
-            _ledPower = .on
-            _ledState = .on
-            _ledColor = [.red, .green]
-        
-        case 0x06:
-            _ledPower = .on
-            _ledState = .on
-            _ledColor = [.amber, .green]
-        
-        case 0x07:
-            _ledPower = .on
-            _ledState = .on
-            _ledColor = [.red, .amber, .green]
-            
-        case 0x60, 0x66:
-            _ledPower = .on
-            _ledState = .blink
-            _ledColor = [.amber, .green]
-            
-        case 0x30, 0x33:
-            _ledPower = .on
-            _ledState = .blink
-            _ledColor = [.red, .amber]
-        
-        case 0x50, 0x55:
-            _ledPower = .on
-            _ledState = .blink
-            _ledColor = [.red, .green]
-            
-        case 0x70, 0x77:
-            _ledPower = .on
-            _ledState = .blink
-            _ledColor = [.red, .amber, .green]
+            case 0x00:
+                print("Off state")
+                _ledPower = .off
+                _ledState = .off
+    //            if _ledColor != [] { _prevLEDColorState = _ledColor }
+                _ledColor = []
 
-        default:
-            print(String(rawData))
-            print("boooo unknown response :(")
+            case 0x01:
+                _ledPower = .on
+                _ledState = .on
+                _ledColor = [.red]
+            case 0x10, 0x11:
+                _ledPower = .on
+                _ledState = .blink
+                _ledColor = [.red]
+
+            case 0x02:
+                _ledPower = .on
+                _ledState = .on
+                _ledColor = [.amber]
+            case 0x20, 0x22:
+                _ledPower = .on
+                _ledState = .blink
+                _ledColor = [.amber]
+
+            case 0x04:
+                _ledPower = .on
+                _ledState = .on
+                _ledColor = [.green]
+            case 0x40, 0x44:
+                _ledPower = .on
+                _ledState = .blink
+                _ledColor = [.green]
+
+            case 0x03:
+                _ledPower = .on
+                _ledState = .on
+                _ledColor = [.red, .amber]
+
+            case 0x05:
+                _ledPower = .on
+                _ledState = .on
+                _ledColor = [.red, .green]
+
+            case 0x06:
+                _ledPower = .on
+                _ledState = .on
+                _ledColor = [.amber, .green]
+
+            case 0x07:
+                _ledPower = .on
+                _ledState = .on
+                _ledColor = [.red, .amber, .green]
+
+            case 0x60, 0x66:
+                _ledPower = .on
+                _ledState = .blink
+                _ledColor = [.amber, .green]
+
+            case 0x30, 0x33:
+                _ledPower = .on
+                _ledState = .blink
+                _ledColor = [.red, .amber]
+
+            case 0x50, 0x55:
+                _ledPower = .on
+                _ledState = .blink
+                _ledColor = [.red, .green]
+
+            case 0x70, 0x77:
+                _ledPower = .on
+                _ledState = .blink
+                _ledColor = [.red, .amber, .green]
+
+            default:
+                print(String(rawData))
+                print("boooo unknown response :(")
         }
     }
 }
@@ -310,12 +310,12 @@ extension SerialController: ORSSerialPortDelegate {
 // MARK: - Public interface
 extension SerialController {
     public static var shared: SerialController = SerialController()
-    
+
     public var power: LEDPower   { get { return self.ledPower } }
     public var color: [LEDColor] { get { return self.ledColor } }
     public var isBlinking: Bool  { get { return self.ledState == .blink } }
     public var deviceConnected: Bool { get { return self.port != nil } }
-    
+
     public func addDelegate(_ delegate: SerialControllerDelegate) {
         self.delegates.append(delegate)
     }
