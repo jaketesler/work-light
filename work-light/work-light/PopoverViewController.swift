@@ -64,7 +64,6 @@ class PopoverViewController: NSViewController {
         switchOnOff.state = ledController.power == .off ? .off : .on
         switchBlink.state = ledController.isBlinking ? .on : .off
         colorDot.layer?.backgroundColor = ledColorToSystemColor(ledController.color)
-//        colorDot.layer?.backgroundColor?.alpha = 1.0
     }
     
     func ledColorToSystemColor(_ ledColor: LEDColor) -> CGColor {

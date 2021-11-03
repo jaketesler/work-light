@@ -11,10 +11,21 @@ import Foundation
 import ORSSerial
 
 class SerialController: NSObject {
-    var port: ORSSerialPort
+    var port: ORSSerialPort? {
+        didSet {
+            if port == nil { print("Serial disconnected") }
+            for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
+        }
+    }
+    
+    @objc dynamic var portManager = ORSSerialPortManager.shared()
     
     static var controller: SerialController = SerialController()
     private var delegates: [SerialControllerDelegate] = []
+    
+    var deviceConnected: Bool {
+        get { return self.port != nil }
+    }
     
     private var ledState: LEDState = .off {
         didSet {
@@ -46,34 +57,16 @@ class SerialController: NSObject {
         }
     }
     
+    
+    var observation: NSKeyValueObservation?
+    
     override init() {
-        var ser_device: ORSSerialPort? = nil
-        for port in ORSSerialPortManager.shared().availablePorts {
-            guard
-                let vID = port.vendorID,
-                let pID = port.productID
-                else { continue }
-            if vID == 0x1a86 && pID == 0x7523 {
-                ser_device = port
-                break
-            }
-        }
-        
-        guard let serialport = ser_device else {
-            print("no serial")
-            exit(1)
-        }
-
-        self.port = serialport
-        print("Path: \(port.path)")
-        
-        self.port.baudRate = 9600
         
         super.init()
         
-        print("Baud rate set to \(self.port.baudRate)")
-        self.port.delegate = self
-        port.open()
+        connect()
+        
+        observation = observe(\.portManager.availablePorts, options: [.new], changeHandler: serialPortsChanged)
         
 //        nc_config()
     }
@@ -97,9 +90,40 @@ class SerialController: NSObject {
     }
     
     private func status() {
-        let stream: UInt8 = 0x00
+        let stream: UInt8 = 0x30
         
         sendData(Data([stream] as [UInt8]))
+    }
+    
+    private func serialPortsChanged(_ obj: _KeyValueCodingAndObserving, _ value: NSKeyValueObservedChange<[ORSSerialPort]>) -> Void {
+        connect()
+    }
+    
+    func connect() {
+        if let curPort = self.port {
+            if curPort.isOpen { curPort.close() }
+            self.port = nil
+        }
+
+        for port in portManager.availablePorts {
+            guard
+                let vID = port.vendorID,
+                let pID = port.productID
+                else { continue }
+            if vID == 0x1a86 && pID == 0x7523 {
+                self.port = port
+                print("New Serial Device: \(port.path)")
+                break
+            }
+        }
+        
+        guard let serialport = self.port else { return }
+        
+        serialport.baudRate = 9600
+        
+        print("Baud rate set to \(serialport.baudRate)")
+        serialport.delegate = self
+        serialport.open()
     }
     
     private func turnOff() {
@@ -113,10 +137,11 @@ class SerialController: NSObject {
     }
     
     private func sendData(_ data: Data) {
-        if !port.isOpen { port.open() }
-        port.send(data)
+        guard let serialport = self.port else { return }
+        if !serialport.isOpen { serialport.open() }
+        serialport.send(data)
         print("Data sent!")
-//        port.close()
+//        serialport.close()
     }
 }
 
@@ -170,61 +195,3 @@ extension SerialController: ORSSerialPortDelegate {
         print("Got \(string) from the serial port!")
     }
 }
-
-//extension SerialController {
-//    @objc func serialPortsWereConnected(_ notification: Notification) {
-//        if let userInfo = notification.userInfo {
-//            let connectedPorts = userInfo[ORSConnectedSerialPortsKey] as! [ORSSerialPort]
-//            print("Ports were connected: \(connectedPorts)")
-//            self.postUserNotificationForConnectedPorts(connectedPorts)
-//        }
-//    }
-//
-//    @objc func serialPortsWereDisconnected(_ notification: Notification) {
-//        if let userInfo = notification.userInfo {
-//            let disconnectedPorts: [ORSSerialPort] = userInfo[ORSDisconnectedSerialPortsKey] as! [ORSSerialPort]
-//            print("Ports were disconnected: \(disconnectedPorts)")
-//            self.postUserNotificationForDisconnectedPorts(disconnectedPorts)
-//        }
-//    }
-//}
-
-//extension SerialController: UNUserNotificationCenterDelegate {
-//    func nc_config() {
-//        let nc = UNUserNotificationCenter.current()
-//        nc.addObserver(self, forKeyPath: <#T##String#>, options: <#T##NSKeyValueObservingOptions#>, context: <#T##UnsafeMutableRawPointer?#>)
-//        nc.addObserver(self, selector: #selector(serialPortsWereConnected(_:)), name: NSNotification.Name.ORSSerialPortsWereConnected, object: nil)
-//        nc.addObserver(self, selector: #selector(serialPortsWereDisconnected(_:)), name: NSNotification.Name.ORSSerialPortsWereDisconnected, object: nil)
-////        NSUserNotificationCenter.default.delegate = self
-//        UNUserNotificationCenter.current().delegate = self
-//
-////        NotificationCenter.default.
-//    }
-//
-//    func postUserNotificationForConnectedPorts(_ connectedPorts: [ORSSerialPort]) {
-//        let unc = UNUserNotificationCenter.current()
-//        for port in connectedPorts {
-//            print(port)
-////            let userNotee = UNNotification()
-////            userNotee.
-//
-////            let userNote = NSUserNotification()
-////            userNote.title = NSLocalizedString("Serial Port Connected", comment: "Serial Port Connected")
-////        userNote.informativeText = "Serial Port \(port.name) was connected to your Mac."
-////            userNote.soundName = nil;
-////            unc.deliver(userNote)
-//        }
-//    }
-//
-//    func postUserNotificationForDisconnectedPorts(_ disconnectedPorts: [ORSSerialPort]) {
-//        let unc = NSUserNotificationCenter.default
-//        for port in disconnectedPorts {
-//            let userNote = NSUserNotification()
-//            userNote.title = NSLocalizedString("Serial Port Disconnected", comment: "Serial Port Disconnected")
-//            userNote.informativeText = "Serial Port \(port.name) was disconnected from your Mac."
-//            userNote.soundName = nil;
-//            unc.deliver(userNote)
-//        }
-//    }
-//}
-
