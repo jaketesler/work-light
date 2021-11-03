@@ -19,7 +19,7 @@ class PopoverViewController: NSViewController {
     
     @IBOutlet weak var switchBlink: NSSwitch!
     
-    var ledController = SerialController.controller
+    var ledController = SerialController.shared
     
     
     @IBAction func greenButtonPushed(_ sender: Any) { ledController.changeColor(.green) }

@@ -9,33 +9,15 @@ import SwiftUI
 import ORSSerial
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    override init() {
-        super.init()
-        print("AD init")
-    }
-    
-//    var window: NSWindow!
-
     var statusBar: StatusBarController!
     var popover = NSPopover.init()
 
     func applicationWillResignActive(_ notification: Notification) { // Called on navigate away
-        print("resign active")
-    }
-
-    func applicationWillFinishLaunching(_ notification: Notification) {
-        print("applicationWillFinishLaunching")
-        
-        // DEBUG
-        print("DBG change color")
-        SerialController.controller.changeColor(.green)
-        
+        //print("resign active")
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         print("applicationDidFinishLaunching")
-        
-        
 
 //        let contentView = ContentView()
 //        popover.contentSize = NSSize(width: 360, height: 360)
@@ -45,7 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+        SerialController.shared.disconnect()
     }
 }
 
