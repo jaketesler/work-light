@@ -10,36 +10,25 @@ import SwiftUI
 
 class PopoverViewController: NSViewController {
     
-    @IBOutlet weak var pushButton: NSButton!
+    @IBOutlet weak var changeToGreen: NSButton!
+    @IBOutlet weak var changeToAmber: NSButton!
+    @IBOutlet weak var changeToRed: NSButton!
+    @IBOutlet weak var statusLabel: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        pushButton.showsBorderOnlyWhileMouseInside = true
+        changeToGreen.showsBorderOnlyWhileMouseInside = true
+        changeToAmber.showsBorderOnlyWhileMouseInside = true
+        changeToRed.showsBorderOnlyWhileMouseInside = true
     }
     
     
-    @IBAction func pushButtonPushed(_ sender: Any) {
-        
-    }
+    @IBAction func greenButtonPushed(_ sender: Any) { SerialController.controller.changeColor(.green) }
+    @IBAction func amberButtonPushed(_ sender: Any) { SerialController.controller.changeColor(.amber) }
+    @IBAction func redButtonPushed(_ sender: Any) { SerialController.controller.changeColor(.red) }
+    
 }
-
-
-
-//extension PopoverViewController {
-//    func setupMenu() -> NSMenu {
-//        let menu = NSMenu()
-//
-//        menu.addItem(withTitle: "HIE", action: #selector(moo(sender:)), keyEquivalent: "")
-//
-//        return menu
-//    }
-//
-//    @objc func moo(sender: AnyObject?) {
-//
-//    }
-//}
-
 
 extension PopoverViewController {
     static func newInstance() -> PopoverViewController {

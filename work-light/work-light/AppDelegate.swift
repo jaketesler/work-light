@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ORSSerial
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     override init() {
@@ -24,10 +25,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         print("applicationWillFinishLaunching")
+        
+        // DEBUG
+        print("DBG change color")
+        SerialController.controller.changeColor(.green)
+        
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         print("applicationDidFinishLaunching")
+        
+        
 
 //        let contentView = ContentView()
 //        popover.contentSize = NSSize(width: 360, height: 360)

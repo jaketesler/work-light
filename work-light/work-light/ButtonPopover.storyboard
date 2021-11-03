@@ -10,36 +10,87 @@
             <objects>
                 <viewController storyboardIdentifier="PopoverViewController" id="bU7-R8-ocO" customClass="PopoverViewController" customModule="work_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="tOy-S4-hL0">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="74"/>
+                        <rect key="frame" x="0.0" y="0.0" width="416" height="163"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="48Q-tz-tET">
-                                <rect key="frame" x="0.0" y="30" width="400" height="29"/>
+                                <rect key="frame" x="0.0" y="30" width="416" height="118"/>
                                 <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vnl-jX-Lnm">
+                                        <rect key="frame" x="3" y="102" width="80" height="16"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Status Label" id="gYn-2K-ebj">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="q3q-4m-ftM">
+                                        <rect key="frame" x="5" y="91" width="406" height="5"/>
+                                    </box>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8gV-d6-R51">
-                                        <rect key="frame" x="-7" y="2" width="414" height="32"/>
-                                        <buttonCell key="cell" type="push" title="PUSH" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lga-Mp-qLn">
+                                        <rect key="frame" x="-2" y="58" width="420" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Change to Green" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lga-Mp-qLn">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
                                         <color key="contentTintColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         <connections>
-                                            <action selector="pushButtonPushed:" target="bU7-R8-ocO" id="l3u-LQ-rSm"/>
+                                            <action selector="greenButtonPushed:" target="bU7-R8-ocO" id="glW-Ty-wn7"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z67-8z-2hm">
+                                        <rect key="frame" x="-2" y="30" width="420" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Change to Amber" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QkQ-n1-whD">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
+                                        <connections>
+                                            <action selector="amberButtonPushed:" target="bU7-R8-ocO" id="mxZ-sK-SIK"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xT2-md-HY7">
+                                        <rect key="frame" x="-2" y="2" width="420" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Change to Red" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4Rc-is-Eak">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
+                                        <connections>
+                                            <action selector="redButtonPushed:" target="bU7-R8-ocO" id="sYJ-rY-IZ5"/>
                                         </connections>
                                     </button>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="J6s-gY-JTh">
-                                        <rect key="frame" x="0.0" y="-2" width="96" height="5"/>
+                                        <rect key="frame" x="5" y="-2" width="406" height="5"/>
                                     </box>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="8gV-d6-R51" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="rDR-xU-0vX"/>
+                                    <constraint firstItem="q3q-4m-ftM" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="25d-Eo-OzI"/>
+                                    <constraint firstAttribute="trailing" secondItem="8gV-d6-R51" secondAttribute="trailing" constant="5" id="2oi-0L-NFP"/>
+                                    <constraint firstAttribute="trailing" secondItem="Z67-8z-2hm" secondAttribute="trailing" constant="5" id="3PN-Ad-voo"/>
+                                    <constraint firstAttribute="trailing" secondItem="q3q-4m-ftM" secondAttribute="trailing" constant="5" id="4uS-sY-5O0"/>
+                                    <constraint firstItem="J6s-gY-JTh" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="AhZ-jr-TW6"/>
+                                    <constraint firstItem="xT2-md-HY7" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="HNF-5p-Akj"/>
+                                    <constraint firstAttribute="trailing" secondItem="xT2-md-HY7" secondAttribute="trailing" constant="5" id="JLg-4d-hlm"/>
+                                    <constraint firstItem="Z67-8z-2hm" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="SSv-Xy-Hmt"/>
+                                    <constraint firstItem="8gV-d6-R51" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="Uaz-DW-6SX"/>
+                                    <constraint firstAttribute="trailing" secondItem="J6s-gY-JTh" secondAttribute="trailing" constant="5" id="syf-U2-IG2"/>
+                                    <constraint firstItem="Vnl-jX-Lnm" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="tr0-xo-ESR"/>
                                 </constraints>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
@@ -53,7 +104,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="changeToAmber" destination="Z67-8z-2hm" id="owm-kM-CZW"/>
+                        <outlet property="changeToGreen" destination="8gV-d6-R51" id="Scy-AP-gLz"/>
+                        <outlet property="changeToRed" destination="xT2-md-HY7" id="G4e-nT-CiF"/>
                         <outlet property="pushButton" destination="8gV-d6-R51" id="y5B-sU-AJC"/>
+                        <outlet property="statusLabel" destination="Vnl-jX-Lnm" id="dbp-dc-k5T"/>
                     </connections>
                 </viewController>
                 <customObject id="9uD-mB-xHs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

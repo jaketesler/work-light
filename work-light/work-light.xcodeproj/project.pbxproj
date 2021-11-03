@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		233EF8AB977A2CF448CB82EA /* Pods_work_light.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE5A72724714277E646E0CF /* Pods_work_light.framework */; };
+		E0284F4C273219E0009D8650 /* ORSSerialPort+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = E0284F4B273219E0009D8650 /* ORSSerialPort+Attributes.m */; };
 		E0FB09F42731C6740073C76F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0FB09F32731C6740073C76F /* Assets.xcassets */; };
 		E0FB09F72731C6740073C76F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0FB09F62731C6740073C76F /* Preview Assets.xcassets */; };
 		E0FB09FF2731C6F70073C76F /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB09FE2731C6F70073C76F /* StatusBarController.swift */; };
@@ -21,6 +23,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F304E1CA62D705EB4C4542D /* Pods-work-light.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-work-light.debug.xcconfig"; path = "Target Support Files/Pods-work-light/Pods-work-light.debug.xcconfig"; sourceTree = "<group>"; };
+		4F3F0DBFB7E30C9D89CD36CF /* Pods-work-light.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-work-light.release.xcconfig"; path = "Target Support Files/Pods-work-light/Pods-work-light.release.xcconfig"; sourceTree = "<group>"; };
+		AEE5A72724714277E646E0CF /* Pods_work_light.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_work_light.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0284F4A273219DF009D8650 /* work-light-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "work-light-Bridging-Header.h"; sourceTree = "<group>"; };
+		E0284F4B273219E0009D8650 /* ORSSerialPort+Attributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ORSSerialPort+Attributes.m"; sourceTree = "<group>"; };
+		E0284F4D27321A5E009D8650 /* ORSSerialPort+Attributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ORSSerialPort+Attributes.h"; sourceTree = "<group>"; };
 		E0FB09EC2731C6730073C76F /* work-light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "work-light.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0FB09F32731C6740073C76F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0FB09F62731C6740073C76F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -34,6 +42,7 @@
 		E0FB0A132731D8F80073C76F /* ButtonPopover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ButtonPopover.storyboard; sourceTree = "<group>"; };
 		E0FB0A152731D9130073C76F /* PopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		E0FB0A172731DF4D0073C76F /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		E0FB0A1A2731F0450073C76F /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,17 +50,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				233EF8AB977A2CF448CB82EA /* Pods_work_light.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		88B1D1A633B59371CF6228F8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AEE5A72724714277E646E0CF /* Pods_work_light.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C437DF9A7C0E9C066B383D6B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1F304E1CA62D705EB4C4542D /* Pods-work-light.debug.xcconfig */,
+				4F3F0DBFB7E30C9D89CD36CF /* Pods-work-light.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E0FB09E32731C6730073C76F = {
 			isa = PBXGroup;
 			children = (
 				E0FB09EE2731C6730073C76F /* work-light */,
 				E0FB09ED2731C6730073C76F /* Products */,
+				C437DF9A7C0E9C066B383D6B /* Pods */,
+				88B1D1A633B59371CF6228F8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,9 +105,13 @@
 				E0FB0A0C2731CD4B0073C76F /* Info.plist */,
 				E0FB09F82731C6740073C76F /* work_light.entitlements */,
 				E0FB09F32731C6740073C76F /* Assets.xcassets */,
+				E0FB0A1A2731F0450073C76F /* Podfile */,
+				E0284F4D27321A5E009D8650 /* ORSSerialPort+Attributes.h */,
+				E0284F4B273219E0009D8650 /* ORSSerialPort+Attributes.m */,
 				E0FB0A192731E1580073C76F /* Old */,
 				E0FB0A0E2731CD550073C76F /* Assets */,
 				E0FB09F52731C6740073C76F /* Preview Content */,
+				E0284F4A273219DF009D8650 /* work-light-Bridging-Header.h */,
 			);
 			path = "work-light";
 			sourceTree = "<group>";
@@ -113,9 +146,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E0FB09FB2731C6740073C76F /* Build configuration list for PBXNativeTarget "work-light" */;
 			buildPhases = (
+				FB6883F159200307D39AEDDB /* [CP] Check Pods Manifest.lock */,
 				E0FB09E82731C6730073C76F /* Sources */,
 				E0FB09E92731C6730073C76F /* Frameworks */,
 				E0FB09EA2731C6730073C76F /* Resources */,
+				1F057B1E54EA226CAFA306B2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -138,6 +173,7 @@
 				TargetAttributes = {
 					E0FB09EB2731C6730073C76F = {
 						CreatedOnToolsVersion = 13.1;
+						LastSwiftMigration = 1310;
 					};
 				};
 			};
@@ -174,6 +210,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1F057B1E54EA226CAFA306B2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-work-light/Pods-work-light-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-work-light/Pods-work-light-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-work-light/Pods-work-light-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB6883F159200307D39AEDDB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-work-light-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E0FB09E82731C6730073C76F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -183,6 +261,7 @@
 				E0FB0A052731C9BD0073C76F /* AppDelegate.swift in Sources */,
 				E0FB0A182731DF4D0073C76F /* main.swift in Sources */,
 				E0FB09FF2731C6F70073C76F /* StatusBarController.swift in Sources */,
+				E0284F4C273219E0009D8650 /* ORSSerialPort+Attributes.m in Sources */,
 				E0FB0A072731CA0F0073C76F /* ContentView.swift in Sources */,
 				E0FB0A012731C7460073C76F /* SerialUSBController.swift in Sources */,
 			);
@@ -308,10 +387,12 @@
 		};
 		E0FB09FC2731C6740073C76F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F304E1CA62D705EB4C4542D /* Pods-work-light.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "work-light/work_light.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -331,16 +412,20 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jaketesler.work-light";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "work-light/work-light-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		E0FB09FD2731C6740073C76F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4F3F0DBFB7E30C9D89CD36CF /* Pods-work-light.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "work-light/work_light.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -360,6 +445,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jaketesler.work-light";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "work-light/work-light-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
