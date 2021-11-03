@@ -68,12 +68,9 @@ class PopoverViewController: NSViewController {
     
     func ledColorToSystemColor(_ ledColor: LEDColor) -> CGColor {
         switch ledColor {
-        case .red:
-            return NSColor.systemRed.cgColor
-        case .amber:
-            return NSColor.systemOrange.cgColor
-        case .green:
-            return NSColor.systemGreen.cgColor
+        case .red:   return NSColor.systemRed.cgColor
+        case .amber: return NSColor.systemOrange.cgColor
+        case .green: return NSColor.systemGreen.cgColor
         }
     }
 }

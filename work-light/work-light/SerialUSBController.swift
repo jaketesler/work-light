@@ -11,25 +11,25 @@ import Foundation
 import ORSSerial
 
 class SerialController: NSObject {
+    //MARK: - ORSSerialPortManager
+    @objc dynamic var portManager = ORSSerialPortManager.shared()
+    private var observation: NSKeyValueObservation?
+    
     private var port: ORSSerialPort? {
         didSet {
-            if port == nil { _ledPower = .off /*print("Serial disconnected")*/ }
-            for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
+            if port == nil {
+                _ledPower = .off
+                print("Serial disconnected")
+            }
+            updateDelegates()
         }
     }
     
-    @objc dynamic var portManager = ORSSerialPortManager.shared()
-    
-    static var shared: SerialController = SerialController()
+    //MARK: - Delegates
     private var delegates: [SerialControllerDelegate] = []
     
-    var deviceConnected: Bool {
-        get { return self.port != nil }
-    }
-    
-    private var _ledState : LEDState = .off {
-        didSet { for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) } }
-    }
+    // MARK: - State Tracking
+    private var _ledState : LEDState = .off { didSet { updateDelegates() } }
     private var ledState: LEDState {
         get { return _ledState }
         set {
@@ -37,13 +37,11 @@ class SerialController: NSObject {
             if ledPower == .on {
                 sendData(Data([ledColor.rawValue | ledState.rawValue] as [UInt8]))
             }
-            for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
+            updateDelegates()
         }
     }
     
-    private var _ledColor: LEDColor = .green {
-        didSet { for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) } }
-    }
+    private var _ledColor: LEDColor = .green { didSet { updateDelegates() } }
     private var ledColor: LEDColor {
         get { return _ledColor }
         set {
@@ -52,13 +50,11 @@ class SerialController: NSObject {
             if ledPower == .on {
                 sendData(Data([newValue.rawValue | ledState.rawValue] as [UInt8]))
             }
-            for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: newValue) }
+            updateDelegates() // does this need newValue?
         }
     }
     
-    private var _ledPower: LEDPower = .off {
-        didSet { for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) } }
-    }
+    private var _ledPower: LEDPower = .off { didSet { updateDelegates() } }
     private var ledPower: LEDPower {
         get { return _ledPower }
         set {
@@ -68,25 +64,24 @@ class SerialController: NSObject {
             } else {
                 sendData(Data([ledColor.rawValue | ledState.rawValue] as [UInt8]))
             }
-            for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: newValue, ledColor: ledColor) }
+            updateDelegates() // does this need newValue?
         }
     }
     
-    
-    var observation: NSKeyValueObservation?
+    //MARK: - Initialization
     
     override init() {
-        
         super.init()
         
         connect()
         status()
+
         observation = observe(\.portManager.availablePorts, options: [.new], changeHandler: serialPortsChanged)
-        
-//        nc_config()
     }
     
-    func changeColor(_ color: LEDColor) {
+    //MARK: - Public Functions
+    
+    public func changeColor(_ color: LEDColor) {
         self.ledColor = color
     }
     
@@ -104,16 +99,34 @@ class SerialController: NSObject {
         }
     }
     
+    // MARK: - Private functions
     private func status() {
         let stream: UInt8 = 0x30
         
         sendData(Data([stream] as [UInt8]))
     }
     
+    // KVO
     private func serialPortsChanged(_ obj: _KeyValueCodingAndObserving, _ value: NSKeyValueObservedChange<[ORSSerialPort]>) -> Void {
         connect()
     }
     
+    private func updateDelegates() {
+        for delegate in delegates {
+            delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor)
+        }
+    }
+    
+    private func turnOff() {
+        var rawData: [UInt8] = []
+        for color in LEDColor.allCases {
+            let bit = (color.rawValue | LEDState.off.rawValue)
+            rawData.append(bit)
+        }
+        sendData(Data(rawData))
+    }
+    
+    // MARK: - Serial comms
     func connect() {
         if let curPort = self.port {
             if curPort.isOpen { curPort.close() }
@@ -141,18 +154,8 @@ class SerialController: NSObject {
         serialport.open()
     }
     
-    func disconnect() {
+    public func disconnect() {
         self.port = nil
-    }
-    
-    private func turnOff() {
-        var rawData: [UInt8] = []
-        for color in LEDColor.allCases {
-            let bit = (color.rawValue | LEDState.off.rawValue)
-            rawData.append(bit)
-        }
-
-        sendData(Data(rawData))
     }
     
     private func sendData(_ data: Data) {
@@ -163,46 +166,6 @@ class SerialController: NSObject {
 //        serialport.close()
     }
 }
-
-enum LEDColor: UInt8, CaseIterable {
-    case red = 0x01
-    case amber = 0x02
-    case green = 0x04
-}
-
-private enum LEDState: UInt8, CaseIterable {
-    case on = 0x10
-    case off = 0x20
-    case blink = 0x40
-}
-
-enum LEDPower: CaseIterable {
-    case on
-    case off
-}
-
-extension SerialController {
-    public var power: LEDPower {
-        get { return self.ledPower }
-    }
-    
-    public var color: LEDColor {
-        get { return self.ledColor }
-    }
-    
-    public var isBlinking: Bool {
-        get { return self.ledState == .blink }
-    }
-    
-    public func addDelegate(_ delegate: SerialControllerDelegate) {
-        self.delegates.append(delegate)
-    }
-}
-
-protocol SerialControllerDelegate {
-    func serialControllerDelegate(statusDidChange state: LEDPower, ledColor: LEDColor)
-}
-
 
 extension SerialController: ORSSerialPortDelegate {
     func serialPortWasRemovedFromSystem(_ serialPort: ORSSerialPort) {
@@ -256,7 +219,26 @@ extension SerialController: ORSSerialPortDelegate {
         
         default:
             print(String(rawData))
-            print("boo hoo :(")
+            print("boooo unknown response :(")
         }
     }
+}
+
+// MARK: - Public interface
+extension SerialController {
+    public static var shared: SerialController = SerialController()
+    
+    public var power: LEDPower { get { return self.ledPower } }
+    public var color: LEDColor { get { return self.ledColor } }
+    public var isBlinking: Bool { get { return self.ledState == .blink } }
+    public var deviceConnected: Bool { get { return self.port != nil } }
+    
+    public func addDelegate(_ delegate: SerialControllerDelegate) {
+        self.delegates.append(delegate)
+    }
+}
+
+// MARK: - SerialControllerDelegate
+protocol SerialControllerDelegate {
+    func serialControllerDelegate(statusDidChange state: LEDPower, ledColor: LEDColor)
 }
