@@ -6,24 +6,47 @@
 //
 
 import Foundation
-
-import IOKit
-import IOKit.usb
-import IOKit.usb.IOUSBLib
-import IOKit.serial
+//import UserNotifications
 
 import ORSSerial
-
-//import UserNotifications
 
 class SerialController: NSObject {
     var port: ORSSerialPort
     
     static var controller: SerialController = SerialController()
+    private var delegates: [SerialControllerDelegate] = []
+    
+    private var ledState: LEDState = .off {
+        didSet {
+            if ledPower == .on {
+                sendData(Data([ledColor.rawValue | ledState.rawValue] as [UInt8]))
+            }
+            for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
+        }
+    }
+    
+    private var ledColor: LEDColor = .green {
+        didSet {
+            turnOff()
+            if ledPower == .on {
+                sendData(Data([ledColor.rawValue | ledState.rawValue] as [UInt8]))
+            }
+            for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
+        }
+    }
+    
+    private var ledPower: LEDPower = .off {
+        didSet {
+            if ledPower == .off {
+                 turnOff()
+            } else {
+                sendData(Data([ledColor.rawValue | ledState.rawValue] as [UInt8]))
+            }
+            for delegate in delegates { delegate.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
+        }
+    }
     
     override init() {
-        print("init")
-        
         var ser_device: ORSSerialPort? = nil
         for port in ORSSerialPortManager.shared().availablePorts {
             guard
@@ -49,45 +72,44 @@ class SerialController: NSObject {
         super.init()
         
         print("Baud rate set to \(self.port.baudRate)")
-//        port.numberOfDataBits = 8
-//        port.parity = .none
-//        port.numberOfStopBits = 1
-//        port.usesRTSCTSFlowControl = false
         self.port.delegate = self
         port.open()
-        
         
 //        nc_config()
     }
     
     func changeColor(_ color: LEDColor) {
-        print("changeColor")
+        self.ledColor = color
+    }
+    
+    public func setOnOffState(_ state: LEDPower) {
+        if self.ledState == .off { self.ledState = .on } // coundn't be blinking(True) in this state
         
-//        RunLoop.current.run() // Required to receive data from ORSSerialPort and to process user input
-        
-        let colorHex: UInt8?
-        switch color {
-        case .red:
-            colorHex = 0x11
-        case .amber:
-            colorHex = 0x12
-        case .green:
-            colorHex = 0x14
-        }
-        
-//        print(color.rawValue.description)
-        
-        if let color = colorHex {
-            turnOff()
-            sendData(Data([color] as [UInt8]))
+        self.ledPower = state
+    }
+    
+    public func setBlink(shouldBlink blink: Bool) {
+        if blink {
+            ledState = .blink
         } else {
-            print("no color hex :(")
+            ledState = ledPower == .off ? .off : .on
         }
     }
     
-    func turnOff() {
-        let offData = Data([0x21, 0x22, 0x24] as [UInt8])
-        sendData(offData)
+    private func status() {
+        let stream: UInt8 = 0x00
+        
+        sendData(Data([stream] as [UInt8]))
+    }
+    
+    private func turnOff() {
+        var rawData: [UInt8] = []
+        for color in LEDColor.allCases {
+            let bit = (color.rawValue | LEDState.off.rawValue)
+            rawData.append(bit)
+        }
+
+        sendData(Data(rawData))
     }
     
     private func sendData(_ data: Data) {
@@ -96,13 +118,47 @@ class SerialController: NSObject {
         print("Data sent!")
 //        port.close()
     }
+}
+
+enum LEDColor: UInt8, CaseIterable {
+    case red = 0x01
+    case amber = 0x02
+    case green = 0x04
+}
+
+private enum LEDState: UInt8, CaseIterable {
+    case on = 0x10
+    case off = 0x20
+    case blink = 0x40
+}
+
+enum LEDPower: CaseIterable {
+    case on
+    case off
+}
+
+extension SerialController {
+    public var power: LEDPower {
+        get { return self.ledPower }
+    }
     
-    enum LEDColor: UInt8 {
-        case red
-        case amber
-        case green
+    public var color: LEDColor {
+        get { return self.ledColor }
+    }
+    
+    public var isBlinking: Bool {
+        get { return self.ledState == .blink }
+    }
+    
+    public func addDelegate(_ delegate: SerialControllerDelegate) {
+        self.delegates.append(delegate)
     }
 }
+
+protocol SerialControllerDelegate {
+    func serialControllerDelegate(statusDidChange state: LEDPower, ledColor: LEDColor)
+}
+
 
 extension SerialController: ORSSerialPortDelegate {
     func serialPortWasRemovedFromSystem(_ serialPort: ORSSerialPort) {
@@ -113,7 +169,9 @@ extension SerialController: ORSSerialPortDelegate {
         let string = String(data: data, encoding: .utf8)
         print("Got \(string) from the serial port!")
     }
+}
 
+//extension SerialController {
 //    @objc func serialPortsWereConnected(_ notification: Notification) {
 //        if let userInfo = notification.userInfo {
 //            let connectedPorts = userInfo[ORSConnectedSerialPortsKey] as! [ORSSerialPort]
@@ -129,7 +187,7 @@ extension SerialController: ORSSerialPortDelegate {
 //            self.postUserNotificationForDisconnectedPorts(disconnectedPorts)
 //        }
 //    }
-}
+//}
 
 //extension SerialController: UNUserNotificationCenterDelegate {
 //    func nc_config() {
@@ -170,28 +228,3 @@ extension SerialController: ORSSerialPortDelegate {
 //    }
 //}
 
-
-extension String {
-    
-    /// Create `Data` from hexadecimal string representation
-    ///
-    /// This creates a `Data` object from hex string. Note, if the string has any spaces or non-hex characters (e.g. starts with '<' and with a '>'), those are ignored and only hex characters are processed.
-    ///
-    /// - returns: Data represented by this hexadecimal string.
-    
-    var hexadecimal: Data? {
-        var data = Data(capacity: count / 2)
-        
-        let regex = try! NSRegularExpression(pattern: "[0-9a-f]{1,2}", options: .caseInsensitive)
-        regex.enumerateMatches(in: self, range: NSRange(startIndex..., in: self)) { match, _, _ in
-            let byteString = (self as NSString).substring(with: match!.range)
-            let num = UInt8(byteString, radix: 16)!
-            data.append(num)
-        }
-        
-        guard data.count > 0 else { return nil }
-        
-        return data
-    }
-    
-}

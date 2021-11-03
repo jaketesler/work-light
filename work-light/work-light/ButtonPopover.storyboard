@@ -9,26 +9,90 @@
         <scene sceneID="PEd-7d-5j0">
             <objects>
                 <viewController storyboardIdentifier="PopoverViewController" id="bU7-R8-ocO" customClass="PopoverViewController" customModule="work_light" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="tOy-S4-hL0">
-                        <rect key="frame" x="0.0" y="0.0" width="416" height="163"/>
+                    <view key="view" misplaced="YES" id="tOy-S4-hL0">
+                        <rect key="frame" x="0.0" y="0.0" width="416" height="244"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="48Q-tz-tET">
-                                <rect key="frame" x="0.0" y="30" width="416" height="118"/>
+                                <rect key="frame" x="5" y="30" width="406" height="223"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vnl-jX-Lnm">
-                                        <rect key="frame" x="3" y="102" width="80" height="16"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Status Label" id="gYn-2K-ebj">
+                                        <rect key="frame" x="-2" y="207" width="132" height="16"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="LED Light Pole Utility" id="gYn-2K-ebj">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="q3q-4m-ftM">
-                                        <rect key="frame" x="5" y="91" width="406" height="5"/>
+                                        <rect key="frame" x="0.0" y="196" width="406" height="5"/>
+                                    </box>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDd-w6-LuV">
+                                        <rect key="frame" x="0.0" y="166" width="406" height="24"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wJG-Pv-CVF">
+                                                <rect key="frame" x="-2" y="4" width="364" height="16"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="LED Pole On/Off" id="eyB-Ka-ah9">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="LNg-vk-2NA">
+                                                <rect key="frame" x="366" y="-1" width="42" height="25"/>
+                                                <connections>
+                                                    <action selector="switchOnOffToggled:" target="bU7-R8-ocO" id="IRA-Z6-7n2"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="v1h-yu-aae"/>
+                                        </constraints>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1xr-Bd-1yX">
+                                        <rect key="frame" x="0.0" y="134" width="406" height="24"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XZt-TD-nA8">
+                                                <rect key="frame" x="-2" y="8" width="378" height="16"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Current Color" id="ehr-MG-1xa">
+                                                    <font key="font" usesAppearanceFont="YES"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="3K2-XS-uEz">
+                                                <rect key="frame" x="382" y="0.0" width="24" height="24"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="24" id="gBz-B6-JaV"/>
+                                                    <constraint firstAttribute="width" constant="24" id="jO5-SP-6nI"/>
+                                                </constraints>
+                                            </customView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="2aW-SR-KLV"/>
+                                        </constraints>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
+                                    <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="F5q-T6-aSn">
+                                        <rect key="frame" x="0.0" y="123" width="406" height="5"/>
                                     </box>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8gV-d6-R51">
-                                        <rect key="frame" x="-2" y="58" width="420" height="32"/>
+                                        <rect key="frame" x="-7" y="90" width="420" height="32"/>
                                         <buttonCell key="cell" type="push" title="Change to Green" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lga-Mp-qLn">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -40,7 +104,7 @@
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z67-8z-2hm">
-                                        <rect key="frame" x="-2" y="30" width="420" height="32"/>
+                                        <rect key="frame" x="-7" y="62" width="420" height="32"/>
                                         <buttonCell key="cell" type="push" title="Change to Amber" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QkQ-n1-whD">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -51,7 +115,7 @@
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xT2-md-HY7">
-                                        <rect key="frame" x="-2" y="2" width="420" height="32"/>
+                                        <rect key="frame" x="-7" y="34" width="420" height="32"/>
                                         <buttonCell key="cell" type="push" title="Change to Red" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4Rc-is-Eak">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -62,23 +126,54 @@
                                         </connections>
                                     </button>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="J6s-gY-JTh">
-                                        <rect key="frame" x="5" y="-2" width="406" height="5"/>
+                                        <rect key="frame" x="0.0" y="30" width="406" height="5"/>
                                     </box>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cj0-WV-cj9">
+                                        <rect key="frame" x="0.0" y="0.0" width="120" height="24"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nYT-U1-q2r">
+                                                <rect key="frame" x="-2" y="4" width="78" height="16"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Blink On/Off" id="eln-Wp-bJh">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="nOr-8H-GNi">
+                                                <rect key="frame" x="80" y="-1" width="42" height="25"/>
+                                                <connections>
+                                                    <action selector="switchBlinkToggled:" target="bU7-R8-ocO" id="QXP-Sc-sir"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="dsC-nv-nUL"/>
+                                        </constraints>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="q3q-4m-ftM" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="25d-Eo-OzI"/>
-                                    <constraint firstAttribute="trailing" secondItem="8gV-d6-R51" secondAttribute="trailing" constant="5" id="2oi-0L-NFP"/>
-                                    <constraint firstAttribute="trailing" secondItem="Z67-8z-2hm" secondAttribute="trailing" constant="5" id="3PN-Ad-voo"/>
-                                    <constraint firstAttribute="trailing" secondItem="q3q-4m-ftM" secondAttribute="trailing" constant="5" id="4uS-sY-5O0"/>
-                                    <constraint firstItem="J6s-gY-JTh" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="AhZ-jr-TW6"/>
-                                    <constraint firstItem="xT2-md-HY7" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="HNF-5p-Akj"/>
-                                    <constraint firstAttribute="trailing" secondItem="xT2-md-HY7" secondAttribute="trailing" constant="5" id="JLg-4d-hlm"/>
-                                    <constraint firstItem="Z67-8z-2hm" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="SSv-Xy-Hmt"/>
-                                    <constraint firstItem="8gV-d6-R51" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="Uaz-DW-6SX"/>
-                                    <constraint firstAttribute="trailing" secondItem="J6s-gY-JTh" secondAttribute="trailing" constant="5" id="syf-U2-IG2"/>
-                                    <constraint firstItem="Vnl-jX-Lnm" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="tr0-xo-ESR"/>
+                                    <constraint firstItem="8gV-d6-R51" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="2mh-hi-JCm"/>
+                                    <constraint firstItem="VDd-w6-LuV" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="7K1-XJ-hDu"/>
+                                    <constraint firstItem="q3q-4m-ftM" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="HSf-ZE-bb7"/>
+                                    <constraint firstItem="F5q-T6-aSn" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="Isa-EU-upM"/>
+                                    <constraint firstItem="xT2-md-HY7" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="TSB-Zm-2cr"/>
+                                    <constraint firstItem="J6s-gY-JTh" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="ord-gM-VBD"/>
+                                    <constraint firstItem="1xr-Bd-1yX" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="pFB-Pq-6MD"/>
+                                    <constraint firstItem="Z67-8z-2hm" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="x9b-S3-3yk"/>
                                 </constraints>
                                 <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
@@ -93,11 +188,16 @@
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="48Q-tz-tET" firstAttribute="width" secondItem="tOy-S4-hL0" secondAttribute="width" id="VVt-ZB-yon"/>
+                            <constraint firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" constant="5" id="0eb-XL-Vd1"/>
+                            <constraint firstItem="48Q-tz-tET" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="5" id="4eY-wY-itE"/>
                             <constraint firstItem="48Q-tz-tET" firstAttribute="centerX" secondItem="tOy-S4-hL0" secondAttribute="centerX" id="fxB-Vn-qsL"/>
                             <constraint firstAttribute="bottom" secondItem="48Q-tz-tET" secondAttribute="bottom" constant="30" id="pLe-uH-AH3"/>
                             <constraint firstItem="48Q-tz-tET" firstAttribute="top" secondItem="tOy-S4-hL0" secondAttribute="top" constant="15" id="pvg-Mt-VfA"/>
@@ -107,8 +207,11 @@
                         <outlet property="changeToAmber" destination="Z67-8z-2hm" id="owm-kM-CZW"/>
                         <outlet property="changeToGreen" destination="8gV-d6-R51" id="Scy-AP-gLz"/>
                         <outlet property="changeToRed" destination="xT2-md-HY7" id="G4e-nT-CiF"/>
+                        <outlet property="colorDot" destination="3K2-XS-uEz" id="IHD-q6-8Z7"/>
                         <outlet property="pushButton" destination="8gV-d6-R51" id="y5B-sU-AJC"/>
                         <outlet property="statusLabel" destination="Vnl-jX-Lnm" id="dbp-dc-k5T"/>
+                        <outlet property="switchBlink" destination="nOr-8H-GNi" id="wYB-un-oUw"/>
+                        <outlet property="switchOnOff" destination="LNg-vk-2NA" id="ocB-79-Wrg"/>
                     </connections>
                 </viewController>
                 <customObject id="9uD-mB-xHs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
