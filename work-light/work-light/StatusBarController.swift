@@ -58,16 +58,46 @@ class StatusBarController {
     func hidePopover(_ sender: AnyObject) {
         popover.performClose(sender)
     }
-
 }
 
 class StatusBarMenuView: NSMenu {
     @IBOutlet weak var topItem: NSMenuItem!
 
-    func setup() {
-        self.addItem(withTitle: "El Menu", action: #selector(elMenuItem(sender:)), keyEquivalent: "")
+    private let deviceDefaultText = "No Device Found"
+    lazy var deviceInfo = deviceDefaultText {
+        didSet { deviceItem.title = "Device: " + deviceInfo }
     }
 
-    @objc func elMenuItem(sender: AnyObject) {
+    lazy var deviceItem: NSMenuItem = {
+        let item = NSMenuItem(title: deviceInfo, action: nil, keyEquivalent: "")
+        return item
+    }()
+
+    func setup() {
+        SerialController.shared.addDelegate(self)
+
+        self.addItem(withTitle: "LED Light Pole Menu Bar Controller", action: nil, keyEquivalent: "")
+        self.addItem(withTitle: "Created by Jake Tesler", action: nil, keyEquivalent: "")
+        self.addItem(NSMenuItem.separator())
+
+        self.addItem(deviceItem)
+        self.addItem(NSMenuItem.separator())
+
+        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "Q")
+        quitItem.isEnabled = true
+        quitItem.target = self
+        self.addItem(quitItem)
+    }
+
+    func setDevice(_ device: String?) {
+        self.deviceInfo = device ?? deviceDefaultText
+    }
+
+    @objc func quit() { exit(0) }
+}
+
+extension StatusBarMenuView: SerialDeviceDelegate {
+    func serialDeviceDelegate(deviceDidChange device: String?) {
+        setDevice(device)
     }
 }

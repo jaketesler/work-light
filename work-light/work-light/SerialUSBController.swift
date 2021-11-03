@@ -27,6 +27,7 @@ class SerialController: NSObject {
 
     //MARK: - Delegates
     private var delegates: [SerialControllerDelegate] = []
+    private var serialDeviceDelegates: [SerialDeviceDelegate] = []
 
     // MARK: - State Tracking
     private var _ledState : LEDState = .off { didSet { updateDelegates() } }
@@ -144,6 +145,8 @@ class SerialController: NSObject {
 
     private func updateDelegates() {
         delegates.forEach({ $0.serialControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) })
+
+        serialDeviceDelegates.forEach({ $0.serialDeviceDelegate(deviceDidChange: self.port?.path) })
     }
 
     private func turnOff() {
@@ -311,9 +314,18 @@ extension SerialController {
     public func addDelegate(_ delegate: SerialControllerDelegate) {
         self.delegates.append(delegate)
     }
+
+    public func addDelegate(_ delegate: SerialDeviceDelegate) {
+        self.serialDeviceDelegates.append(delegate)
+    }
 }
 
 // MARK: - SerialControllerDelegate
 protocol SerialControllerDelegate {
     func serialControllerDelegate(statusDidChange state: LEDPower, ledColor: [LEDColor])
+}
+
+// MARK: - SerialDeviceDelegate
+protocol SerialDeviceDelegate {
+    func serialDeviceDelegate(deviceDidChange device: String?)
 }
