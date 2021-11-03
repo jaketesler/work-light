@@ -10,14 +10,14 @@
             <objects>
                 <viewController storyboardIdentifier="PopoverViewController" id="bU7-R8-ocO" customClass="PopoverViewController" customModule="work_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="tOy-S4-hL0">
-                        <rect key="frame" x="0.0" y="0.0" width="416" height="234"/>
+                        <rect key="frame" x="0.0" y="0.0" width="445" height="246"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="48Q-tz-tET">
-                                <rect key="frame" x="5" y="5" width="406" height="214"/>
+                                <rect key="frame" x="5" y="5" width="435" height="226"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vnl-jX-Lnm">
-                                        <rect key="frame" x="3" y="198" width="132" height="16"/>
+                                        <rect key="frame" x="3" y="210" width="132" height="16"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="LED Light Pole Utility" id="gYn-2K-ebj">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -25,13 +25,13 @@
                                         </textFieldCell>
                                     </textField>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="q3q-4m-ftM">
-                                        <rect key="frame" x="0.0" y="187" width="406" height="5"/>
+                                        <rect key="frame" x="0.0" y="199" width="435" height="5"/>
                                     </box>
-                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDd-w6-LuV">
-                                        <rect key="frame" x="5" y="157" width="396" height="24"/>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDd-w6-LuV" userLabel="Power On/Off">
+                                        <rect key="frame" x="5" y="169" width="425" height="24"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wJG-Pv-CVF">
-                                                <rect key="frame" x="-2" y="4" width="354" height="16"/>
+                                                <rect key="frame" x="-2" y="4" width="383" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="LED Pole On/Off" id="eyB-Ka-ah9">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -39,7 +39,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="LNg-vk-2NA">
-                                                <rect key="frame" x="356" y="-1" width="42" height="25"/>
+                                                <rect key="frame" x="385" y="-1" width="42" height="25"/>
                                                 <connections>
                                                     <action selector="switchOnOffToggled:" target="bU7-R8-ocO" id="IRA-Z6-7n2"/>
                                                 </connections>
@@ -57,11 +57,11 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
-                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cj0-WV-cj9">
-                                        <rect key="frame" x="5" y="125" width="396" height="24"/>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cj0-WV-cj9" userLabel="Blink On/Off">
+                                        <rect key="frame" x="5" y="137" width="425" height="24"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nYT-U1-q2r">
-                                                <rect key="frame" x="-2" y="4" width="354" height="16"/>
+                                                <rect key="frame" x="-2" y="4" width="383" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Blink On/Off" id="eln-Wp-bJh">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -69,7 +69,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="nOr-8H-GNi">
-                                                <rect key="frame" x="356" y="-1" width="42" height="25"/>
+                                                <rect key="frame" x="385" y="-1" width="42" height="25"/>
                                                 <connections>
                                                     <action selector="switchBlinkToggled:" target="bU7-R8-ocO" id="QXP-Sc-sir"/>
                                                 </connections>
@@ -87,11 +87,11 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
-                                    <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1xr-Bd-1yX">
-                                        <rect key="frame" x="5" y="93" width="396" height="24"/>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1xr-Bd-1yX" userLabel="Current Color">
+                                        <rect key="frame" x="5" y="105" width="425" height="24"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XZt-TD-nA8">
-                                                <rect key="frame" x="-2" y="8" width="368" height="16"/>
+                                                <rect key="frame" x="-2" y="8" width="397" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Current Color" id="ehr-MG-1xa">
                                                     <font key="font" usesAppearanceFont="YES"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -99,7 +99,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="3K2-XS-uEz">
-                                                <rect key="frame" x="372" y="0.0" width="24" height="24"/>
+                                                <rect key="frame" x="401" y="0.0" width="24" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="gBz-B6-JaV"/>
                                                     <constraint firstAttribute="width" constant="24" id="jO5-SP-6nI"/>
@@ -119,56 +119,203 @@
                                         </customSpacing>
                                     </stackView>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="F5q-T6-aSn">
-                                        <rect key="frame" x="0.0" y="82" width="406" height="5"/>
+                                        <rect key="frame" x="0.0" y="94" width="435" height="5"/>
                                     </box>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8gV-d6-R51">
-                                        <rect key="frame" x="-7" y="49" width="420" height="32"/>
-                                        <buttonCell key="cell" type="push" title="Change to Green" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lga-Mp-qLn">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="contentTintColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <connections>
-                                            <action selector="greenButtonPushed:" target="bU7-R8-ocO" id="glW-Ty-wn7"/>
-                                        </connections>
-                                    </button>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z67-8z-2hm">
-                                        <rect key="frame" x="-7" y="21" width="420" height="32"/>
-                                        <buttonCell key="cell" type="push" title="Change to Amber" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QkQ-n1-whD">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-                                        <connections>
-                                            <action selector="amberButtonPushed:" target="bU7-R8-ocO" id="mxZ-sK-SIK"/>
-                                        </connections>
-                                    </button>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xT2-md-HY7">
-                                        <rect key="frame" x="-7" y="-7" width="420" height="32"/>
-                                        <buttonCell key="cell" type="push" title="Change to Red" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4Rc-is-Eak">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-                                        <connections>
-                                            <action selector="redButtonPushed:" target="bU7-R8-ocO" id="sYJ-rY-IZ5"/>
-                                        </connections>
-                                    </button>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Kdz-Sa-uhT" userLabel="Green View">
+                                        <rect key="frame" x="0.0" y="64" width="435" height="24"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AZp-Ue-U70">
+                                                <rect key="frame" x="3" y="4" width="46" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="42" id="EcT-vP-2Fo"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Green" id="g52-YE-Jr9">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wM1-5d-Dr9" userLabel="Green Control">
+                                                <rect key="frame" x="334" y="0.0" width="96" height="24"/>
+                                                <subviews>
+                                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8gV-d6-R51">
+                                                        <rect key="frame" x="-7" y="-3" width="64" height="32"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="50" id="D0G-O2-hZo"/>
+                                                        </constraints>
+                                                        <buttonCell key="cell" type="push" title="Only" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lga-Mp-qLn">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="contentTintColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <connections>
+                                                            <action selector="greenButtonPushed:" target="bU7-R8-ocO" id="glW-Ty-wn7"/>
+                                                        </connections>
+                                                    </button>
+                                                    <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="bPP-5J-ab2">
+                                                        <rect key="frame" x="56" y="0.0" width="42" height="25"/>
+                                                        <connections>
+                                                            <action selector="greenSwitchToggled:" target="bU7-R8-ocO" id="Wx6-oA-gko"/>
+                                                        </connections>
+                                                    </switch>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="24" id="7T2-pH-PlY"/>
+                                                </constraints>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="AZp-Ue-U70" firstAttribute="leading" secondItem="Kdz-Sa-uhT" secondAttribute="leading" constant="5" id="Cjj-qs-ZHf"/>
+                                            <constraint firstAttribute="height" constant="24" id="Mc5-BP-xqB"/>
+                                            <constraint firstItem="AZp-Ue-U70" firstAttribute="centerY" secondItem="Kdz-Sa-uhT" secondAttribute="centerY" id="OJO-1H-BuQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="wM1-5d-Dr9" secondAttribute="trailing" constant="5" id="ufc-iK-4dn"/>
+                                            <constraint firstItem="wM1-5d-Dr9" firstAttribute="centerY" secondItem="Kdz-Sa-uhT" secondAttribute="centerY" id="yYm-7T-cPZ"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="tvY-ux-8tZ" userLabel="Amber View">
+                                        <rect key="frame" x="0.0" y="32" width="435" height="24"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XLA-zx-qRa">
+                                                <rect key="frame" x="3" y="4" width="46" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="42" id="9ML-bK-qw1"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Amber" id="v9B-lx-UsF">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hNN-dW-GhH" userLabel="Amber Control">
+                                                <rect key="frame" x="334" y="0.0" width="96" height="24"/>
+                                                <subviews>
+                                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z67-8z-2hm">
+                                                        <rect key="frame" x="-7" y="-3" width="64" height="32"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="50" id="ws3-zD-a8R"/>
+                                                        </constraints>
+                                                        <buttonCell key="cell" type="push" title="Only" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QkQ-n1-whD">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
+                                                        <connections>
+                                                            <action selector="amberButtonPushed:" target="bU7-R8-ocO" id="mxZ-sK-SIK"/>
+                                                        </connections>
+                                                    </button>
+                                                    <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="ihe-bi-UEe">
+                                                        <rect key="frame" x="56" y="0.0" width="42" height="25"/>
+                                                        <connections>
+                                                            <action selector="amberSwitchToggled:" target="bU7-R8-ocO" id="c5t-Iw-209"/>
+                                                        </connections>
+                                                    </switch>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="24" id="IPX-Qz-Nqv"/>
+                                                </constraints>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="hNN-dW-GhH" firstAttribute="centerY" secondItem="tvY-ux-8tZ" secondAttribute="centerY" id="2gp-yC-4pV"/>
+                                            <constraint firstAttribute="trailing" secondItem="hNN-dW-GhH" secondAttribute="trailing" constant="5" id="YPq-Q8-QCu"/>
+                                            <constraint firstItem="XLA-zx-qRa" firstAttribute="leading" secondItem="tvY-ux-8tZ" secondAttribute="leading" constant="5" id="ddz-mb-SN0"/>
+                                            <constraint firstAttribute="height" constant="24" id="jws-qq-Zji"/>
+                                            <constraint firstItem="XLA-zx-qRa" firstAttribute="centerY" secondItem="tvY-ux-8tZ" secondAttribute="centerY" id="lKx-c6-OWw"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="kwA-Bs-KGD" userLabel="Red View">
+                                        <rect key="frame" x="0.0" y="0.0" width="435" height="24"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hf1-RA-c6e">
+                                                <rect key="frame" x="3" y="4" width="46" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="42" id="27Z-P8-ZZS"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Red" id="RP7-Ta-kwX">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="27e-xE-YMM" userLabel="Red Control">
+                                                <rect key="frame" x="334" y="0.0" width="96" height="24"/>
+                                                <subviews>
+                                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xT2-md-HY7">
+                                                        <rect key="frame" x="-7" y="-3" width="64" height="32"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="50" id="A4e-Pk-Bla"/>
+                                                        </constraints>
+                                                        <buttonCell key="cell" type="push" title="Only" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4Rc-is-Eak">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
+                                                        <connections>
+                                                            <action selector="redButtonPushed:" target="bU7-R8-ocO" id="sYJ-rY-IZ5"/>
+                                                        </connections>
+                                                    </button>
+                                                    <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="OTS-Fb-34t">
+                                                        <rect key="frame" x="56" y="0.0" width="42" height="25"/>
+                                                        <connections>
+                                                            <action selector="redSwitchToggled:" target="bU7-R8-ocO" id="bmX-cG-Ymo"/>
+                                                        </connections>
+                                                    </switch>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="24" id="Gp3-0U-Alh"/>
+                                                </constraints>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="hf1-RA-c6e" firstAttribute="leading" secondItem="kwA-Bs-KGD" secondAttribute="leading" constant="5" id="ACj-8y-JOX"/>
+                                            <constraint firstAttribute="height" constant="24" id="Qbd-js-m6a"/>
+                                            <constraint firstItem="hf1-RA-c6e" firstAttribute="centerY" secondItem="kwA-Bs-KGD" secondAttribute="centerY" id="arS-5A-g6h"/>
+                                            <constraint firstAttribute="trailing" secondItem="27e-xE-YMM" secondAttribute="trailing" constant="5" id="k6w-wP-acv"/>
+                                            <constraint firstItem="27e-xE-YMM" firstAttribute="centerY" secondItem="kwA-Bs-KGD" secondAttribute="centerY" id="vvk-wm-2tP"/>
+                                        </constraints>
+                                    </customView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="8gV-d6-R51" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="2mh-hi-JCm"/>
-                                    <constraint firstAttribute="trailing" secondItem="Cj0-WV-cj9" secondAttribute="trailing" constant="5" id="45i-Zb-0Rf"/>
+                                    <constraint firstItem="Cj0-WV-cj9" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" constant="-5" id="45i-Zb-0Rf"/>
                                     <constraint firstItem="VDd-w6-LuV" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="4Xx-FO-4s2"/>
-                                    <constraint firstAttribute="trailing" secondItem="1xr-Bd-1yX" secondAttribute="trailing" constant="5" id="77F-jQ-y5W"/>
+                                    <constraint firstItem="1xr-Bd-1yX" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" constant="-5" id="77F-jQ-y5W"/>
+                                    <constraint firstAttribute="trailing" secondItem="tvY-ux-8tZ" secondAttribute="trailing" id="Aqj-sn-LNl"/>
+                                    <constraint firstAttribute="trailing" secondItem="Kdz-Sa-uhT" secondAttribute="trailing" id="C8J-Oe-IFD"/>
+                                    <constraint firstItem="Kdz-Sa-uhT" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" id="Dov-kz-OIO"/>
+                                    <constraint firstAttribute="trailing" secondItem="kwA-Bs-KGD" secondAttribute="trailing" id="Dyf-pE-O8I"/>
                                     <constraint firstItem="q3q-4m-ftM" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="HSf-ZE-bb7"/>
                                     <constraint firstItem="F5q-T6-aSn" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="Isa-EU-upM"/>
-                                    <constraint firstItem="xT2-md-HY7" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="TSB-Zm-2cr"/>
-                                    <constraint firstAttribute="trailing" secondItem="VDd-w6-LuV" secondAttribute="trailing" constant="5" id="c97-AU-tiI"/>
+                                    <constraint firstItem="tvY-ux-8tZ" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" id="W5K-Ru-fsF"/>
+                                    <constraint firstItem="VDd-w6-LuV" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" constant="-5" id="c97-AU-tiI"/>
                                     <constraint firstItem="1xr-Bd-1yX" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="md6-9T-HJ1"/>
                                     <constraint firstItem="Cj0-WV-cj9" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="n8Z-1i-3Pm"/>
                                     <constraint firstItem="Vnl-jX-Lnm" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="pIn-In-yeM"/>
-                                    <constraint firstItem="Z67-8z-2hm" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="x9b-S3-3yk"/>
+                                    <constraint firstItem="kwA-Bs-KGD" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" id="pdD-LR-oHN"/>
                                 </constraints>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
@@ -203,11 +350,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="amberToggle" destination="ihe-bi-UEe" id="NmS-Tn-B94"/>
                         <outlet property="changeToAmber" destination="Z67-8z-2hm" id="owm-kM-CZW"/>
                         <outlet property="changeToGreen" destination="8gV-d6-R51" id="Scy-AP-gLz"/>
                         <outlet property="changeToRed" destination="xT2-md-HY7" id="G4e-nT-CiF"/>
                         <outlet property="colorDot" destination="3K2-XS-uEz" id="IHD-q6-8Z7"/>
+                        <outlet property="greenToggle" destination="bPP-5J-ab2" id="uhB-tQ-ObL"/>
                         <outlet property="pushButton" destination="8gV-d6-R51" id="y5B-sU-AJC"/>
+                        <outlet property="redToggle" destination="OTS-Fb-34t" id="I49-S5-lrd"/>
                         <outlet property="statusLabel" destination="Vnl-jX-Lnm" id="dbp-dc-k5T"/>
                         <outlet property="switchBlink" destination="nOr-8H-GNi" id="wYB-un-oUw"/>
                         <outlet property="switchOnOff" destination="LNg-vk-2NA" id="ocB-79-Wrg"/>
@@ -231,7 +381,7 @@
                     </connections>
                 </menu>
             </objects>
-            <point key="canvasLocation" x="91" y="190.5"/>
+            <point key="canvasLocation" x="119.5" y="190"/>
         </scene>
     </scenes>
 </document>
