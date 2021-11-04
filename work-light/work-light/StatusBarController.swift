@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import AppKit
 
 class StatusBarController {
     private var statusBar: NSStatusBar
@@ -45,7 +44,7 @@ class StatusBarController {
         if(popover.isShown) {
             hidePopover(sender)
         } else {
-            NSApp.activate(ignoringOtherApps: true)
+            NSApp.activate(ignoringOtherApps: true) // needed for auto-hide
             showPopover(sender)
         }
     }

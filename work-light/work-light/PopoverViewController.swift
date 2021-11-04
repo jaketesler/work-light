@@ -14,15 +14,17 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var changeToAmber: NSButton!
     @IBOutlet weak var changeToRed: NSButton!
 
+    @IBOutlet weak var onOffToggle: NSSwitch!
+    @IBOutlet weak var blinkToggle: NSSwitch!
+
     @IBOutlet weak var greenToggle: NSSwitch!
     @IBOutlet weak var amberToggle: NSSwitch!
     @IBOutlet weak var redToggle: NSSwitch!
 
     @IBOutlet weak var statusLabel: NSTextField!
-    @IBOutlet weak var switchOnOff: NSSwitch!
-    @IBOutlet weak var colorDot: NSView!
+    @IBOutlet weak var disconnectedLabel: NSTextField!
 
-    @IBOutlet weak var switchBlink: NSSwitch!
+    @IBOutlet weak var colorDot: NSView!
 
     @IBAction func greenButtonPushed(_ sender: Any) { ledController.changeColor(to: .green) }
     @IBAction func amberButtonPushed(_ sender: Any) { ledController.changeColor(to: .amber) }
@@ -34,6 +36,9 @@ class PopoverViewController: NSViewController {
 
     @IBAction func switchOnOffToggled(_ sender: NSSwitch) { ledController.set(power: sender.state == .off ? .off : .on) }
     @IBAction func switchBlinkToggled(_ sender: NSSwitch) { ledController.set(blink: sender.state == .on) }
+
+    private lazy var allToggles: [NSSwitch] = [onOffToggle, blinkToggle, greenToggle, amberToggle, redToggle]
+    private lazy var allButtons: [NSButton] = [changeToGreen, changeToAmber, changeToRed]
 
     // MARK: - Variables
     private var ledController = SerialController.shared
@@ -57,9 +62,7 @@ class PopoverViewController: NSViewController {
 
     // MARK: - UI Helpers
     private func setupView() {
-        changeToGreen.showsBorderOnlyWhileMouseInside = true
-        changeToAmber.showsBorderOnlyWhileMouseInside = true
-        changeToRed.showsBorderOnlyWhileMouseInside = true
+        allButtons.forEach({ $0.showsBorderOnlyWhileMouseInside = true })
 
         colorDot.wantsLayer = true
         colorDot.layer?.masksToBounds = true
@@ -68,14 +71,56 @@ class PopoverViewController: NSViewController {
     }
 
     func update() {
-        switchOnOff.animator().state = ledController.power == .off ? .off : .on
-        switchBlink.animator().state = ledController.isBlinking ? .on : .off
+        onOffToggle.animator().state = ledController.power == .off ? .off : .on
+        blinkToggle.animator().state = ledController.isBlinking ? .on : .off
 
         colorDot.layer?.backgroundColor = ledColorToSystemColor(ledController.color)
 
         redToggle.animator().state = ledController.color.contains(.red) ? .on : .off
         greenToggle.animator().state = ledController.color.contains(.green) ? .on : .off
         amberToggle.animator().state = ledController.color.contains(.amber) ? .on : .off
+
+        if SerialController.shared.deviceConnected {
+            // device is connected
+            disconnectedLabel.isHidden = true
+           enableUI()
+        } else {
+            // device is not connected
+            disconnectedLabel.isHidden = false
+            disableUI()
+        }
+    }
+
+    func enableUI() {
+        allToggles.forEach({ $0.isEnabled = true })
+
+        allButtons.forEach({ button in
+            button.isEnabled = true
+            button.showsBorderOnlyWhileMouseInside = true
+            button.bezelColor = .systemBlue
+        })
+
+        colorDot.layer?.borderColor = .clear
+        colorDot.layer?.borderWidth = 0.0
+
+        (self.view as! NSViewInteractive).isUserInteractionEnabled = true
+
+    }
+
+    func disableUI() {
+        allToggles.forEach({ $0.isEnabled = false })
+
+        allButtons.forEach({ button in
+            button.isEnabled = false
+            button.showsBorderOnlyWhileMouseInside = false
+            button.bezelColor = nil
+        })
+
+        colorDot.layer?.borderColor = .black
+        colorDot.layer?.borderWidth = 0.6
+        colorDot.layer?.backgroundColor = .clear
+
+        (self.view as! NSViewInteractive).isUserInteractionEnabled = false
     }
 
     // MARK: - Utilities
@@ -120,6 +165,14 @@ class PopoverViewController: NSViewController {
 extension PopoverViewController: SerialControllerDelegate {
     func serialControllerDelegate(statusDidChange state: LEDPower, ledColor: [LEDColor]) {
         update()
+    }
+}
+
+class NSViewInteractive: NSView {
+    var isUserInteractionEnabled: Bool = true
+
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        return isUserInteractionEnabled ? super.hitTest(point) : nil
     }
 }
 
