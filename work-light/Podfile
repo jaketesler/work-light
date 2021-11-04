@@ -8,7 +8,6 @@ target 'work-light' do
   # Pods for work-light
   
   # Serial
-    pod "ORSSerialPort"
-    #pod "SwiftSerial"
+  pod "ORSSerialPort"
 
 end
