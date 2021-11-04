@@ -10,21 +10,28 @@ import SwiftUI
 
 class PopoverViewController: NSViewController {
     // MARK: - UI Elements
-    @IBOutlet weak var changeToGreen: NSButton!
-    @IBOutlet weak var changeToAmber: NSButton!
-    @IBOutlet weak var changeToRed: NSButton!
-
     @IBOutlet weak var onOffToggle: NSSwitch!
     @IBOutlet weak var blinkToggle: NSSwitch!
+
+    @IBOutlet weak var greenButton: NSButton!
+    @IBOutlet weak var amberButton: NSButton!
+    @IBOutlet weak var redButton: NSButton!
 
     @IBOutlet weak var greenToggle: NSSwitch!
     @IBOutlet weak var amberToggle: NSSwitch!
     @IBOutlet weak var redToggle: NSSwitch!
 
+    private lazy var allButtons: [NSButton] = [greenButton, amberButton, redButton]
+    private lazy var allToggles: [NSSwitch] = [onOffToggle, blinkToggle, greenToggle, amberToggle, redToggle]
+
     @IBOutlet weak var statusLabel: NSTextField!
     @IBOutlet weak var disconnectedLabel: NSTextField!
 
     @IBOutlet weak var colorDot: NSView!
+
+    // MARK: - UI Actions
+    @IBAction func switchOnOffToggled(_ sender: NSSwitch) { ledController.set(power: sender.state == .off ? .off : .on) }
+    @IBAction func switchBlinkToggled(_ sender: NSSwitch) { ledController.set(blink: sender.state == .on) }
 
     @IBAction func greenButtonPushed(_ sender: Any) { ledController.changeColor(to: .green) }
     @IBAction func amberButtonPushed(_ sender: Any) { ledController.changeColor(to: .amber) }
@@ -33,12 +40,6 @@ class PopoverViewController: NSViewController {
     @IBAction func greenSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .green, to: sender.state == .on) }
     @IBAction func amberSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .amber, to: sender.state == .on) }
     @IBAction func redSwitchToggled(_ sender: NSSwitch)   { ledController.set(color: .red,   to: sender.state == .on) }
-
-    @IBAction func switchOnOffToggled(_ sender: NSSwitch) { ledController.set(power: sender.state == .off ? .off : .on) }
-    @IBAction func switchBlinkToggled(_ sender: NSSwitch) { ledController.set(blink: sender.state == .on) }
-
-    private lazy var allToggles: [NSSwitch] = [onOffToggle, blinkToggle, greenToggle, amberToggle, redToggle]
-    private lazy var allButtons: [NSButton] = [changeToGreen, changeToAmber, changeToRed]
 
     // MARK: - Variables
     private var ledController = SerialController.shared

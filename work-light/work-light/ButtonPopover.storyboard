@@ -361,15 +361,15 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="amberButton" destination="Z67-8z-2hm" id="owm-kM-CZW"/>
                         <outlet property="amberToggle" destination="ihe-bi-UEe" id="NmS-Tn-B94"/>
                         <outlet property="blinkToggle" destination="nOr-8H-GNi" id="v2l-ZS-aLM"/>
-                        <outlet property="changeToAmber" destination="Z67-8z-2hm" id="owm-kM-CZW"/>
-                        <outlet property="changeToGreen" destination="8gV-d6-R51" id="Scy-AP-gLz"/>
-                        <outlet property="changeToRed" destination="xT2-md-HY7" id="G4e-nT-CiF"/>
                         <outlet property="colorDot" destination="3K2-XS-uEz" id="IHD-q6-8Z7"/>
                         <outlet property="disconnectedLabel" destination="WkQ-gV-FoQ" id="iwR-8R-Kfb"/>
+                        <outlet property="greenButton" destination="8gV-d6-R51" id="Scy-AP-gLz"/>
                         <outlet property="greenToggle" destination="bPP-5J-ab2" id="uhB-tQ-ObL"/>
                         <outlet property="onOffToggle" destination="LNg-vk-2NA" id="ii7-y9-Y5f"/>
+                        <outlet property="redButton" destination="xT2-md-HY7" id="G4e-nT-CiF"/>
                         <outlet property="redToggle" destination="OTS-Fb-34t" id="I49-S5-lrd"/>
                         <outlet property="statusLabel" destination="Vnl-jX-Lnm" id="dbp-dc-k5T"/>
                     </connections>
