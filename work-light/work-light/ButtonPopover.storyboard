@@ -356,7 +356,6 @@
                         <outlet property="changeToRed" destination="xT2-md-HY7" id="G4e-nT-CiF"/>
                         <outlet property="colorDot" destination="3K2-XS-uEz" id="IHD-q6-8Z7"/>
                         <outlet property="greenToggle" destination="bPP-5J-ab2" id="uhB-tQ-ObL"/>
-                        <outlet property="pushButton" destination="8gV-d6-R51" id="y5B-sU-AJC"/>
                         <outlet property="redToggle" destination="OTS-Fb-34t" id="I49-S5-lrd"/>
                         <outlet property="statusLabel" destination="Vnl-jX-Lnm" id="dbp-dc-k5T"/>
                         <outlet property="switchBlink" destination="nOr-8H-GNi" id="wYB-un-oUw"/>
