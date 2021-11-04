@@ -19,6 +19,8 @@ class SerialController: NSObject {
         didSet {
             if port == nil {
                 _ledPower = .off
+                _ledState = .off
+                _ledColor = []
                 print("Serial disconnected")
             }
             updateDelegates()
@@ -31,34 +33,30 @@ class SerialController: NSObject {
 
     // MARK: - State Tracking
     private var _ledState : LEDState = .off { didSet { updateDelegates() } }
-    private var ledState: LEDState {
+    fileprivate var ledState: LEDState {
         get { return _ledState }
         set {
             _ledState = newValue
-            if ledPower == .on {
-                sendData(Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]))
-            }
+            if ledPower == .on { sendData(Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8])) }
             updateDelegates()
         }
     }
     private var _prevLEDBlinkState: Bool = false
 
     private var _ledColor: [LEDColor] = [] { didSet { updateDelegates() } }
-    private var ledColor: [LEDColor] {
+    fileprivate var ledColor: [LEDColor] {
         get { return _ledColor.sorted() }
         set {
             _ledColor = newValue.sorted()
             turnOff()
-            if ledPower == .on {
-                sendData(Data([bitwise_or(newValue) | ledState.rawValue] as [UInt8]))
-            }
-            updateDelegates() // does this need newValue?
+            if ledPower == .on { sendData(Data([bitwise_or(newValue) | ledState.rawValue] as [UInt8])) }
+            updateDelegates()
         }
     }
     private var _prevLEDColorState: [LEDColor] = [.green]
 
     private var _ledPower: LEDPower = .off { didSet { updateDelegates() } }
-    private var ledPower: LEDPower {
+    fileprivate var ledPower: LEDPower {
         get { return _ledPower }
         set {
             _ledPower = newValue
@@ -69,17 +67,17 @@ class SerialController: NSObject {
                 if _prevLEDBlinkState { _ledState = .blink }
                 sendData(Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]))
             }
-            updateDelegates() // does this need newValue?
+            updateDelegates()
         }
     }
 
     //MARK: - Initialization
 
-    override init() {
+    fileprivate override init() {
         super.init()
 
         connect()
-        status()
+        updateStatus()
 
         // Set up serial port change KVO
         observation = observe(\.portManager.availablePorts, options: [.new], changeHandler: serialPortsChanged)
@@ -87,7 +85,7 @@ class SerialController: NSObject {
 
     //MARK: - Public Functions
 
-    public func changeColorTo(_ color: LEDColor) {
+    public func changeColor(to color: LEDColor) {
         if _ledPower == .off { // if power is off and we want to turn on a color, switch system on
             _ledPower = .on
             _ledState = .on
@@ -96,13 +94,13 @@ class SerialController: NSObject {
         self.ledColor = [color]
     }
 
-    public func setColor(_ color: LEDColor, state: Bool) {
-        if _ledPower == .off && state { // if power is off and we want to turn on a color, switch system on
+    public func set(color: LEDColor, to state: LEDPower) {
+        if _ledPower == .off && state != .off { // if power is off and we want to turn on a color, switch system on
             _ledPower = .on
             _ledState = .on
         }
 
-        if state {
+        if state != .off {
             if ledColor.contains(color) { return }
             ledColor.append(color)
         } else {
@@ -111,20 +109,24 @@ class SerialController: NSObject {
         }
     }
 
-    public func setOnOffState(_ state: LEDPower) {
+    public func set(color: LEDColor, to state: Bool) {
+        set(color: color, to: state ? .on : .off)
+    }
+
+    public func set(power state: LEDPower) {
         if state == .off {
             if ledColor != [] { _prevLEDColorState = _ledColor } // store color
             _prevLEDBlinkState = _ledState == .blink
         } else {
-            if self.ledState == .off { // coundn't be blinking(True) in this state
-                self.ledState = .on // refresh ledState to ON
+            if ledState == .off { // coundn't be blinking(True) in this state
+                ledState = .on // refresh ledState to ON
             }
         }
 
         self.ledPower = state
     }
 
-    public func setBlink(_ blink: Bool) {
+    public func set(blink: Bool) {
         if blink {
             ledState = .blink
         } else {
@@ -133,7 +135,7 @@ class SerialController: NSObject {
     }
 
     // MARK: - Private functions
-    private func status() {
+    private func updateStatus() {
         let status_byte: UInt8 = 0x30
         sendData(Data([status_byte] as [UInt8]))
     }
@@ -150,18 +152,14 @@ class SerialController: NSObject {
     }
 
     private func turnOff() {
-        var rawData: [UInt8] = []
-        for color in LEDColor.allCases {
-            let stateByte = (color.rawValue | LEDState.off.rawValue)
-            rawData.append(stateByte)
-        }
+        let rawData: [UInt8] = LEDColor.allCases.map({ color in (color.rawValue | LEDState.off.rawValue) })
         sendData(Data(rawData))
     }
 
     // MARK: - Utilities
     func bitwise_or(_ arr: [UInt8]) -> UInt8 {
         var result: UInt8 = 0x0
-        arr.forEach { result |= $0 }
+        arr.forEach { val in (result |= val) }
         return result
     }
 
@@ -191,13 +189,15 @@ class SerialController: NSObject {
         guard let serialport = self.port else { return }
 
         serialport.baudRate = 9600
-
         print("Baud rate set to \(serialport.baudRate)")
+
         serialport.delegate = self
         serialport.open()
     }
 
     public func disconnect() {
+        guard let serialport = self.port else { return }
+        if serialport.isOpen { serialport.close() }
         self.port = nil
     }
 
@@ -214,11 +214,10 @@ extension SerialController: ORSSerialPortDelegate {
     }
 
     func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
-        let string = String(data: data, encoding: .utf8)
-        for element in (string ?? "").unicodeScalars {
-            let value = element.value as UInt32
-            updateDriverState(rawData: value)
-        }
+        guard let string = String(data: data, encoding: .utf8) else { return }
+        string.unicodeScalars.forEach({ element in
+            updateDriverState(rawData: element.value as UInt32)
+        })
     }
 
     func updateDriverState(rawData: UInt32) {

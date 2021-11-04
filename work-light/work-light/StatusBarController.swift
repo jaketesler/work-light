@@ -68,10 +68,7 @@ class StatusBarMenuView: NSMenu {
         didSet { deviceItem.title = "Device: " + deviceInfo }
     }
 
-    lazy var deviceItem: NSMenuItem = {
-        let item = NSMenuItem(title: deviceInfo, action: nil, keyEquivalent: "")
-        return item
-    }()
+    lazy var deviceItem: NSMenuItem = { return NSMenuItem(title: deviceInfo, action: nil, keyEquivalent: "") }()
 
     func setup() {
         SerialController.shared.addDelegate(self)

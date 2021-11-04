@@ -24,16 +24,16 @@ class PopoverViewController: NSViewController {
 
     @IBOutlet weak var switchBlink: NSSwitch!
 
-    @IBAction func greenButtonPushed(_ sender: Any) { ledController.changeColorTo(.green) }
-    @IBAction func amberButtonPushed(_ sender: Any) { ledController.changeColorTo(.amber) }
-    @IBAction func redButtonPushed(_ sender: Any)   { ledController.changeColorTo(.red) }
+    @IBAction func greenButtonPushed(_ sender: Any) { ledController.changeColor(to: .green) }
+    @IBAction func amberButtonPushed(_ sender: Any) { ledController.changeColor(to: .amber) }
+    @IBAction func redButtonPushed(_ sender: Any)   { ledController.changeColor(to: .red) }
 
-    @IBAction func greenSwitchToggled(_ sender: NSSwitch) { ledController.setColor(.green, state: sender.state == .on) }
-    @IBAction func amberSwitchToggled(_ sender: NSSwitch) { ledController.setColor(.amber, state: sender.state == .on) }
-    @IBAction func redSwitchToggled(_ sender: NSSwitch)   { ledController.setColor(.red,   state: sender.state == .on) }
+    @IBAction func greenSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .green, to: sender.state == .on) }
+    @IBAction func amberSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .amber, to: sender.state == .on) }
+    @IBAction func redSwitchToggled(_ sender: NSSwitch)   { ledController.set(color: .red,   to: sender.state == .on) }
 
-    @IBAction func switchOnOffToggled(_ sender: NSSwitch) { ledController.setOnOffState(sender.state == .off ? .off : .on) }
-    @IBAction func switchBlinkToggled(_ sender: NSSwitch) { ledController.setBlink(sender.state == .on) }
+    @IBAction func switchOnOffToggled(_ sender: NSSwitch) { ledController.set(power: sender.state == .off ? .off : .on) }
+    @IBAction func switchBlinkToggled(_ sender: NSSwitch) { ledController.set(blink: sender.state == .on) }
 
     // MARK: - Variables
     private var ledController = SerialController.shared
@@ -43,6 +43,7 @@ class PopoverViewController: NSViewController {
         super.viewDidLoad()
 
         setupView()
+
         ledController.addDelegate(self)
 
         update()
@@ -50,6 +51,7 @@ class PopoverViewController: NSViewController {
 
     override func viewWillAppear() {
         super.viewWillAppear()
+
         update()
     }
 
