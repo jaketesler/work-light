@@ -10,13 +10,12 @@ import ORSSerial
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusBar: StatusBarController!
-    var popover = NSPopover.init()
 
     func applicationWillResignActive(_ notification: Notification) { // Called on navigate away
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        statusBar = StatusBarController.init(popover)
+        statusBar = StatusBarController()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

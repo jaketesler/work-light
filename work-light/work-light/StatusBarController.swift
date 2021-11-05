@@ -9,48 +9,40 @@ import Foundation
 import SwiftUI
 
 class StatusBarController {
-    private var statusBar: NSStatusBar
     private var statusItem: NSStatusItem
-    private var popover: NSPopover
     private var menu: StatusBarMenuView
+    private var popover = NSPopover()
 
-    init(_ popover: NSPopover) {
-        self.popover = popover
-        self.popover.behavior = .transient
-
-        self.menu = StatusBarMenuView()
-        self.menu.setup()
-
-        self.statusBar = NSStatusBar.system
-        self.statusItem = statusBar.statusItem(withLength: NSStatusItem.squareLength)
-
-        guard let statusBarButton = self.statusItem.button else {
-            fatalError("Unable to acquire Status Bar Button")
+    private var statusBarButton: NSStatusBarButton {
+        get {
+            guard let button = self.statusItem.button else { fatalError("Unable to acquire Status Bar Button") }
+            return button
         }
-
-        statusBarButton.image = NSImage(named: NSImage.Name("sun"))
-        statusBarButton.image?.size = NSSize(width: 18.0, height: 18.0)
-
-        statusBarButton.action = #selector(togglePopover(sender:))
-        statusBarButton.target = self
-
-        statusBarButton.menu = self.menu // Right-click menu
-
-        self.popover.contentViewController = PopoverViewController.newInstance()
-        // self.popover.animates = false
     }
 
+    init() {
+        self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+
+        self.menu = StatusBarMenuView()
+
+        self.popover.contentViewController = PopoverViewController.newInstance()
+        self.popover.behavior = .transient
+
+        self.statusBarButton.target = self
+        self.statusBarButton.action = #selector(togglePopover(sender:))
+        self.statusBarButton.menu = self.menu // Right-click menu
+        self.statusBarButton.image = NSImage(named: NSImage.Name("sun"))
+        self.statusBarButton.image?.size = NSSize(width: 18.0, height: 18.0)
+    }
+
+    // MARK: - Popover controls
+
     @objc func togglePopover(sender: AnyObject) {
-        if(popover.isShown) {
-            hidePopover(sender)
-        } else {
-            NSApp.activate(ignoringOtherApps: true) // needed for auto-hide
-            showPopover(sender)
-        }
+        popover.isShown ? hidePopover(sender) : showPopover(sender)
     }
 
     func showPopover(_ sender: AnyObject) {
-        guard let statusBarButton = statusItem.button else { return }
+        NSApp.activate(ignoringOtherApps: true) // needed for auto-hide
         popover.show(relativeTo: statusBarButton.bounds, of: statusBarButton, preferredEdge: NSRectEdge.maxY)
     }
 
@@ -63,15 +55,27 @@ class StatusBarMenuView: NSMenu {
     @IBOutlet weak var topItem: NSMenuItem!
 
     private let deviceDefaultText = "No Device Found"
-    lazy var deviceInfo = deviceDefaultText {
-        didSet { deviceItem.title = "Device: " + deviceInfo }
+    lazy var deviceInfo = self.deviceDefaultText {
+        didSet { self.deviceItem.title = "Device: \(self.deviceInfo)" }
     }
 
-    lazy var deviceItem: NSMenuItem = { return NSMenuItem(title: deviceInfo, action: nil, keyEquivalent: "") }()
+    lazy var deviceItem = NSMenuItem(title: self.deviceInfo, action: nil, keyEquivalent: "")
 
-    func setup() {
+    override init(title: String) {
+        super.init(title: title)
+
+        addItems()
         SerialController.shared.addDelegate(self)
+    }
 
+    required init(coder: NSCoder) {
+        super.init(coder: coder)
+
+        addItems()
+        SerialController.shared.addDelegate(self)
+    }
+
+    private func addItems() {
         self.addItem(withTitle: "LED Light Pole Menu Bar Controller", action: nil, keyEquivalent: "")
         self.addItem(withTitle: "Created by Jake Tesler", action: nil, keyEquivalent: "")
         self.addItem(NSMenuItem.separator())
