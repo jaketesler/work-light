@@ -19,6 +19,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        SerialController.shared.disconnect()
+        SerialControllerManager.shared.disconnectAll()
     }
 }

@@ -42,7 +42,7 @@ class PopoverViewController: NSViewController {
     @IBAction func redSwitchToggled(_ sender: NSSwitch)   { ledController.set(color: .red,   to: sender.state == .on) }
 
     // MARK: - Variables
-    private var ledController = SerialController.shared
+    private var ledController = LEDController.shared
 
     // MARK: - ViewController
     override func viewDidLoad() {
@@ -50,13 +50,15 @@ class PopoverViewController: NSViewController {
 
         setupView()
 
-        ledController.addDelegate(self)
+        ledController.addDelegate(ledControllerDelegate: self)
 
         update()
     }
 
     override func viewWillAppear() {
         super.viewWillAppear()
+
+        ledController.updateStatus()
 
         update()
     }
@@ -81,10 +83,10 @@ class PopoverViewController: NSViewController {
         greenToggle.animator().state = ledController.color.contains(.green) ? .on : .off
         amberToggle.animator().state = ledController.color.contains(.amber) ? .on : .off
 
-        if SerialController.shared.deviceConnected {
+        if ledController.deviceConnected {
             // device is connected
             disconnectedLabel.isHidden = true
-           enableUI()
+            enableUI()
         } else {
             // device is not connected
             disconnectedLabel.isHidden = false
@@ -163,8 +165,8 @@ class PopoverViewController: NSViewController {
 }
 
 // MARK: - SerialControllerDelegate
-extension PopoverViewController: SerialControllerDelegate {
-    func serialControllerDelegate(statusDidChange state: LEDPower, ledColor: [LEDColor]) {
+extension PopoverViewController: LEDControllerDelegate {
+    func ledControllerDelegate(statusDidChange state: LEDPower, ledColor: [LEDColor]) {
         update()
     }
 }

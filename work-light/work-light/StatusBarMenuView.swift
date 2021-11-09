@@ -22,14 +22,12 @@ class StatusBarMenuView: NSMenu {
         super.init(title: title)
 
         addItems()
-        SerialController.shared.addDelegate(self)
+
+        LEDController.shared.addDelegate(serialDeviceDelegate: self)
     }
 
     required init(coder: NSCoder) {
         super.init(coder: coder)
-
-        addItems()
-        SerialController.shared.addDelegate(self)
     }
 
     private func addItems() {
@@ -54,6 +52,14 @@ class StatusBarMenuView: NSMenu {
 }
 
 extension StatusBarMenuView: SerialDeviceDelegate {
+    func serialDeviceDelegate(deviceDidConnect device: String) {
+        setDevice(device)
+    }
+
+    func serialDeviceDelegateDeviceDidDisconnect() {
+        setDevice(nil)
+    }
+
     func serialDeviceDelegate(deviceDidChange device: String?) {
         setDevice(device)
     }
