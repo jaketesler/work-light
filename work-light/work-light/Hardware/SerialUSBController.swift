@@ -129,21 +129,6 @@ extension SerialController {
     }
 }
 
-// MARK: - SerialControllerManager (Public)
-class SerialControllerManager {
-    public static var shared: SerialControllerManager = SerialControllerManager()
-
-    private var controllers: [SerialController] = []
-
-    public func disconnectAll() {
-        controllers.forEach({ $0.disconnect() })
-    }
-}
-
-protocol SerialControllerManaged {
-    func disconnect()
-}
-
 // MARK: - Delegate Protocols
 // MARK: SerialDeviceDelegate
 protocol SerialDeviceDelegate {
