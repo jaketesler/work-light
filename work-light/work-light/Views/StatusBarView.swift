@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 class StatusBarController {
+    // MARK: - UI Elements
     private var statusItem: NSStatusItem
     private var menu: StatusBarMenuView
     private var popover = NSPopover()
@@ -20,6 +21,7 @@ class StatusBarController {
         }
     }
 
+    // MARK: - ViewController
     init() {
         self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
@@ -35,8 +37,7 @@ class StatusBarController {
         self.statusBarButton.image?.size = NSSize(width: 18.0, height: 18.0)
     }
 
-    // MARK: - Popover controls
-
+    // MARK: - UI Controls (Popover)
     @objc func togglePopover(sender: AnyObject) {
         popover.isShown ? hidePopover(sender) : showPopover(sender)
     }
