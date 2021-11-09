@@ -6,12 +6,19 @@
 //
 
 import Foundation
-//import UserNotifications
-
 import ORSSerial
 
 class SerialController: NSObject, SerialControllerManaged {
-    // MARK: - ORSSerialPortManager
+    // MARK: - Private Variables
+    // MARK: Configuration
+    private var productID: NSNumber = 0x7523
+    private var vendorID: NSNumber = 0x1a86
+
+    // MARK: Delegates
+    private var deviceDelegates: [SerialDeviceDelegate] = []
+    private var portDelegates: [SerialPortDelegate] = []
+
+    // MARK: ORSSerialPortManager
     @objc dynamic private var portManager = ORSSerialPortManager.shared()
     private var observation: NSKeyValueObservation?
 
@@ -21,15 +28,6 @@ class SerialController: NSObject, SerialControllerManaged {
             deviceDelegates.forEach({ $0.serialDeviceDelegate(deviceDidChange: self.port?.path) })
         }
     }
-
-    // MARK: Configuration
-    private var productID: NSNumber = 0x7523
-    private var vendorID: NSNumber = 0x1a86
-
-
-    // MARK: - Delegates
-    private var deviceDelegates: [SerialDeviceDelegate] = []
-    private var portDelegates: [SerialPortDelegate] = []
 
     // MARK: - Initialization
     fileprivate override init() {
@@ -49,16 +47,12 @@ class SerialController: NSObject, SerialControllerManaged {
 
     private func setup() {
         connect()
+
         observation = observe(\.portManager.availablePorts, options: [.new], changeHandler: serialPortsChanged)
     }
 
-    // MARK: - Private functions
-    // KVO
-    private func serialPortsChanged(_ obj: _KeyValueCodingAndObserving, _ value: NSKeyValueObservedChange<[ORSSerialPort]>) -> Void {
-        connect()
-    }
-
-    // MARK: - Serial comms
+    // MARK: - Public Functions
+    // MARK: Serial comms
     func connect() {
         if let curPort = self.port {
             if curPort.isOpen { curPort.close() }
@@ -84,16 +78,12 @@ class SerialController: NSObject, SerialControllerManaged {
 
         serialport.delegate = self
         serialport.open()
-
-        deviceDelegates.forEach({ $0.serialDeviceDelegate(deviceDidConnect: serialport.path) })
     }
 
     func disconnect() {
         guard let serialport = self.port else { return }
         if serialport.isOpen { serialport.close() }
         self.port = nil
-
-        deviceDelegates.forEach({ $0.serialDeviceDelegateDeviceDidDisconnect() })
     }
 
     func sendData(_ data: Data) {
@@ -101,19 +91,13 @@ class SerialController: NSObject, SerialControllerManaged {
         if !serialport.isOpen { serialport.open() }
         serialport.send(data)
     }
-}
 
-extension SerialController: ORSSerialPortDelegate {
-    func serialPortWasRemovedFromSystem(_ serialPort: ORSSerialPort) {
-        print("Serial removed: \(serialPort)")
-    }
-
-    func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
-        portDelegates.forEach({ $0.serialPortDelegate(serialPort.path, didReceive: data) })
+    // MARK: - Private Functions
+    // KVO
+    private func serialPortsChanged(_ obj: _KeyValueCodingAndObserving, _ value: NSKeyValueObservedChange<[ORSSerialPort]>) -> Void {
+        connect()
     }
 }
-
-
 
 // MARK: - Public interface
 extension SerialController {
@@ -129,12 +113,21 @@ extension SerialController {
     }
 }
 
+// MARK: - Extension: ORSSerialPortDelegate
+extension SerialController: ORSSerialPortDelegate {
+    func serialPortWasRemovedFromSystem(_ serialPort: ORSSerialPort) {
+        print("Serial removed: \(serialPort)")
+    }
+
+    func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
+        portDelegates.forEach({ $0.serialPortDelegate(serialPort.path, didReceive: data) })
+    }
+}
+
 // MARK: - Delegate Protocols
 // MARK: SerialDeviceDelegate
 protocol SerialDeviceDelegate {
     func serialDeviceDelegate(deviceDidChange device: String?)
-    func serialDeviceDelegate(deviceDidConnect device: String)
-    func serialDeviceDelegateDeviceDidDisconnect()
 }
 
 // MARK: SerialPortDelegate

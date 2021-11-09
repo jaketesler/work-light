@@ -8,7 +8,8 @@
 import Foundation
 
 class LEDController: NSObject {
-    // MARK: - Variables (Private)
+    // MARK: - Private Variables
+    // MARK: Management
     private var serialController = SerialController(vendorID: 0x1a86, productID: 0x7523)
     private var delegates: [LEDControllerDelegate] = []
 
@@ -64,7 +65,7 @@ class LEDController: NSObject {
         }
     }
 
-    // MARK: - Variables (Public)
+    // MARK: - Public Variables
     public var power: LEDPower   { get { return self.ledPower } }
     public var color: [LEDColor] { get { return self.ledColor } }
     public var isBlinking: Bool  { get { return self.ledState == .blink } }
@@ -166,14 +167,6 @@ class LEDController: NSObject {
 
 // MARK: - Extension: SerialDeviceDelegate
 extension LEDController: SerialDeviceDelegate {
-    func serialDeviceDelegate(deviceDidConnect device: String) {
-        portPath = device
-    }
-
-    func serialDeviceDelegateDeviceDidDisconnect() {
-        portPath = nil
-    }
-
     func serialDeviceDelegate(deviceDidChange device: String?) {
         portPath = device
     }
@@ -182,8 +175,8 @@ extension LEDController: SerialDeviceDelegate {
 // MARK: Extension: SerialPortDelegate
 extension LEDController: SerialPortDelegate {
     func serialPortDelegate(_ port: String?, didReceive data: Data) {
-        guard let string = String(data: data, encoding: .utf8) else { return }
-        string.unicodeScalars.forEach({ element in
+        guard let dataString = String(data: data, encoding: .utf8) else { return }
+        dataString.unicodeScalars.forEach({ element in
             updateDriverState(rawData: element.value as UInt32)
         })
     }

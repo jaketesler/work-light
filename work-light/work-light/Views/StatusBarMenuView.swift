@@ -9,19 +9,22 @@ import Foundation
 import SwiftUI
 
 class StatusBarMenuView: NSMenu {
+    // MARK: - UI Elements
     @IBOutlet weak var topItem: NSMenuItem!
 
+    lazy var deviceItem = NSMenuItem(title: self.deviceInfo, action: nil, keyEquivalent: "")
+
+    // MARK: - Variables
     private let deviceDefaultText = "No Device Found"
     lazy var deviceInfo = self.deviceDefaultText {
         didSet { self.deviceItem.title = "Device: \(self.deviceInfo)" }
     }
 
-    lazy var deviceItem = NSMenuItem(title: self.deviceInfo, action: nil, keyEquivalent: "")
-
+    // MARK: - View Initialization
     override init(title: String) {
         super.init(title: title)
 
-        addItems()
+        setupView()
 
         LEDController.shared.addDelegate(serialDeviceDelegate: self)
     }
@@ -30,7 +33,8 @@ class StatusBarMenuView: NSMenu {
         super.init(coder: coder)
     }
 
-    private func addItems() {
+    // MARK: - UI Helpers
+    private func setupView() {
         self.addItem(withTitle: "LED Light Pole Menu Bar Controller", action: nil, keyEquivalent: "")
         self.addItem(withTitle: "Created by Jake Tesler", action: nil, keyEquivalent: "")
         self.addItem(NSMenuItem.separator())
@@ -48,18 +52,12 @@ class StatusBarMenuView: NSMenu {
         self.deviceInfo = device ?? deviceDefaultText
     }
 
+    // MARK: - Utilities
     @objc func quit() { exit(0) }
 }
 
+// MARK: - Extension: SerialDeviceDelegate
 extension StatusBarMenuView: SerialDeviceDelegate {
-    func serialDeviceDelegate(deviceDidConnect device: String) {
-        setDevice(device)
-    }
-
-    func serialDeviceDelegateDeviceDidDisconnect() {
-        setDevice(nil)
-    }
-
     func serialDeviceDelegate(deviceDidChange device: String?) {
         setDevice(device)
     }

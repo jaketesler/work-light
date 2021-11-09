@@ -21,7 +21,7 @@ class StatusBarView {
         }
     }
 
-    // MARK: - ViewController
+    // MARK: - View Initialization
     init() {
         self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
