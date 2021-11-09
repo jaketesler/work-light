@@ -8,8 +8,8 @@
         <!--Popover View Controller-->
         <scene sceneID="PEd-7d-5j0">
             <objects>
-                <viewController storyboardIdentifier="PopoverViewController" id="bU7-R8-ocO" customClass="PopoverViewController" customModule="work_light" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="tOy-S4-hL0" customClass="NSViewInteractive" customModule="work_light" customModuleProvider="target">
+                <viewController storyboardIdentifier="PopoverViewController" id="bU7-R8-ocO" customClass="PopoverViewController" customModule="Work_Light" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="tOy-S4-hL0" customClass="NSViewInteractive" customModule="Work_Light" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="445" height="269"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -375,7 +375,7 @@
                     </connections>
                 </viewController>
                 <customObject id="9uD-mB-xHs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <menu title="MENUUU" id="ibx-gI-nYr" customClass="StatusBarMenuView" customModule="work_light" customModuleProvider="target">
+                <menu title="MENUUU" id="ibx-gI-nYr" customClass="StatusBarMenuView" customModule="Work_Light" customModuleProvider="target">
                     <items>
                         <menuItem title="Item 1" id="rUW-kz-7dN">
                             <modifierMask key="keyEquivalentModifierMask"/>
