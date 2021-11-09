@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class StatusBarController {
+class StatusBarView {
     // MARK: - UI Elements
     private var statusItem: NSStatusItem
     private var menu: StatusBarMenuView

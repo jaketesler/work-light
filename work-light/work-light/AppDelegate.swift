@@ -9,13 +9,13 @@ import SwiftUI
 import ORSSerial
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    var statusBar: StatusBarController!
+    var statusBar: StatusBarView!
 
     func applicationWillResignActive(_ notification: Notification) { // Called on navigate away
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        statusBar = StatusBarController()
+        statusBar = StatusBarView()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
