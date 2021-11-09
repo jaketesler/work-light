@@ -81,8 +81,7 @@ class LEDController: NSObject {
 
     //MARK: - Public Functions
     public func updateStatus() {
-        let status_byte: UInt8 = 0x30
-        serialController.sendData(Data([status_byte] as [UInt8]))
+        serialController.sendData(Data([LEDCommands.Commands.status] as [UInt8]))
     }
 
     public func changeColor(to color: LEDColor) {
@@ -145,82 +144,12 @@ class LEDController: NSObject {
     }
 
     private func updateDriverState(rawData: UInt32) {
-        switch rawData {
-            case 0x00:
-                _ledPower = .off
-                _ledState = .off
-                _ledColor = []
-
-            case 0x01:
-                _ledPower = .on
-                _ledState = .on
-                _ledColor = [.red]
-            case 0x10, 0x11:
-                _ledPower = .on
-                _ledState = .blink
-                _ledColor = [.red]
-
-            case 0x02:
-                _ledPower = .on
-                _ledState = .on
-                _ledColor = [.amber]
-            case 0x20, 0x22:
-                _ledPower = .on
-                _ledState = .blink
-                _ledColor = [.amber]
-
-            case 0x04:
-                _ledPower = .on
-                _ledState = .on
-                _ledColor = [.green]
-            case 0x40, 0x44:
-                _ledPower = .on
-                _ledState = .blink
-                _ledColor = [.green]
-
-            case 0x03:
-                _ledPower = .on
-                _ledState = .on
-                _ledColor = [.red, .amber]
-
-            case 0x05:
-                _ledPower = .on
-                _ledState = .on
-                _ledColor = [.red, .green]
-
-            case 0x06:
-                _ledPower = .on
-                _ledState = .on
-                _ledColor = [.amber, .green]
-
-            case 0x07:
-                _ledPower = .on
-                _ledState = .on
-                _ledColor = [.red, .amber, .green]
-
-            case 0x60, 0x66:
-                _ledPower = .on
-                _ledState = .blink
-                _ledColor = [.amber, .green]
-
-            case 0x30, 0x33:
-                _ledPower = .on
-                _ledState = .blink
-                _ledColor = [.red, .amber]
-
-            case 0x50, 0x55:
-                _ledPower = .on
-                _ledState = .blink
-                _ledColor = [.red, .green]
-
-            case 0x70, 0x77:
-                _ledPower = .on
-                _ledState = .blink
-                _ledColor = [.red, .amber, .green]
-
-            default:
-                print("boooo unknown status response :( - \(String(rawData))")
+        guard let status = LEDCommands.Data.rawDataToState(rawData) else {
+            print("boooo unknown status response :( - \(String(rawData))")
+            return
         }
+
+        (_ledPower, _ledState, _ledColor) = status
     }
 
     // MARK: - Utilities
