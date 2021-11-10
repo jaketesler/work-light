@@ -8,9 +8,10 @@
 import Foundation
 
 enum LEDColor: UInt8, CaseIterable, Comparable {
-    case red   = 0x01
-    case amber = 0x02
-    case green = 0x04
+    case red    = 0x01
+    case amber  = 0x02
+    case green  = 0x04
+    case buzzer = 0x08
 
     static func < (lhs: LEDColor, rhs: LEDColor) -> Bool { return lhs.rawValue < rhs.rawValue }
 }
@@ -31,8 +32,64 @@ class LEDCommands {
         static let status: UInt8 = 0x30
     }
 
+    class ControlBits {
+        static let red:    UInt8 = 0x01
+        static let amber:  UInt8 = 0x02
+        static let green:  UInt8 = 0x04
+        static let buzzer: UInt8 = 0x08
+    }
+
     class Data {
         static func rawDataToState(_ rawData: UInt32) -> (LEDPower, LEDState, [LEDColor])? {
+            let redBit      = Bool(rawData & 0b0000_0001)
+            let amberBit    = Bool(rawData & 0b0000_0010)
+            let greenBit    = Bool(rawData & 0b0000_0100)
+            let buzzerBit   = Bool(rawData & 0b0000_1000)
+
+            let redBlink    = Bool(rawData & 0b0001_0000)
+            let amberBlink  = Bool(rawData & 0b0010_0000)
+            let greenBlink  = Bool(rawData & 0b0100_0000)
+            let buzzerBlink = Bool(rawData & 0b1000_0000)
+
+            let powerOnOff = Bool(rawData & 0xFF)
+            let blinkState = Bool(rawData & 0xF0)
+
+            let power: LEDPower = powerOnOff ? .on : .off
+
+            let state: LEDState
+            if blinkState { // must go first
+                state = .blink
+            } else {
+                state = powerOnOff ? .on : .off
+            }
+
+            var color: [LEDColor] = []
+            if Bool(redBit || redBlink)       { color.append(.red) }
+            if Bool(amberBit || amberBlink)   { color.append(.amber) }
+            if Bool(greenBit || greenBlink)   { color.append(.green) }
+            if Bool(buzzerBit || buzzerBlink) { color.append(.buzzer) }
+
+            if let (origPower, origState, origColor) = rawDataToStateOrig(rawData) {
+                if power == origPower && state == origState && color == origColor {
+                    print("MATCH")
+                } else if power == origPower && state == origState && color.filter({ $0 != .buzzer }) == origColor {
+                    print("power", power, origPower)
+                    print("state", state, origState)
+                    print("color", color, origColor)
+                    print("MATCH (minus buzzer)")
+                } else {
+                    print("power", power, origPower)
+                    print("state", state, origState)
+                    print("color", color, origColor)
+                    print("NO MATCH")
+                }
+            }
+
+//            return rawDataToStateOrig(rawData)
+            return (power, state, color)
+        }
+
+        static func rawDataToStateOrig(_ rawData: UInt32) -> (LEDPower, LEDState, [LEDColor])? {
             let power: LEDPower,
                 state: LEDState,
                 color: [LEDColor]
@@ -115,5 +172,11 @@ class LEDCommands {
 
             return (power, state, color)
         }
+    }
+}
+
+extension Bool {
+    init(_ value: UInt32) {
+        self = Bool(value != 0)
     }
 }
