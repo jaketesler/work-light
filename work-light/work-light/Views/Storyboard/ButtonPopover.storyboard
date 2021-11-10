@@ -17,7 +17,7 @@
                                 <rect key="frame" x="5" y="5" width="435" height="281"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vnl-jX-Lnm">
-                                        <rect key="frame" x="3" y="233" width="132" height="16"/>
+                                        <rect key="frame" x="3" y="265" width="132" height="16"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="LED Light Pole Utility" id="gYn-2K-ebj">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -25,7 +25,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WkQ-gV-FoQ">
-                                        <rect key="frame" x="3" y="210" width="154" height="15"/>
+                                        <rect key="frame" x="3" y="242" width="154" height="15"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Device is disconnected" id="v5f-ix-X6c">
                                             <font key="font" size="13" name="SFPro-BoldItalic"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -33,12 +33,12 @@
                                         </textFieldCell>
                                     </textField>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="q3q-4m-ftM">
-                                        <rect key="frame" x="0.0" y="199" width="435" height="5"/>
+                                        <rect key="frame" x="0.0" y="231" width="435" height="5"/>
                                     </box>
-                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDd-w6-LuV" userLabel="Power On/Off">
-                                        <rect key="frame" x="5" y="169" width="425" height="24"/>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDd-w6-LuV" userLabel="Power On/Off Stack">
+                                        <rect key="frame" x="5" y="201" width="425" height="24"/>
                                         <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wJG-Pv-CVF">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wJG-Pv-CVF" userLabel="Power Label">
                                                 <rect key="frame" x="-2" y="4" width="383" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="LED Pole On/Off" id="eyB-Ka-ah9">
                                                     <font key="font" metaFont="system"/>
@@ -54,7 +54,9 @@
                                             </switch>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstItem="wJG-Pv-CVF" firstAttribute="centerY" secondItem="VDd-w6-LuV" secondAttribute="centerY" id="YZY-Lb-lwT"/>
                                             <constraint firstAttribute="height" constant="24" id="v1h-yu-aae"/>
+                                            <constraint firstItem="LNg-vk-2NA" firstAttribute="centerY" secondItem="VDd-w6-LuV" secondAttribute="centerY" id="xSw-NH-Yu5"/>
                                         </constraints>
                                         <visibilityPriorities>
                                             <integer value="1000"/>
@@ -65,10 +67,10 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
-                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cj0-WV-cj9" userLabel="Blink On/Off">
-                                        <rect key="frame" x="5" y="137" width="425" height="24"/>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cj0-WV-cj9" userLabel="Blink On/Off Stack">
+                                        <rect key="frame" x="5" y="169" width="425" height="24"/>
                                         <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nYT-U1-q2r">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nYT-U1-q2r" userLabel="Blink Label">
                                                 <rect key="frame" x="-2" y="4" width="383" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Blink On/Off" id="eln-Wp-bJh">
                                                     <font key="font" metaFont="system"/>
@@ -84,7 +86,9 @@
                                             </switch>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstItem="nYT-U1-q2r" firstAttribute="centerY" secondItem="Cj0-WV-cj9" secondAttribute="centerY" id="ci3-nL-wxa"/>
                                             <constraint firstAttribute="height" constant="24" id="dsC-nv-nUL"/>
+                                            <constraint firstItem="nOr-8H-GNi" firstAttribute="centerY" secondItem="Cj0-WV-cj9" secondAttribute="centerY" id="uN3-d5-uYv"/>
                                         </constraints>
                                         <visibilityPriorities>
                                             <integer value="1000"/>
@@ -95,7 +99,6 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
-                                    <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1xr-Bd-1yX" userLabel="Current Color">
                                     <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lt0-4K-Kox" userLabel="Buzzer On/Off Stack">
                                         <rect key="frame" x="5" y="137" width="425" height="24"/>
                                         <subviews>
@@ -128,10 +131,11 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1xr-Bd-1yX" userLabel="Current Color Stack">
                                         <rect key="frame" x="5" y="105" width="425" height="24"/>
                                         <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XZt-TD-nA8">
-                                                <rect key="frame" x="-2" y="8" width="397" height="16"/>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XZt-TD-nA8" userLabel="Color Label">
+                                                <rect key="frame" x="-2" y="4" width="397" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Current Color" id="ehr-MG-1xa">
                                                     <font key="font" usesAppearanceFont="YES"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -148,6 +152,8 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="24" id="2aW-SR-KLV"/>
+                                            <constraint firstItem="XZt-TD-nA8" firstAttribute="centerY" secondItem="1xr-Bd-1yX" secondAttribute="centerY" id="KdZ-NA-dHl"/>
+                                            <constraint firstItem="3K2-XS-uEz" firstAttribute="centerY" secondItem="1xr-Bd-1yX" secondAttribute="centerY" id="pqx-GS-mor"/>
                                         </constraints>
                                         <visibilityPriorities>
                                             <integer value="1000"/>
@@ -345,11 +351,11 @@
                                     <constraint firstItem="Cj0-WV-cj9" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" constant="-5" id="45i-Zb-0Rf"/>
                                     <constraint firstItem="VDd-w6-LuV" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="4Xx-FO-4s2"/>
                                     <constraint firstItem="1xr-Bd-1yX" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" constant="-5" id="77F-jQ-y5W"/>
-                                    <constraint firstAttribute="trailing" secondItem="tvY-ux-8tZ" secondAttribute="trailing" id="Aqj-sn-LNl"/>
-                                    <constraint firstAttribute="trailing" secondItem="Kdz-Sa-uhT" secondAttribute="trailing" id="C8J-Oe-IFD"/>
                                     <constraint firstItem="Lt0-4K-Kox" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="9zQ-vX-3j6"/>
+                                    <constraint firstItem="tvY-ux-8tZ" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" id="Aqj-sn-LNl"/>
+                                    <constraint firstItem="Kdz-Sa-uhT" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" id="C8J-Oe-IFD"/>
                                     <constraint firstItem="Kdz-Sa-uhT" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" id="Dov-kz-OIO"/>
-                                    <constraint firstAttribute="trailing" secondItem="kwA-Bs-KGD" secondAttribute="trailing" id="Dyf-pE-O8I"/>
+                                    <constraint firstItem="kwA-Bs-KGD" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" id="Dyf-pE-O8I"/>
                                     <constraint firstItem="q3q-4m-ftM" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="HSf-ZE-bb7"/>
                                     <constraint firstItem="F5q-T6-aSn" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="Isa-EU-upM"/>
                                     <constraint firstItem="tvY-ux-8tZ" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" id="W5K-Ru-fsF"/>
