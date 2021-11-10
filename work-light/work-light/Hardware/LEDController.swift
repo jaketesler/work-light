@@ -69,6 +69,7 @@ class LEDController: NSObject {
     public var power: LEDPower   { get { return self.ledPower } }
     public var color: [LEDColor] { get { return self.ledColor } }
     public var isBlinking: Bool  { get { return self.ledState == .blink } }
+    public var isBuzzerOn: Bool  { get { return self.ledColor.contains(.buzzer) } }
 
     // MARK: - Initialization
     override init() {
@@ -86,12 +87,14 @@ class LEDController: NSObject {
     }
 
     public func changeColor(to color: LEDColor) {
+        if color == .buzzer { return }
+
         if _ledPower == .off { // if power is off and we want to turn on a color, switch system on
             _ledPower = .on
             _ledState = .on
         }
 
-        self.ledColor = [color]
+        self.ledColor = isBuzzerOn ? [color, .buzzer] : [color]
     }
 
     public func set(color: LEDColor, to state: LEDPower) {
@@ -145,12 +148,7 @@ class LEDController: NSObject {
     }
 
     private func updateDriverState(rawData: UInt32) {
-        guard let status = LEDCommands.Data.rawDataToState(rawData) else {
-            print("boooo unknown status response :( - \(String(rawData))")
-            return
-        }
-
-        (_ledPower, _ledState, _ledColor) = status
+        (_ledPower, _ledState, _ledColor) = LEDCommands.Data.rawDataToState(rawData)
     }
 
     // MARK: - Utilities

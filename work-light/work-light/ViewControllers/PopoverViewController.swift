@@ -12,6 +12,7 @@ class PopoverViewController: NSViewController {
     // MARK: - UI Elements
     @IBOutlet weak var onOffToggle: NSSwitch!
     @IBOutlet weak var blinkToggle: NSSwitch!
+    @IBOutlet weak var buzzerToggle: NSSwitch!
 
     @IBOutlet weak var greenButton: NSButton!
     @IBOutlet weak var amberButton: NSButton!
@@ -22,7 +23,7 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var redToggle: NSSwitch!
 
     private lazy var allButtons: [NSButton] = [greenButton, amberButton, redButton]
-    private lazy var allToggles: [NSSwitch] = [onOffToggle, blinkToggle, greenToggle, amberToggle, redToggle]
+    private lazy var allToggles: [NSSwitch] = [onOffToggle, blinkToggle, buzzerToggle, greenToggle, amberToggle, redToggle]
 
     @IBOutlet weak var statusLabel: NSTextField!
     @IBOutlet weak var disconnectedLabel: NSTextField!
@@ -32,6 +33,7 @@ class PopoverViewController: NSViewController {
     // MARK: - UI Actions
     @IBAction func switchOnOffToggled(_ sender: NSSwitch) { ledController.set(power: sender.state == .off ? .off : .on) }
     @IBAction func switchBlinkToggled(_ sender: NSSwitch) { ledController.set(blink: sender.state == .on) }
+    @IBAction func switchBuzzerToggled(_ sender: NSSwitch) { ledController.set(color: .buzzer, to: sender.state == .on) }
 
     @IBAction func greenButtonPushed(_ sender: Any) { ledController.changeColor(to: .green) }
     @IBAction func amberButtonPushed(_ sender: Any) { ledController.changeColor(to: .amber) }
@@ -76,6 +78,7 @@ class PopoverViewController: NSViewController {
     func update() {
         onOffToggle.animator().state = ledController.power == .off ? .off : .on
         blinkToggle.animator().state = ledController.isBlinking ? .on : .off
+        buzzerToggle.animator().state = ledController.isBuzzerOn ? .on : .off
 
         colorDot.layer?.backgroundColor = ledColorToSystemColor(ledController.color)
 
@@ -128,7 +131,8 @@ class PopoverViewController: NSViewController {
 
     // MARK: - Utilities
     func ledColorToSystemColor(_ ledColor: [LEDColor]) -> CGColor {
-        switch ledColor {
+        let color = ledColor.filter({ $0 != .buzzer })
+        switch color {
             case [.red]:   return NSColor.systemRed.cgColor
             case [.amber]: return NSColor.systemOrange.cgColor
             case [.green]: return NSColor.systemGreen.cgColor

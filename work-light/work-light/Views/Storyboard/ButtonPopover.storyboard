@@ -10,11 +10,11 @@
             <objects>
                 <viewController storyboardIdentifier="PopoverViewController" id="bU7-R8-ocO" customClass="PopoverViewController" customModule="Work_Light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="tOy-S4-hL0" customClass="NSViewInteractive" customModule="Work_Light" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="445" height="269"/>
+                        <rect key="frame" x="0.0" y="0.0" width="445" height="301"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="48Q-tz-tET">
-                                <rect key="frame" x="5" y="5" width="435" height="249"/>
+                                <rect key="frame" x="5" y="5" width="435" height="281"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vnl-jX-Lnm">
                                         <rect key="frame" x="3" y="233" width="132" height="16"/>
@@ -96,6 +96,38 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1xr-Bd-1yX" userLabel="Current Color">
+                                    <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lt0-4K-Kox" userLabel="Buzzer On/Off Stack">
+                                        <rect key="frame" x="5" y="137" width="425" height="24"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EFI-ju-IZA" userLabel="Buzzer Label">
+                                                <rect key="frame" x="-2" y="4" width="383" height="16"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Buzzer On/Off" id="oKp-3k-Pc9">
+                                                    <font key="font" usesAppearanceFont="YES"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="cSZ-zd-7T3">
+                                                <rect key="frame" x="385" y="-1" width="42" height="25"/>
+                                                <connections>
+                                                    <action selector="switchBuzzerToggled:" target="bU7-R8-ocO" id="VVG-Tm-5G1"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="EFI-ju-IZA" firstAttribute="centerY" secondItem="Lt0-4K-Kox" secondAttribute="centerY" id="MjR-Cp-Z2N"/>
+                                            <constraint firstAttribute="height" constant="24" id="mBh-3b-YrI"/>
+                                            <constraint firstItem="cSZ-zd-7T3" firstAttribute="centerY" secondItem="Lt0-4K-Kox" secondAttribute="centerY" id="wvS-GM-dyP"/>
+                                        </constraints>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
                                         <rect key="frame" x="5" y="105" width="425" height="24"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XZt-TD-nA8">
@@ -315,11 +347,13 @@
                                     <constraint firstItem="1xr-Bd-1yX" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" constant="-5" id="77F-jQ-y5W"/>
                                     <constraint firstAttribute="trailing" secondItem="tvY-ux-8tZ" secondAttribute="trailing" id="Aqj-sn-LNl"/>
                                     <constraint firstAttribute="trailing" secondItem="Kdz-Sa-uhT" secondAttribute="trailing" id="C8J-Oe-IFD"/>
+                                    <constraint firstItem="Lt0-4K-Kox" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="9zQ-vX-3j6"/>
                                     <constraint firstItem="Kdz-Sa-uhT" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" id="Dov-kz-OIO"/>
                                     <constraint firstAttribute="trailing" secondItem="kwA-Bs-KGD" secondAttribute="trailing" id="Dyf-pE-O8I"/>
                                     <constraint firstItem="q3q-4m-ftM" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="HSf-ZE-bb7"/>
                                     <constraint firstItem="F5q-T6-aSn" firstAttribute="width" secondItem="48Q-tz-tET" secondAttribute="width" id="Isa-EU-upM"/>
                                     <constraint firstItem="tvY-ux-8tZ" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" id="W5K-Ru-fsF"/>
+                                    <constraint firstItem="Lt0-4K-Kox" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" constant="-5" id="c5D-qd-uh7"/>
                                     <constraint firstItem="VDd-w6-LuV" firstAttribute="trailing" secondItem="48Q-tz-tET" secondAttribute="trailing" constant="-5" id="c97-AU-tiI"/>
                                     <constraint firstItem="1xr-Bd-1yX" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="md6-9T-HJ1"/>
                                     <constraint firstItem="Cj0-WV-cj9" firstAttribute="leading" secondItem="48Q-tz-tET" secondAttribute="leading" constant="5" id="n8Z-1i-3Pm"/>
@@ -337,8 +371,10 @@
                                     <integer value="1000"/>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
+                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
@@ -364,6 +400,7 @@
                         <outlet property="amberButton" destination="Z67-8z-2hm" id="owm-kM-CZW"/>
                         <outlet property="amberToggle" destination="ihe-bi-UEe" id="NmS-Tn-B94"/>
                         <outlet property="blinkToggle" destination="nOr-8H-GNi" id="v2l-ZS-aLM"/>
+                        <outlet property="buzzerToggle" destination="cSZ-zd-7T3" id="43H-b0-72L"/>
                         <outlet property="colorDot" destination="3K2-XS-uEz" id="IHD-q6-8Z7"/>
                         <outlet property="disconnectedLabel" destination="WkQ-gV-FoQ" id="iwR-8R-Kfb"/>
                         <outlet property="greenButton" destination="8gV-d6-R51" id="Scy-AP-gLz"/>
