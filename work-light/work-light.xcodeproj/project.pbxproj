@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		233EF8AB977A2CF448CB82EA /* Pods_work_light.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE5A72724714277E646E0CF /* Pods_work_light.framework */; };
+		E00F3F6B273C869400188B65 /* Bool-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00F3F6A273C869400188B65 /* Bool-Extension.swift */; };
 		E0284F4C273219E0009D8650 /* ORSSerialPort+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = E0284F4B273219E0009D8650 /* ORSSerialPort+Attributes.m */; };
 		E0284F4F273244B8009D8650 /* LEDTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0284F4E273244B8009D8650 /* LEDTypes.swift */; };
 		E0284F532734AF14009D8650 /* StatusBarMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0284F522734AF14009D8650 /* StatusBarMenuView.swift */; };
@@ -28,6 +29,7 @@
 		1F304E1CA62D705EB4C4542D /* Pods-work-light.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-work-light.debug.xcconfig"; path = "Target Support Files/Pods-work-light/Pods-work-light.debug.xcconfig"; sourceTree = "<group>"; };
 		4F3F0DBFB7E30C9D89CD36CF /* Pods-work-light.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-work-light.release.xcconfig"; path = "Target Support Files/Pods-work-light/Pods-work-light.release.xcconfig"; sourceTree = "<group>"; };
 		AEE5A72724714277E646E0CF /* Pods_work_light.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_work_light.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E00F3F6A273C869400188B65 /* Bool-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool-Extension.swift"; sourceTree = "<group>"; };
 		E0284F4A273219DF009D8650 /* work-light-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "work-light-Bridging-Header.h"; sourceTree = "<group>"; };
 		E0284F4B273219E0009D8650 /* ORSSerialPort+Attributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ORSSerialPort+Attributes.m"; sourceTree = "<group>"; };
 		E0284F4D27321A5E009D8650 /* ORSSerialPort+Attributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ORSSerialPort+Attributes.h"; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 		E0284F5F273B08A6009D8650 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E00F3F6A273C869400188B65 /* Bool-Extension.swift */,
 				E0284F60273B08AA009D8650 /* ORSSerial */,
 			);
 			path = Extensions;
@@ -298,6 +301,7 @@
 				E0284F62273B0B35009D8650 /* SerialControllerManager.swift in Sources */,
 				E0FB0A052731C9BD0073C76F /* AppDelegate.swift in Sources */,
 				E0FB0A182731DF4D0073C76F /* main.swift in Sources */,
+				E00F3F6B273C869400188B65 /* Bool-Extension.swift in Sources */,
 				E0284F532734AF14009D8650 /* StatusBarMenuView.swift in Sources */,
 				E0284F4F273244B8009D8650 /* LEDTypes.swift in Sources */,
 				E0FB09FF2731C6F70073C76F /* StatusBarView.swift in Sources */,
