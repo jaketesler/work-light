@@ -5,9 +5,10 @@
 //  Created by Jake Tesler on 11/2/21.
 //
 
-import Foundation
 import AppKit
+import Foundation
 
+// swiftlint:disable all
 
 let app = NSApplication.shared
 let delegate = AppDelegate()

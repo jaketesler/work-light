@@ -26,50 +26,62 @@ class LEDController: NSObject {
     }
 
     // MARK: State Tracking
-    private var _ledState : LEDState = .off { didSet { updateLEDControllerDelegates() } }
-    fileprivate var ledState: LEDState {
-        get { return _ledState }
+    private var _ledState : LEDState = .off {
+        didSet { updateLEDControllerDelegates() }
+    }
+    private var ledState: LEDState {
+        get { _ledState }
         set {
             _ledState = newValue
-            if ledPower == .on { serialController.sendData(Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8])) }
+            if ledPower == .on {
+                let data = Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8])
+                _ = serialController.sendData(data)
+            }
             updateLEDControllerDelegates()
         }
     }
-    private var _prevLEDBlinkState: Bool = false
+    private var _prevLEDBlinkState = false
 
-    private var _ledColor: [LEDColor] = [] { didSet { updateLEDControllerDelegates() } }
-    fileprivate var ledColor: [LEDColor] {
-        get { return _ledColor.sorted() }
+    private var _ledColor: [LEDColor] = [] {
+        didSet { updateLEDControllerDelegates() }
+    }
+    private var ledColor: [LEDColor] {
+        get { _ledColor.sorted() }
         set {
             _ledColor = newValue.sorted()
             turnOff()
-            if ledPower == .on { serialController.sendData(Data([bitwise_or(newValue) | ledState.rawValue] as [UInt8])) }
+            if ledPower == .on {
+                let data = Data([bitwise_or(newValue) | ledState.rawValue] as [UInt8])
+                _ = serialController.sendData(data)
+            }
             updateLEDControllerDelegates()
         }
     }
     private var _prevLEDColorState: [LEDColor] = [.green]
 
-    private var _ledPower: LEDPower = .off { didSet { updateLEDControllerDelegates() } }
-    fileprivate var ledPower: LEDPower {
-        get { return _ledPower }
+    private var _ledPower: LEDPower = .off {
+        didSet { updateLEDControllerDelegates() }
+    }
+    private var ledPower: LEDPower {
+        get { _ledPower }
         set {
             _ledPower = newValue
             if newValue == .off {
                  turnOff()
             } else {
-                if ledColor == [] { _ledColor = _prevLEDColorState }
+                if ledColor.isEmpty { _ledColor = _prevLEDColorState }
                 if _prevLEDBlinkState { _ledState = .blink }
-                serialController.sendData(Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]))
+                _ = serialController.sendData(Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]))
             }
             updateLEDControllerDelegates()
         }
     }
 
     // MARK: - Public Variables
-    public var power: LEDPower   { get { return self.ledPower } }
-    public var color: [LEDColor] { get { return self.ledColor } }
-    public var isBlinking: Bool  { get { return self.ledState == .blink } }
-    public var isBuzzerOn: Bool  { get { return self.ledColor.contains(.buzzer) } }
+    public var power: LEDPower   { self.ledPower }
+    public var color: [LEDColor] { self.ledColor }
+    public var isBlinking: Bool  { self.ledState == .blink }
+    public var isBuzzerOn: Bool  { self.ledColor.contains(.buzzer) }
 
     // MARK: - Initialization
     override init() {
@@ -81,9 +93,9 @@ class LEDController: NSObject {
         updateStatus()
     }
 
-    //MARK: - Public Functions
+    // MARK: - Public Functions
     public func updateStatus() {
-        serialController.sendData(Data([LEDCommands.Commands.status] as [UInt8]))
+        _ = serialController.sendData(Data([LEDCommands.Commands.status] as [UInt8]))
     }
 
     public func changeColor(to color: LEDColor) {
@@ -108,7 +120,7 @@ class LEDController: NSObject {
             ledColor.append(color)
         } else {
             if !ledColor.contains(color) { return }
-            ledColor = ledColor.filter({ $0 != color })
+            ledColor = ledColor.filter { $0 != color }
         }
     }
 
@@ -118,7 +130,7 @@ class LEDController: NSObject {
 
     public func set(power state: LEDPower) {
         if state == .off {
-            if ledColor != [] { _prevLEDColorState = _ledColor } // store color
+            if !ledColor.isEmpty { _prevLEDColorState = _ledColor } // store color
             _prevLEDBlinkState = _ledState == .blink
         } else {
             if ledState == .off { // coundn't be blinking(True) in this state
@@ -139,12 +151,12 @@ class LEDController: NSObject {
 
     // MARK: - Private
     private func updateLEDControllerDelegates() {
-        delegates.forEach({ $0.ledControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) })
+        delegates.forEach { $0.ledControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
     }
 
     private func turnOff() {
-        let rawData: [UInt8] = LEDColor.allCases.map({ color in (color.rawValue | LEDState.off.rawValue) })
-        serialController.sendData(Data(rawData))
+        let rawData: [UInt8] = LEDColor.allCases.map { color in (color.rawValue | LEDState.off.rawValue) }
+        _ = serialController.sendData(Data(rawData))
     }
 
     private func updateDriverState(rawData: UInt32) {
@@ -158,9 +170,7 @@ class LEDController: NSObject {
         return result
     }
 
-    private func bitwise_or(_ arr: [LEDColor]) -> UInt8 {
-        return bitwise_or(arr.map { $0.rawValue })
-    }
+    private func bitwise_or(_ arr: [LEDColor]) -> UInt8 { bitwise_or(arr.map { $0.rawValue }) }
 }
 
 // MARK: - Extension: SerialDeviceDelegate
@@ -174,9 +184,10 @@ extension LEDController: SerialDeviceDelegate {
 extension LEDController: SerialPortDelegate {
     func serialPortDelegate(_ port: String?, didReceive data: Data) {
         guard let dataString = String(data: data, encoding: .utf8) else { return }
-        dataString.unicodeScalars.forEach({ element in
+
+        dataString.unicodeScalars.forEach { element in
             updateDriverState(rawData: element.value as UInt32)
-        })
+        }
     }
 }
 
@@ -184,7 +195,7 @@ extension LEDController: SerialPortDelegate {
 extension LEDController {
     public static var shared = LEDController()
 
-    public var deviceConnected: Bool { get { return serialController.deviceConnected } }
+    public var deviceConnected: Bool { serialController.deviceConnected }
 
     public func addDelegate(ledControllerDelegate delegate: LEDControllerDelegate) {
         self.delegates.append(delegate)
@@ -196,6 +207,6 @@ extension LEDController {
 }
 
 // MARK: - LEDControllerDelegate
-protocol LEDControllerDelegate {
+protocol LEDControllerDelegate: AnyObject {
     func ledControllerDelegate(statusDidChange state: LEDPower, ledColor: [LEDColor])
 }

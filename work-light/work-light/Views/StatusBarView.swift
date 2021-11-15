@@ -15,10 +15,8 @@ class StatusBarView {
     private var popover = NSPopover()
 
     private var statusBarButton: NSStatusBarButton {
-        get {
-            guard let button = self.statusItem.button else { fatalError("Unable to acquire Status Bar Button") }
-            return button
-        }
+        guard let button = self.statusItem.button else { fatalError("Unable to acquire Status Bar Button") }
+        return button
     }
 
     // MARK: - View Initialization
@@ -38,7 +36,8 @@ class StatusBarView {
     }
 
     // MARK: - UI Controls (Popover)
-    @objc func togglePopover(sender: AnyObject) {
+    @objc
+    func togglePopover(sender: AnyObject) {
         popover.isShown ? hidePopover(sender) : showPopover(sender)
     }
 

@@ -5,11 +5,13 @@
 //  Created by Jake Tesler on 11/2/21.
 //
 
-import SwiftUI
 import ORSSerial
+import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    var statusBar: StatusBarView!
+    // swiftlint:disable implicitly_unwrapped_optional
+    private var statusBar: StatusBarView!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     func applicationWillResignActive(_ notification: Notification) { // Called on navigate away
     }

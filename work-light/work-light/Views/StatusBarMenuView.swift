@@ -10,7 +10,7 @@ import SwiftUI
 
 class StatusBarMenuView: NSMenu {
     // MARK: - UI Elements
-    @IBOutlet weak var topItem: NSMenuItem!
+    @IBOutlet private weak var topItem: NSMenuItem!
 
     lazy var deviceItem = NSMenuItem(title: self.deviceInfo, action: nil, keyEquivalent: "")
 
@@ -53,7 +53,8 @@ class StatusBarMenuView: NSMenu {
     }
 
     // MARK: - Utilities
-    @objc func quit() { exit(0) }
+    @objc
+    func quit() { exit(0) }
 }
 
 // MARK: - Extension: SerialDeviceDelegate

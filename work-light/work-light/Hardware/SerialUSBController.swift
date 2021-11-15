@@ -19,18 +19,18 @@ class SerialController: NSObject, SerialControllerManaged {
     private var portDelegates: [SerialPortDelegate] = []
 
     // MARK: ORSSerialPortManager
-    @objc dynamic private var portManager = ORSSerialPortManager.shared()
+    @objc private dynamic var portManager = ORSSerialPortManager.shared()
     private var observation: NSKeyValueObservation?
 
     private var port: ORSSerialPort? {
         didSet {
             if port == nil { print("Serial disconnected") }
-            deviceDelegates.forEach({ $0.serialDeviceDelegate(deviceDidChange: self.port?.path) })
+            deviceDelegates.forEach { $0.serialDeviceDelegate(deviceDidChange: self.port?.path) }
         }
     }
 
     // MARK: - Initialization
-    fileprivate override init() {
+    override private init() {
         super.init()
 
         setup()
@@ -48,30 +48,31 @@ class SerialController: NSObject, SerialControllerManaged {
     private func setup() {
         connect()
 
-        observation = observe(\.portManager.availablePorts, options: [.new], changeHandler: serialPortsChanged)
+        observation = observe(\.portManager.availablePorts,
+                              options: [.new],
+                              changeHandler: serialPortsChanged)
     }
 
     // MARK: - Public Functions
     // MARK: Serial comms
     func connect() {
-        if let curPort = self.port {
-            if curPort.isOpen { curPort.close() }
-            self.port = nil
-        }
+        disconnect()
 
         for port in portManager.availablePorts {
             guard
                 let vID = port.vendorID,
                 let pID = port.productID
                 else { continue }
-            if vID == self.vendorID && pID == self.productID {
+            if  vID == self.vendorID &&
+                pID == self.productID {
                 self.port = port
                 print("New Serial Device: \(port.path)")
                 break
             }
         }
 
-        guard let serialport = self.port else { return }
+        guard let serialport = self.port
+              else { return }
 
         serialport.baudRate = 9600
         print("Baud rate set to \(serialport.baudRate)")
@@ -81,27 +82,32 @@ class SerialController: NSObject, SerialControllerManaged {
     }
 
     func disconnect() {
-        guard let serialport = self.port else { return }
+        guard let serialport = self.port
+              else { return }
+
         if serialport.isOpen { serialport.close() }
         self.port = nil
     }
 
-    func sendData(_ data: Data) {
-        guard let serialport = self.port else { return }
+    func sendData(_ data: Data) -> Bool {
+        guard let serialport = self.port
+              else { return false }
+
         if !serialport.isOpen { serialport.open() }
-        serialport.send(data)
+        return serialport.send(data)
     }
 
     // MARK: - Private Functions
     // KVO
-    private func serialPortsChanged(_ obj: _KeyValueCodingAndObserving, _ value: NSKeyValueObservedChange<[ORSSerialPort]>) -> Void {
+    private func serialPortsChanged(_ obj: _KeyValueCodingAndObserving,
+                                    _ value: NSKeyValueObservedChange<[ORSSerialPort]>) {
         connect()
     }
 }
 
 // MARK: - Public interface
 extension SerialController {
-    public var deviceConnected: Bool { get { return self.port != nil } }
+    public var deviceConnected: Bool { self.port != nil }
 
     public func addDelegate(serialDeviceDelegate delegate: SerialDeviceDelegate) {
         self.deviceDelegates.append(delegate)
@@ -120,17 +126,17 @@ extension SerialController: ORSSerialPortDelegate {
     }
 
     func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
-        portDelegates.forEach({ $0.serialPortDelegate(serialPort.path, didReceive: data) })
+        portDelegates.forEach { $0.serialPortDelegate(serialPort.path, didReceive: data) }
     }
 }
 
 // MARK: - Delegate Protocols
 // MARK: SerialDeviceDelegate
-protocol SerialDeviceDelegate {
+protocol SerialDeviceDelegate: AnyObject {
     func serialDeviceDelegate(deviceDidChange device: String?)
 }
 
 // MARK: SerialPortDelegate
-protocol SerialPortDelegate {
+protocol SerialPortDelegate: AnyObject {
     func serialPortDelegate(_ port: String?, didReceive data: Data)
 }

@@ -10,14 +10,14 @@ import Foundation
 // MARK: - SerialControllerManager (Public)
 class SerialControllerManager {
     // MARK: - Public Variables
-    public static var shared: SerialControllerManager = SerialControllerManager()
+    public static var shared = SerialControllerManager()
 
     // MARK: - Private Variables
     private var controllers: [SerialController] = []
 
     // MARK: Public Functions
     public func disconnectAll() {
-        controllers.forEach({ $0.disconnect() })
+        controllers.forEach { $0.disconnect() }
     }
 }
 

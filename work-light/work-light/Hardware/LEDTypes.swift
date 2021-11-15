@@ -7,13 +7,15 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name large_tuple
+
 enum LEDColor: UInt8, CaseIterable, Comparable {
     case red    = 0x01
     case amber  = 0x02
     case green  = 0x04
     case buzzer = 0x08
 
-    static func < (lhs: LEDColor, rhs: LEDColor) -> Bool { return lhs.rawValue < rhs.rawValue }
+    static func < (lhs: LEDColor, rhs: LEDColor) -> Bool { lhs.rawValue < rhs.rawValue }
 }
 
 enum LEDState: UInt8, CaseIterable {
@@ -32,14 +34,14 @@ class LEDCommands {
         static let status: UInt8 = 0x30
     }
 
-    class Data {
-        fileprivate class ControlBits {
-            static let red:    UInt32 = 0x01
-            static let amber:  UInt32 = 0x02
-            static let green:  UInt32 = 0x04
-            static let buzzer: UInt32 = 0x08
-        }
+    private class ControlBits {
+        static let red:    UInt32 = 0x01
+        static let amber:  UInt32 = 0x02
+        static let green:  UInt32 = 0x04
+        static let buzzer: UInt32 = 0x08
+    }
 
+    class Data {
         static func rawDataToState(_ rawData: UInt32) -> (LEDPower, LEDState, [LEDColor]) {
             let redBit      = Bool(rawData & ControlBits.red)
             let amberBit    = Bool(rawData & ControlBits.amber)

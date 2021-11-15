@@ -18,7 +18,6 @@
 		E0FB09FF2731C6F70073C76F /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB09FE2731C6F70073C76F /* StatusBarView.swift */; };
 		E0FB0A012731C7460073C76F /* SerialUSBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB0A002731C7460073C76F /* SerialUSBController.swift */; };
 		E0FB0A052731C9BD0073C76F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB0A042731C9BD0073C76F /* AppDelegate.swift */; };
-		E0FB0A0D2731CD4B0073C76F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0FB0A0C2731CD4B0073C76F /* Info.plist */; };
 		E0FB0A122731D26B0073C76F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0FB0A112731D26B0073C76F /* Main.storyboard */; };
 		E0FB0A142731D8F80073C76F /* ButtonPopover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0FB0A132731D8F80073C76F /* ButtonPopover.storyboard */; };
 		E0FB0A162731D9130073C76F /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB0A152731D9130073C76F /* PopoverViewController.swift */; };
@@ -188,6 +187,7 @@
 			buildConfigurationList = E0FB09FB2731C6740073C76F /* Build configuration list for PBXNativeTarget "work-light" */;
 			buildPhases = (
 				FB6883F159200307D39AEDDB /* [CP] Check Pods Manifest.lock */,
+				E00F3F6C273C8DCB00188B65 /* ShellScript */,
 				E0FB09E82731C6730073C76F /* Sources */,
 				E0FB09E92731C6730073C76F /* Frameworks */,
 				E0FB09EA2731C6730073C76F /* Resources */,
@@ -243,7 +243,6 @@
 			files = (
 				E0FB0A142731D8F80073C76F /* ButtonPopover.storyboard in Resources */,
 				E0FB09F42731C6740073C76F /* Assets.xcassets in Resources */,
-				E0FB0A0D2731CD4B0073C76F /* Info.plist in Resources */,
 				E0FB0A122731D26B0073C76F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,6 +266,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-work-light/Pods-work-light-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		E00F3F6C273C8DCB00188B65 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "/opt/homebrew/bin/swiftlint\n";
 		};
 		FB6883F159200307D39AEDDB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -328,6 +344,7 @@
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_COMPLETION_HANDLER_MISUSE = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -360,10 +377,14 @@
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -389,6 +410,7 @@
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_COMPLETION_HANDLER_MISUSE = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -415,10 +437,14 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

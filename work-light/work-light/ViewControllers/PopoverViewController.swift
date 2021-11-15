@@ -8,31 +8,35 @@
 import Foundation
 import SwiftUI
 
+// swiftlint:disable comma
+
 class PopoverViewController: NSViewController {
     // MARK: - UI Elements
-    @IBOutlet weak var onOffToggle: NSSwitch!
-    @IBOutlet weak var blinkToggle: NSSwitch!
-    @IBOutlet weak var buzzerToggle: NSSwitch!
+    @IBOutlet private weak var onOffToggle: NSSwitch!
+    @IBOutlet private weak var blinkToggle: NSSwitch!
+    @IBOutlet private weak var buzzerToggle: NSSwitch!
 
-    @IBOutlet weak var greenButton: NSButton!
-    @IBOutlet weak var amberButton: NSButton!
-    @IBOutlet weak var redButton: NSButton!
+    @IBOutlet private weak var greenButton: NSButton!
+    @IBOutlet private weak var amberButton: NSButton!
+    @IBOutlet private weak var redButton: NSButton!
 
-    @IBOutlet weak var greenToggle: NSSwitch!
-    @IBOutlet weak var amberToggle: NSSwitch!
-    @IBOutlet weak var redToggle: NSSwitch!
+    @IBOutlet private weak var greenToggle: NSSwitch!
+    @IBOutlet private weak var amberToggle: NSSwitch!
+    @IBOutlet private weak var redToggle: NSSwitch!
 
     private lazy var allButtons: [NSButton] = [greenButton, amberButton, redButton]
-    private lazy var allToggles: [NSSwitch] = [onOffToggle, blinkToggle, buzzerToggle, greenToggle, amberToggle, redToggle]
+    private lazy var allToggles: [NSSwitch] = [onOffToggle, blinkToggle, buzzerToggle,
+                                               greenToggle, amberToggle, redToggle]
 
-    @IBOutlet weak var statusLabel: NSTextField!
-    @IBOutlet weak var disconnectedLabel: NSTextField!
+    @IBOutlet private weak var statusLabel: NSTextField!
+    @IBOutlet private weak var disconnectedLabel: NSTextField!
 
-    @IBOutlet weak var colorDot: NSView!
+    @IBOutlet private weak var colorDot: NSView!
 
     // MARK: - UI Actions
-    @IBAction func switchOnOffToggled(_ sender: NSSwitch) { ledController.set(power: sender.state == .off ? .off : .on) }
-    @IBAction func switchBlinkToggled(_ sender: NSSwitch) { ledController.set(blink: sender.state == .on) }
+    // swiftlint:disable line_length
+    @IBAction func switchOnOffToggled(_ sender: NSSwitch)  { ledController.set(power: sender.state == .off ? .off : .on) }
+    @IBAction func switchBlinkToggled(_ sender: NSSwitch)  { ledController.set(blink: sender.state == .on) }
     @IBAction func switchBuzzerToggled(_ sender: NSSwitch) { ledController.set(color: .buzzer, to: sender.state == .on) }
 
     @IBAction func greenButtonPushed(_ sender: Any) { ledController.changeColor(to: .green) }
@@ -42,6 +46,7 @@ class PopoverViewController: NSViewController {
     @IBAction func greenSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .green, to: sender.state == .on) }
     @IBAction func amberSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .amber, to: sender.state == .on) }
     @IBAction func redSwitchToggled(_ sender: NSSwitch)   { ledController.set(color: .red,   to: sender.state == .on) }
+    // swiftlint:enable line_length
 
     // MARK: - Variables
     private var ledController = LEDController.shared
@@ -67,22 +72,22 @@ class PopoverViewController: NSViewController {
 
     // MARK: - UI Helpers
     private func setupView() {
-        allButtons.forEach({ $0.showsBorderOnlyWhileMouseInside = true })
+        allButtons.forEach { $0.showsBorderOnlyWhileMouseInside = true }
 
         colorDot.wantsLayer = true
         colorDot.layer?.masksToBounds = true
-        colorDot.layer?.cornerRadius = 12.0;
+        colorDot.layer?.cornerRadius = 12.0
         colorDot.layer?.backgroundColor = .init(red: 0, green: 0, blue: 0, alpha: 0)
     }
 
     func update() {
-        onOffToggle.animator().state = ledController.power == .off ? .off : .on
-        blinkToggle.animator().state = ledController.isBlinking ? .on : .off
+        onOffToggle.animator().state  = ledController.power == .off ? .off : .on
+        blinkToggle.animator().state  = ledController.isBlinking ? .on : .off
         buzzerToggle.animator().state = ledController.isBuzzerOn ? .on : .off
 
         colorDot.layer?.backgroundColor = ledColorToSystemColor(ledController.color)
 
-        redToggle.animator().state = ledController.color.contains(.red) ? .on : .off
+        redToggle.animator().state   = ledController.color.contains(.red)   ? .on : .off
         greenToggle.animator().state = ledController.color.contains(.green) ? .on : .off
         amberToggle.animator().state = ledController.color.contains(.amber) ? .on : .off
 
@@ -97,30 +102,30 @@ class PopoverViewController: NSViewController {
         }
     }
 
+    // swiftlint:disable force_cast
     func enableUI() {
-        allToggles.forEach({ $0.isEnabled = true })
+        allToggles.forEach { $0.isEnabled = true }
 
-        allButtons.forEach({ button in
+        allButtons.forEach { button in
             button.isEnabled = true
             button.showsBorderOnlyWhileMouseInside = true
             button.bezelColor = .systemBlue
-        })
+        }
 
         colorDot.layer?.borderColor = .clear
         colorDot.layer?.borderWidth = 0.0
 
         (self.view as! NSViewInteractive).isUserInteractionEnabled = true
-
     }
 
     func disableUI() {
-        allToggles.forEach({ $0.isEnabled = false })
+        allToggles.forEach { $0.isEnabled = false }
 
-        allButtons.forEach({ button in
+        allButtons.forEach { button in
             button.isEnabled = false
             button.showsBorderOnlyWhileMouseInside = false
             button.bezelColor = nil
-        })
+        }
 
         colorDot.layer?.borderColor = .black
         colorDot.layer?.borderWidth = 0.6
@@ -128,10 +133,11 @@ class PopoverViewController: NSViewController {
 
         (self.view as! NSViewInteractive).isUserInteractionEnabled = false
     }
+    // swiftlint:enable force_cast
 
     // MARK: - Utilities
     func ledColorToSystemColor(_ ledColor: [LEDColor]) -> CGColor {
-        let color = ledColor.filter({ $0 != .buzzer })
+        let color = ledColor.filter { $0 != .buzzer }
         switch color {
             case [.red]:   return NSColor.systemRed.cgColor
             case [.amber]: return NSColor.systemOrange.cgColor
@@ -176,10 +182,10 @@ extension PopoverViewController: LEDControllerDelegate {
 }
 
 class NSViewInteractive: NSView {
-    var isUserInteractionEnabled: Bool = true
+    var isUserInteractionEnabled = true
 
     override func hitTest(_ point: NSPoint) -> NSView? {
-        return isUserInteractionEnabled ? super.hitTest(point) : nil
+        isUserInteractionEnabled ? super.hitTest(point) : nil
     }
 }
 
@@ -189,8 +195,10 @@ extension PopoverViewController {
         let storyboard = NSStoryboard(name: NSStoryboard.Name("ButtonPopover"), bundle: nil)
         let identifier = NSStoryboard.SceneIdentifier("PopoverViewController")
 
-        guard let viewcontroller = storyboard.instantiateController(withIdentifier: identifier) as? PopoverViewController else {
-            fatalError("Unable to instantiate ViewController in ButtonPopover.storyboard")
+        guard
+            let viewcontroller = storyboard.instantiateController(withIdentifier: identifier) as? PopoverViewController
+            else {
+                fatalError("Unable to instantiate ViewController in ButtonPopover.storyboard")
         }
         return viewcontroller
     }
