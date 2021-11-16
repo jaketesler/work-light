@@ -36,7 +36,7 @@ class LEDController: NSObject {
             _ledState = newValue
             if ledPower == .on {
                 let data = Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8])
-                _ = serialController.sendData(data)
+                _ = serialController.send(serialData: data)
             }
             updateLEDControllerDelegates()
         }
@@ -53,7 +53,7 @@ class LEDController: NSObject {
             turnOff()
             if ledPower == .on {
                 let data = Data([bitwise_or(newValue) | ledState.rawValue] as [UInt8])
-                _ = serialController.sendData(data)
+                _ = serialController.send(serialData: data)
             }
             updateLEDControllerDelegates()
         }
@@ -72,7 +72,7 @@ class LEDController: NSObject {
             } else {
                 if ledColor.isEmpty { _ledColor = _prevLEDColorState }
                 if _prevLEDBlinkState { _ledState = .blink }
-                _ = serialController.sendData(Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]))
+                _ = serialController.send(serialData: Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]))
             }
             updateLEDControllerDelegates()
         }
@@ -88,15 +88,15 @@ class LEDController: NSObject {
     override init() {
         super.init()
 
-        serialController.addDelegate(serialDeviceDelegate: self)
-        serialController.addDelegate(serialPortDelegate: self)
+        serialController.register(serialDeviceDelegate: self)
+        serialController.register(serialPortDelegate: self)
 
         _ = updateStatus()
     }
 
     // MARK: - Public Functions
     public func updateStatus() -> Bool {
-        serialController.sendData(Data([LEDCommands.Commands.status] as [UInt8]))
+        serialController.send(serialData: Data([LEDCommands.Commands.status] as [UInt8]))
     }
 
     public func changeColor(to color: LEDColor) {
@@ -157,7 +157,7 @@ class LEDController: NSObject {
 
     private func turnOff() {
         let rawData: [UInt8] = LEDColor.allCases.map { color in (color.rawValue | LEDState.off.rawValue) }
-        _ = serialController.sendData(Data(rawData))
+        _ = serialController.send(serialData: Data(rawData))
     }
 
     private func updateDriverState(rawData: UInt32) {

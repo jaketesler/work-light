@@ -17,12 +17,12 @@ class SerialControllerManager {
 
     // MARK: Public Functions
     public func disconnectAll() {
-        controllers.forEach { $0.disconnect() }
+        controllers.forEach { $0.disconnectSerial() }
     }
 }
 
-// MARK: - SerialControllerManaged
+// MARK: - Protocols
 // Protocol for SerialController object conformance
 protocol SerialControllerManaged {
-    func disconnect()
+    func disconnectSerial()
 }

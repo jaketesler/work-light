@@ -54,9 +54,9 @@ class SerialController: NSObject, SerialControllerManaged {
                               changeHandler: serialPortsChanged)
     }
 
-    // MARK: - Public Functions
+    // MARK: - Private Functions
     // MARK: Serial Communication
-    func connect() {
+    private func connect() {
         disconnect()
 
         for port in portManager.availablePorts {
@@ -82,7 +82,7 @@ class SerialController: NSObject, SerialControllerManaged {
         serialPort.open()
     }
 
-    func disconnect() {
+    private func disconnect() {
         guard let serialPort = port
               else { return }
 
@@ -90,7 +90,7 @@ class SerialController: NSObject, SerialControllerManaged {
         port = nil
     }
 
-    func sendData(_ data: Data) -> Bool {
+    private func send(data: Data) -> Bool {
         guard let serialPort = port
               else { return false }
 
@@ -98,28 +98,39 @@ class SerialController: NSObject, SerialControllerManaged {
         return serialPort.send(data)
     }
 
-    // MARK: - Private Functions
-    // KVO
+    // MARK: KVO
     private func serialPortsChanged(_ obj: _KeyValueCodingAndObserving,
                                     _ value: NSKeyValueObservedChange<[ORSSerialPort]>) {
-        connect()
+        connectSerial()
+    }
+
+    // MARK: Delegates
+    private func addDelegate(serialDeviceDelegate delegate: SerialDeviceDelegate) {
+        deviceDelegates.append(delegate)
+
+        delegate.serialDeviceDelegate(deviceDidChange: port?.path)
+    }
+
+    private func addDelegate(serialPortDelegate delegate: SerialPortDelegate) {
+        portDelegates.append(delegate)
     }
 }
 
+// swiftlint:disable line_length
 // MARK: - Public Interface
 extension SerialController {
     // MARK: - Public Variables
     public var deviceConnected: Bool { self.port != nil }
 
-    // MARK: Public Functions
-    public func addDelegate(serialDeviceDelegate delegate: SerialDeviceDelegate) {
-        self.deviceDelegates.append(delegate)
-        delegate.serialDeviceDelegate(deviceDidChange: self.port?.path)
-    }
+    // MARK: - Public Functions
+    // MARK: Delegates
+    public func register(serialDeviceDelegate delegate: SerialDeviceDelegate) { addDelegate(serialDeviceDelegate: delegate) }
+    public func register(serialPortDelegate delegate: SerialPortDelegate) { addDelegate(serialPortDelegate: delegate) }
 
-    public func addDelegate(serialPortDelegate delegate: SerialPortDelegate) {
-        self.portDelegates.append(delegate)
-    }
+    // MARK: Serial Communication
+    public func connectSerial() { connect() }
+    public func disconnectSerial() { disconnect() }
+    public func send(serialData data: Data) -> Bool { send(data: data) }
 }
 
 // MARK: - Extensions
