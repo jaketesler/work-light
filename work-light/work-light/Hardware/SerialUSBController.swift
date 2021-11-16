@@ -71,30 +71,30 @@ class SerialController: NSObject, SerialControllerManaged {
             }
         }
 
-        guard let serialport = self.port
+        guard let serialPort = self.port
               else { return }
 
-        serialport.baudRate = 9600
-        print("Baud rate set to \(serialport.baudRate)")
+        serialPort.baudRate = 9600
+        print("Baud rate set to \(serialPort.baudRate)")
 
-        serialport.delegate = self
-        serialport.open()
+        serialPort.delegate = self
+        serialPort.open()
     }
 
     func disconnect() {
-        guard let serialport = self.port
+        guard let serialPort = port
               else { return }
 
-        if serialport.isOpen { serialport.close() }
-        self.port = nil
+        if serialPort.isOpen { serialPort.close() }
+        port = nil
     }
 
     func sendData(_ data: Data) -> Bool {
-        guard let serialport = self.port
+        guard let serialPort = port
               else { return false }
 
-        if !serialport.isOpen { serialport.open() }
-        return serialport.send(data)
+        if !serialPort.isOpen { serialPort.open() }
+        return serialPort.send(data)
     }
 
     // MARK: - Private Functions
