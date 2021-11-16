@@ -90,12 +90,12 @@ class LEDController: NSObject {
         serialController.addDelegate(serialDeviceDelegate: self)
         serialController.addDelegate(serialPortDelegate: self)
 
-        updateStatus()
+        _ = updateStatus()
     }
 
     // MARK: - Public Functions
-    public func updateStatus() {
-        _ = serialController.sendData(Data([LEDCommands.Commands.status] as [UInt8]))
+    public func updateStatus() -> Bool {
+        serialController.sendData(Data([LEDCommands.Commands.status] as [UInt8]))
     }
 
     public func changeColor(to color: LEDColor) {

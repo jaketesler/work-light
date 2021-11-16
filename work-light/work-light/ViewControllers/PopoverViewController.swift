@@ -65,8 +65,7 @@ class PopoverViewController: NSViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        ledController.updateStatus()
-
+        _ = ledController.updateStatus()
         update()
     }
 
