@@ -8,7 +8,6 @@
 import Foundation
 import ORSSerial
 
-// MARK: - SerialController (Public)
 class SerialController: NSObject, SerialControllerManaged {
     // MARK: - Private Variables
     // MARK: Configuration
@@ -145,13 +144,11 @@ extension SerialController: ORSSerialPortDelegate {
     }
 }
 
-// MARK: - Delegate Protocols
-// MARK: SerialDeviceDelegate
+// MARK: - Protocols
 protocol SerialDeviceDelegate: AnyObject {
     func serialDeviceDelegate(deviceDidChange device: String?)
 }
 
-// MARK: SerialPortDelegate
 protocol SerialPortDelegate: AnyObject {
     func serialPortDelegate(_ port: String?, didReceive data: Data)
 }

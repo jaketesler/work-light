@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - LEDController (Public)
 class LEDController: NSObject {
     // MARK: - Private Variables
     // MARK: Serial Management

@@ -57,7 +57,8 @@ class StatusBarMenuView: NSMenu {
     func quit() { exit(0) }
 }
 
-// MARK: - Extension: SerialDeviceDelegate
+// MARK: - Extensions
+// MARK: StatusBarMenuView: SerialDeviceDelegate
 extension StatusBarMenuView: SerialDeviceDelegate {
     func serialDeviceDelegate(deviceDidChange device: String?) {
         setDevice(device)

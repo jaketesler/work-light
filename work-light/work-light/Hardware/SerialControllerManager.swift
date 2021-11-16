@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - SerialControllerManager (Public)
 class SerialControllerManager {
     // MARK: - Private Variables
     private var controllers: [SerialController] = []
