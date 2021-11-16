@@ -9,11 +9,11 @@ import Foundation
 
 // MARK: - SerialControllerManager (Public)
 class SerialControllerManager {
-    // MARK: - Public Variables
-    public static var shared = SerialControllerManager()
-
     // MARK: - Private Variables
     private var controllers: [SerialController] = []
+
+    // MARK: - Public Variables
+    public static var shared = SerialControllerManager()
 
     // MARK: Public Functions
     public func disconnectAll() {
@@ -21,6 +21,7 @@ class SerialControllerManager {
     }
 }
 
+// MARK: - SerialControllerManaged
 // Protocol for SerialController object conformance
 protocol SerialControllerManaged {
     func disconnect()

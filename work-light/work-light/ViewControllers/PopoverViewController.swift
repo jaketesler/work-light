@@ -152,6 +152,7 @@ class PopoverViewController: NSViewController {
         }
     }
 
+    // MARK: Utilities (Private)
     private func colorBlend(_ colorA: NSColor, _ colorB: NSColor, weightA: CGFloat = 0.5) -> NSColor {
         guard let colA = colorA.usingColorSpace(.sRGB),
               let colB = colorB.usingColorSpace(.sRGB)
@@ -180,6 +181,7 @@ extension PopoverViewController: LEDControllerDelegate {
     }
 }
 
+// MARK: - Custom Views
 class NSViewInteractive: NSView {
     var isUserInteractionEnabled = true
 
@@ -188,7 +190,7 @@ class NSViewInteractive: NSView {
     }
 }
 
-// MARK: - Storyboard
+// MARK: - Storyboard Initialization
 extension PopoverViewController {
     static func newInstance() -> PopoverViewController {
         let storyboard = NSStoryboard(name: NSStoryboard.Name("ButtonPopover"), bundle: nil)

@@ -8,6 +8,7 @@
 import Foundation
 import ORSSerial
 
+// MARK: - SerialController (Public)
 class SerialController: NSObject, SerialControllerManaged {
     // MARK: - Private Variables
     // MARK: Configuration
@@ -18,7 +19,7 @@ class SerialController: NSObject, SerialControllerManaged {
     private var deviceDelegates: [SerialDeviceDelegate] = []
     private var portDelegates: [SerialPortDelegate] = []
 
-    // MARK: ORSSerialPortManager
+    // MARK: ORSSerial
     @objc private dynamic var portManager = ORSSerialPortManager.shared()
     private var observation: NSKeyValueObservation?
 
@@ -54,7 +55,7 @@ class SerialController: NSObject, SerialControllerManaged {
     }
 
     // MARK: - Public Functions
-    // MARK: Serial comms
+    // MARK: Serial Communication
     func connect() {
         disconnect()
 
@@ -105,10 +106,12 @@ class SerialController: NSObject, SerialControllerManaged {
     }
 }
 
-// MARK: - Public interface
+// MARK: - Public Interface
 extension SerialController {
+    // MARK: - Public Variables
     public var deviceConnected: Bool { self.port != nil }
 
+    // MARK: Public Functions
     public func addDelegate(serialDeviceDelegate delegate: SerialDeviceDelegate) {
         self.deviceDelegates.append(delegate)
         delegate.serialDeviceDelegate(deviceDidChange: self.port?.path)
@@ -119,7 +122,8 @@ extension SerialController {
     }
 }
 
-// MARK: - Extension: ORSSerialPortDelegate
+// MARK: - Extensions
+// MARK: SerialController: ORSSerialPortDelegate
 extension SerialController: ORSSerialPortDelegate {
     func serialPortWasRemovedFromSystem(_ serialPort: ORSSerialPort) {
         print("Serial removed: \(serialPort)")

@@ -20,7 +20,7 @@ class StatusBarMenuView: NSMenu {
         didSet { self.deviceItem.title = "Device: \(self.deviceInfo)" }
     }
 
-    // MARK: - View Initialization
+    // MARK: - Initialization
     override init(title: String) {
         super.init(title: title)
 

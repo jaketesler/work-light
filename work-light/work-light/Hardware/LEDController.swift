@@ -7,9 +7,10 @@
 
 import Foundation
 
+// MARK: - LEDController (Public)
 class LEDController: NSObject {
     // MARK: - Private Variables
-    // MARK: Management
+    // MARK: Serial Management
     private var serialController = SerialController(vendorID: 0x1a86, productID: 0x7523)
     private var delegates: [LEDControllerDelegate] = []
 
@@ -25,7 +26,7 @@ class LEDController: NSObject {
         }
     }
 
-    // MARK: State Tracking
+    // MARK: LED State Tracking
     private var _ledState : LEDState = .off {
         didSet { updateLEDControllerDelegates() }
     }
@@ -149,7 +150,7 @@ class LEDController: NSObject {
         }
     }
 
-    // MARK: - Private
+    // MARK: - Private Functions
     private func updateLEDControllerDelegates() {
         delegates.forEach { $0.ledControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
     }
@@ -163,7 +164,7 @@ class LEDController: NSObject {
         (_ledPower, _ledState, _ledColor) = LEDCommands.Data.rawDataToState(rawData)
     }
 
-    // MARK: - Utilities
+    // MARK: Utilities
     private func bitwise_or(_ arr: [UInt8]) -> UInt8 {
         var result: UInt8 = 0x0
         arr.forEach { val in (result |= val) }
@@ -173,14 +174,15 @@ class LEDController: NSObject {
     private func bitwise_or(_ arr: [LEDColor]) -> UInt8 { bitwise_or(arr.map { $0.rawValue }) }
 }
 
-// MARK: - Extension: SerialDeviceDelegate
+// MARK: - Extensions
+// MARK: LEDController: SerialDeviceDelegate
 extension LEDController: SerialDeviceDelegate {
     func serialDeviceDelegate(deviceDidChange device: String?) {
         portPath = device
     }
 }
 
-// MARK: Extension: SerialPortDelegate
+// MARK: LEDController: SerialPortDelegate
 extension LEDController: SerialPortDelegate {
     func serialPortDelegate(_ port: String?, didReceive data: Data) {
         guard let dataString = String(data: data, encoding: .utf8) else { return }
@@ -191,12 +193,15 @@ extension LEDController: SerialPortDelegate {
     }
 }
 
-// MARK: - Public Interface
+// MARK: - LEDController Interface (Public)
 extension LEDController {
+    // MARK: - Public Variables
+    // MARK: Shared Instance
     public static var shared = LEDController()
 
     public var deviceConnected: Bool { serialController.deviceConnected }
 
+    // MARK: - Public Functions
     public func addDelegate(ledControllerDelegate delegate: LEDControllerDelegate) {
         self.delegates.append(delegate)
     }

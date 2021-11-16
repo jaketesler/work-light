@@ -19,7 +19,7 @@ class StatusBarView {
         return button
     }
 
-    // MARK: - View Initialization
+    // MARK: - Initialization
     init() {
         self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
