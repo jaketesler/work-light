@@ -49,7 +49,7 @@ class StatusBarMenuView: NSMenu {
     }
 
     func setDevice(_ device: String?) {
-        self.deviceInfo = device ?? deviceDefaultText
+        deviceInfo = device ?? deviceDefaultText
     }
 
     // MARK: - Utilities

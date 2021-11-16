@@ -182,7 +182,7 @@ extension PopoverViewController: LEDControllerDelegate {
 }
 
 // MARK: - Custom Views
-class NSViewInteractive: NSView {
+private class NSViewInteractive: NSView {
     var isUserInteractionEnabled = true
 
     override func hitTest(_ point: NSPoint) -> NSView? {
@@ -197,10 +197,10 @@ extension PopoverViewController {
         let identifier = NSStoryboard.SceneIdentifier("PopoverViewController")
 
         guard
-            let viewcontroller = storyboard.instantiateController(withIdentifier: identifier) as? PopoverViewController
+            let viewController = storyboard.instantiateController(withIdentifier: identifier) as? PopoverViewController
             else {
                 fatalError("Unable to instantiate ViewController in ButtonPopover.storyboard")
         }
-        return viewcontroller
+        return viewController
     }
 }

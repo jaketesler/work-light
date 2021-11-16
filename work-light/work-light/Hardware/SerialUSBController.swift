@@ -13,7 +13,7 @@ class SerialController: NSObject, SerialControllerManaged {
     // MARK: - Private Variables
     // MARK: Configuration
     private var productID: NSNumber = 0x7523
-    private var vendorID: NSNumber = 0x1a86
+    private var vendorID:  NSNumber = 0x1a86
 
     // MARK: Delegates
     private var deviceDelegates: [SerialDeviceDelegate] = []
@@ -25,8 +25,8 @@ class SerialController: NSObject, SerialControllerManaged {
 
     private var port: ORSSerialPort? {
         didSet {
-            if port == nil { print("Serial disconnected") }
-            deviceDelegates.forEach { $0.serialDeviceDelegate(deviceDidChange: self.port?.path) }
+            if self.port == nil { print("Serial disconnected") }
+            self.deviceDelegates.forEach { $0.serialDeviceDelegate(deviceDidChange: self.port?.path) }
         }
     }
 

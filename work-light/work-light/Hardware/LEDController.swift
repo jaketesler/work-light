@@ -67,7 +67,7 @@ class LEDController: NSObject {
         get { _ledPower }
         set {
             _ledPower = newValue
-            if newValue == .off {
+            if _ledPower == .off {
                  turnOff()
             } else {
                 if ledColor.isEmpty { _ledColor = _prevLEDColorState }
@@ -107,7 +107,7 @@ class LEDController: NSObject {
             _ledState = .on
         }
 
-        self.ledColor = isBuzzerOn ? [color, .buzzer] : [color]
+        ledColor = isBuzzerOn ? [color, .buzzer] : [color]
     }
 
     public func set(color: LEDColor, to state: LEDPower) {
@@ -116,12 +116,12 @@ class LEDController: NSObject {
             _ledState = .on
         }
 
-        if state != .off {
-            if ledColor.contains(color) { return }
-            ledColor.append(color)
+        if state == .off {
+            ledColor.removeAll { $0 == color }
         } else {
-            if !ledColor.contains(color) { return }
-            ledColor = ledColor.filter { $0 != color }
+            if !ledColor.contains(color) {
+                ledColor.append(color)
+            }
         }
     }
 
@@ -139,7 +139,7 @@ class LEDController: NSObject {
             }
         }
 
-        self.ledPower = state
+        ledPower = state
     }
 
     public func set(blink: Bool) {
@@ -167,7 +167,7 @@ class LEDController: NSObject {
     // MARK: Utilities
     private func bitwise_or(_ arr: [UInt8]) -> UInt8 {
         var result: UInt8 = 0x0
-        arr.forEach { val in (result |= val) }
+        arr.forEach { result |= $0 }
         return result
     }
 
