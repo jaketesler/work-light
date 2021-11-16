@@ -174,22 +174,6 @@ class PopoverViewController: NSViewController {
     }
 }
 
-// MARK: - SerialControllerDelegate
-extension PopoverViewController: LEDControllerDelegate {
-    func ledControllerDelegate(statusDidChange state: LEDPower, ledColor: [LEDColor]) {
-        update()
-    }
-}
-
-// MARK: - Custom Views
-private class NSViewInteractive: NSView {
-    var isUserInteractionEnabled = true
-
-    override func hitTest(_ point: NSPoint) -> NSView? {
-        isUserInteractionEnabled ? super.hitTest(point) : nil
-    }
-}
-
 // MARK: - Storyboard Initialization
 extension PopoverViewController {
     static func newInstance() -> PopoverViewController {
@@ -202,5 +186,22 @@ extension PopoverViewController {
                 fatalError("Unable to instantiate ViewController in ButtonPopover.storyboard")
         }
         return viewController
+    }
+}
+
+// MARK: - Extensions
+// MARK: PopoverViewController : LEDControllerDelegate
+extension PopoverViewController: LEDControllerDelegate {
+    func ledControllerDelegate(statusDidChange state: LEDPower, ledColor: [LEDColor]) {
+        update()
+    }
+}
+
+// MARK: - Views
+private class NSViewInteractive: NSView {
+    var isUserInteractionEnabled = true
+
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        isUserInteractionEnabled ? super.hitTest(point) : nil
     }
 }
