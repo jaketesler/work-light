@@ -57,7 +57,7 @@ class PopoverViewController: NSViewController {
 
         setupView()
 
-        ledController.addDelegate(ledControllerDelegate: self)
+        ledController.register(ledControllerDelegate: self)
 
         update()
     }

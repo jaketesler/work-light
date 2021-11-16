@@ -78,12 +78,6 @@ class LEDController: NSObject {
         }
     }
 
-    // MARK: - Public Variables
-    public var power: LEDPower   { self.ledPower }
-    public var color: [LEDColor] { self.ledColor }
-    public var isBlinking: Bool  { self.ledState == .blink }
-    public var isBuzzerOn: Bool  { self.ledColor.contains(.buzzer) }
-
     // MARK: - Initialization
     override init() {
         super.init()
@@ -155,6 +149,14 @@ class LEDController: NSObject {
         delegates.forEach { $0.ledControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
     }
 
+    private func addDelegate(ledControllerDelegate delegate: LEDControllerDelegate) {
+        delegates.append(delegate)
+    }
+
+    private func addDelegate(serialDeviceDelegate delegate: SerialDeviceDelegate) {
+        serialController.register(serialDeviceDelegate: delegate)
+    }
+
     private func turnOff() {
         let rawData: [UInt8] = LEDColor.allCases.map { color in (color.rawValue | LEDState.off.rawValue) }
         _ = serialController.send(serialData: Data(rawData))
@@ -193,25 +195,26 @@ extension LEDController: SerialPortDelegate {
     }
 }
 
-// MARK: - LEDController Interface (Public)
+// swiftlint:disable line_length
+// MARK: - Public Interface
 extension LEDController {
     // MARK: - Public Variables
     // MARK: Shared Instance
     public static var shared = LEDController()
 
-    public var deviceConnected: Bool { serialController.deviceConnected }
+    // MARK: State Variables
+    public var power: LEDPower   { self.ledPower }
+    public var color: [LEDColor] { self.ledColor }
+    public var isBlinking: Bool  { self.ledState == .blink }
+    public var isBuzzerOn: Bool  { self.ledColor.contains(.buzzer) }
+    public var deviceConnected: Bool { self.serialController.deviceConnected }
 
     // MARK: - Public Functions
-    public func addDelegate(ledControllerDelegate delegate: LEDControllerDelegate) {
-        self.delegates.append(delegate)
-    }
-
-    public func addDelegate(serialDeviceDelegate delegate: SerialDeviceDelegate) {
-        self.serialController.addDelegate(serialDeviceDelegate: delegate)
-    }
+    public func register(ledControllerDelegate delegate: LEDControllerDelegate) { addDelegate(ledControllerDelegate: delegate) }
+    public func register(serialDeviceDelegate delegate: SerialDeviceDelegate) { addDelegate(serialDeviceDelegate: delegate) }
 }
 
-// MARK: - LEDControllerDelegate
+// MARK: - Protocols
 protocol LEDControllerDelegate: AnyObject {
     func ledControllerDelegate(statusDidChange state: LEDPower, ledColor: [LEDColor])
 }

@@ -26,7 +26,7 @@ class StatusBarMenuView: NSMenu {
 
         setupView()
 
-        LEDController.shared.addDelegate(serialDeviceDelegate: self)
+        LEDController.shared.register(serialDeviceDelegate: self)
     }
 
     required init(coder: NSCoder) {
