@@ -198,7 +198,7 @@ extension PopoverViewController: LEDControllerDelegate {
 }
 
 // MARK: - Views
-private class NSViewInteractive: NSView {
+class NSViewInteractive: NSView {
     var isUserInteractionEnabled = true
 
     override func hitTest(_ point: NSPoint) -> NSView? {
