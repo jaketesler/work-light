@@ -31,15 +31,10 @@ class LEDController: NSObject {
     }
     private var _prevLEDBlinkState = false
 
-    private var ledColor: [LEDColor] {
-        get { _ledColorSorted.sorted() }
-        set {
-            _ledColorSorted = newValue.sorted()
-            updateLEDControllerDelegates()
-        }
+    @Sorted private var ledColor: [LEDColor] = [] {
+        didSet { updateLEDControllerDelegates() }
     }
-    private var _ledColorSorted: [LEDColor] = [] // To ensure sorting
-    private var _prevLEDColorState: [LEDColor] = [.green]
+    private var _prevLEDColorState: [LEDColor] = [.green] // This is also the initial state
 
     private var ledPower: LEDPower = .off {
         didSet { updateLEDControllerDelegates() }
