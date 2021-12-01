@@ -16,9 +16,9 @@ class LEDController: NSObject {
     private var portPath: String? {
         didSet {
             if portPath == nil {
-                _ledPower = .off
-                _ledState = .off
-                _ledColor = []
+                ledPower = .off
+                ledState = .off
+                ledColor = []
                 print("Serial disconnected")
             }
             updateLEDControllerDelegates()
@@ -26,55 +26,23 @@ class LEDController: NSObject {
     }
 
     // MARK: LED State Tracking
-    private var _ledState : LEDState = .off {
+    private var ledState : LEDState = .off {
         didSet { updateLEDControllerDelegates() }
-    }
-    private var ledState: LEDState {
-        get { _ledState }
-        set {
-            _ledState = newValue
-            if ledPower == .on {
-                let data = Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8])
-                _ = serialController.send(serialData: data)
-            }
-            updateLEDControllerDelegates()
-        }
     }
     private var _prevLEDBlinkState = false
 
-    private var _ledColor: [LEDColor] = [] {
-        didSet { updateLEDControllerDelegates() }
-    }
     private var ledColor: [LEDColor] {
-        get { _ledColor.sorted() }
+        get { _ledColorSorted.sorted() }
         set {
-            _ledColor = newValue.sorted()
-            turnOff()
-            if ledPower == .on {
-                let data = Data([bitwise_or(newValue) | ledState.rawValue] as [UInt8])
-                _ = serialController.send(serialData: data)
-            }
+            _ledColorSorted = newValue.sorted()
             updateLEDControllerDelegates()
         }
     }
+    private var _ledColorSorted: [LEDColor] = [] // To ensure sorting
     private var _prevLEDColorState: [LEDColor] = [.green]
 
-    private var _ledPower: LEDPower = .off {
+    private var ledPower: LEDPower = .off {
         didSet { updateLEDControllerDelegates() }
-    }
-    private var ledPower: LEDPower {
-        get { _ledPower }
-        set {
-            _ledPower = newValue
-            if _ledPower == .off { // -> OFF
-                 turnOff()
-            } else { // -> ON
-                if ledColor.isEmpty { _ledColor = _prevLEDColorState }
-                if _prevLEDBlinkState { _ledState = .blink }
-                _ = serialController.send(serialData: Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]))
-            }
-            updateLEDControllerDelegates()
-        }
     }
 
     // MARK: - Initialization
@@ -96,26 +64,29 @@ class LEDController: NSObject {
         if color == .buzzer { return }
 
         // if power is off and we want to turn on a color, switch system on
-        if _ledPower == .off { _ledPower = .on }
+        if ledPower == .off { ledPower = .on }
 
         // if state is off and we want to turn on a color, switch system on (but if blinking, allow)
-        if _ledState == .off { _ledState = .on }
+        if ledState == .off { ledState = .on }
 
         ledColor = isBuzzerOn ? [color, .buzzer] : [color]
+        pushSystemState()
     }
 
     public func set(color: LEDColor, to state: LEDPower) {
         if state == .off { // -> OFF
             ledColor.removeAll { $0 == color }
+            pushSystemState()
         } else { // -> ON
             // if power is off and we want to turn on a color, switch system on
-            if _ledPower == .off { _ledPower = .on }
+            if ledPower == .off { ledPower = .on }
 
             // if state is off and we want to turn on a color, switch system on (but if blinking, allow)
-            if _ledState == .off { _ledState = .on }
+            if ledState == .off { ledState = .on }
 
             if !ledColor.contains(color) {
                 ledColor.append(color)
+                pushSystemState()
             }
         }
     }
@@ -127,20 +98,26 @@ class LEDController: NSObject {
     public func set(power state: LEDPower) {
         if state == .off { // -> OFF
            // store color then clear
-            if !ledColor.isEmpty { _prevLEDColorState = _ledColor }
-            _ledColor = []
+            if !ledColor.isEmpty { _prevLEDColorState = ledColor }
+            ledColor = []
 
             // store blink then clear
-            _prevLEDBlinkState = _ledState == .blink
-            _ledState = .off
+            _prevLEDBlinkState = ledState == .blink
+            ledState = .off
+
+            // ledPowerChanged
+            ledPower = state
+            turnOff() // this seems to be needed, otherwise blink can't be set while power is off
 
         } else { // -> ON
+            ledPower = state
+            if ledColor.isEmpty { ledColor = _prevLEDColorState }
             if ledState == .off { // coundn't be blinking(True) in this state
-                ledState = _prevLEDBlinkState ? .blink : .on // refresh ledState to ON
+                ledState = _prevLEDBlinkState ? .blink : .on // Restore state
             }
         }
 
-        ledPower = state
+        pushSystemState()
     }
 
     public func set(blink: Bool) {
@@ -149,9 +126,29 @@ class LEDController: NSObject {
         } else {
             ledState = (ledPower == .off) ? .off : .on
         }
+
+        pushSystemState()
     }
 
     // MARK: - Private Functions
+    private func pushSystemState() {
+        // NOTE: This function cannot be used to turn the system off, because settings (e.g. blink) are cleared during data refresh,
+        //       and will not be retained in UI since actual received system state would be 'off' (rather than what config is)
+
+        if ledPower == .on {
+            // This may result in new modes! (alternating blink?)
+//             let rawData: [UInt8] = LEDColor.allCases.map { color in
+//                 (color.rawValue | (ledColor.contains(color) ?  ledState.rawValue : LEDState.off.rawValue))
+//             }
+//             _ = serialController.send(serialData: Data(rawData))
+
+            turnOff() // seems necessary when using bad code
+            let data = Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]) // TODO: bad code
+            _ = serialController.send(serialData: data)
+        }
+        updateLEDControllerDelegates()
+    }
+
     private func updateLEDControllerDelegates() {
         delegates.forEach { $0.ledControllerDelegate(statusDidChange: ledPower, ledColor: ledColor) }
     }
@@ -175,9 +172,9 @@ class LEDController: NSObject {
             ledColorIn: [LEDColor]
         (ledPowerIn, ledStateIn, ledColorIn) = LEDCommands.Data.rawDataToState(rawData)
 
-        if _ledPower != ledPowerIn { _ledPower = ledPowerIn }
-        if _ledState != ledStateIn { _ledState = ledStateIn }
-        if _ledColor != ledColorIn { _ledColor = ledColorIn }
+        if ledPower != ledPowerIn { ledPower = ledPowerIn }
+        if ledState != ledStateIn { ledState = ledStateIn }
+        if ledColor != ledColorIn { ledColor = ledColorIn }
     }
 
     // MARK: Utilities
