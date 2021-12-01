@@ -66,9 +66,9 @@ class LEDController: NSObject {
         get { _ledPower }
         set {
             _ledPower = newValue
-            if _ledPower == .off {
+            if _ledPower == .off { // -> OFF
                  turnOff()
-            } else {
+            } else { // -> ON
                 if ledColor.isEmpty { _ledColor = _prevLEDColorState }
                 if _prevLEDBlinkState { _ledState = .blink }
                 _ = serialController.send(serialData: Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]))
@@ -125,12 +125,18 @@ class LEDController: NSObject {
     }
 
     public func set(power state: LEDPower) {
-        if state == .off {
-            if !ledColor.isEmpty { _prevLEDColorState = _ledColor } // store color
+        if state == .off { // -> OFF
+           // store color then clear
+            if !ledColor.isEmpty { _prevLEDColorState = _ledColor }
+            _ledColor = []
+
+            // store blink then clear
             _prevLEDBlinkState = _ledState == .blink
-        } else {
+            _ledState = .off
+
+        } else { // -> ON
             if ledState == .off { // coundn't be blinking(True) in this state
-                ledState = .on // refresh ledState to ON
+                ledState = _prevLEDBlinkState ? .blink : .on // refresh ledState to ON
             }
         }
 
@@ -164,7 +170,14 @@ class LEDController: NSObject {
     }
 
     private func updateDriverState(rawData: UInt32) {
-        (_ledPower, _ledState, _ledColor) = LEDCommands.Data.rawDataToState(rawData)
+        let ledPowerIn: LEDPower,
+            ledStateIn: LEDState,
+            ledColorIn: [LEDColor]
+        (ledPowerIn, ledStateIn, ledColorIn) = LEDCommands.Data.rawDataToState(rawData)
+
+        if _ledPower != ledPowerIn { _ledPower = ledPowerIn }
+        if _ledState != ledStateIn { _ledState = ledStateIn }
+        if _ledColor != ledColorIn { _ledColor = ledColorIn }
     }
 
     // MARK: Utilities
