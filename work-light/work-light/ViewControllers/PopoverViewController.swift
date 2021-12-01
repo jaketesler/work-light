@@ -16,15 +16,15 @@ class PopoverViewController: NSViewController {
     @IBOutlet private weak var blinkToggle: NSSwitch!
     @IBOutlet private weak var buzzerToggle: NSSwitch!
 
-    @IBOutlet private weak var greenButton: NSButton!
-    @IBOutlet private weak var amberButton: NSButton!
-    @IBOutlet private weak var redButton: NSButton!
+    @IBOutlet private weak var greenOnly: NSButton!
+    @IBOutlet private weak var amberOnly: NSButton!
+    @IBOutlet private weak var redOnly: NSButton!
 
     @IBOutlet private weak var greenToggle: NSSwitch!
     @IBOutlet private weak var amberToggle: NSSwitch!
     @IBOutlet private weak var redToggle: NSSwitch!
 
-    private lazy var allButtons: [NSButton] = [greenButton, amberButton, redButton]
+    private lazy var allButtons: [NSButton] = [greenOnly, amberOnly, redOnly]
     private lazy var allToggles: [NSSwitch] = [onOffToggle, blinkToggle, buzzerToggle,
                                                greenToggle, amberToggle, redToggle]
 
@@ -39,9 +39,9 @@ class PopoverViewController: NSViewController {
     @IBAction func switchBlinkToggled(_ sender: NSSwitch)  { ledController.set(blink: sender.state == .on) }
     @IBAction func switchBuzzerToggled(_ sender: NSSwitch) { ledController.set(color: .buzzer, to: sender.state == .on) }
 
-    @IBAction func greenButtonPushed(_ sender: Any) { ledController.changeColor(to: .green) }
-    @IBAction func amberButtonPushed(_ sender: Any) { ledController.changeColor(to: .amber) }
-    @IBAction func redButtonPushed(_ sender: Any)   { ledController.changeColor(to: .red) }
+    @IBAction func greenOnlyPushed(_ sender: Any) { ledController.changeColor(to: .green) }
+    @IBAction func amberOnlyPushed(_ sender: Any) { ledController.changeColor(to: .amber) }
+    @IBAction func redOnlyPushed(_ sender: Any)   { ledController.changeColor(to: .red) }
 
     @IBAction func greenSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .green, to: sender.state == .on) }
     @IBAction func amberSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .amber, to: sender.state == .on) }

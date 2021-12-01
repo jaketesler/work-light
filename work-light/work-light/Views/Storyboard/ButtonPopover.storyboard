@@ -196,7 +196,7 @@
                                                         <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="contentTintColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <connections>
-                                                            <action selector="greenButtonPushed:" target="bU7-R8-ocO" id="glW-Ty-wn7"/>
+                                                            <action selector="greenOnlyPushed:" target="bU7-R8-ocO" id="qYi-g5-bFv"/>
                                                         </connections>
                                                     </button>
                                                     <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="bPP-5J-ab2">
@@ -255,7 +255,7 @@
                                                         </buttonCell>
                                                         <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
                                                         <connections>
-                                                            <action selector="amberButtonPushed:" target="bU7-R8-ocO" id="mxZ-sK-SIK"/>
+                                                            <action selector="amberOnlyPushed:" target="bU7-R8-ocO" id="cD2-qH-WwW"/>
                                                         </connections>
                                                     </button>
                                                     <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="ihe-bi-UEe">
@@ -314,7 +314,7 @@
                                                         </buttonCell>
                                                         <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
                                                         <connections>
-                                                            <action selector="redButtonPushed:" target="bU7-R8-ocO" id="sYJ-rY-IZ5"/>
+                                                            <action selector="redOnlyPushed:" target="bU7-R8-ocO" id="gzz-v9-CWe"/>
                                                         </connections>
                                                     </button>
                                                     <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="OTS-Fb-34t">
@@ -403,16 +403,16 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="amberButton" destination="Z67-8z-2hm" id="owm-kM-CZW"/>
+                        <outlet property="amberOnly" destination="Z67-8z-2hm" id="owm-kM-CZW"/>
                         <outlet property="amberToggle" destination="ihe-bi-UEe" id="NmS-Tn-B94"/>
                         <outlet property="blinkToggle" destination="nOr-8H-GNi" id="v2l-ZS-aLM"/>
                         <outlet property="buzzerToggle" destination="cSZ-zd-7T3" id="43H-b0-72L"/>
                         <outlet property="colorDot" destination="3K2-XS-uEz" id="IHD-q6-8Z7"/>
                         <outlet property="disconnectedLabel" destination="WkQ-gV-FoQ" id="iwR-8R-Kfb"/>
-                        <outlet property="greenButton" destination="8gV-d6-R51" id="Scy-AP-gLz"/>
+                        <outlet property="greenOnly" destination="8gV-d6-R51" id="Scy-AP-gLz"/>
                         <outlet property="greenToggle" destination="bPP-5J-ab2" id="uhB-tQ-ObL"/>
                         <outlet property="onOffToggle" destination="LNg-vk-2NA" id="ii7-y9-Y5f"/>
-                        <outlet property="redButton" destination="xT2-md-HY7" id="G4e-nT-CiF"/>
+                        <outlet property="redOnly" destination="xT2-md-HY7" id="G4e-nT-CiF"/>
                         <outlet property="redToggle" destination="OTS-Fb-34t" id="I49-S5-lrd"/>
                         <outlet property="statusLabel" destination="Vnl-jX-Lnm" id="dbp-dc-k5T"/>
                     </connections>
