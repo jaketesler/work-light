@@ -14,6 +14,7 @@
 		E0284F532734AF14009D8650 /* StatusBarMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0284F522734AF14009D8650 /* StatusBarMenuView.swift */; };
 		E0284F5A2734BDC6009D8650 /* LEDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0284F592734BDC6009D8650 /* LEDController.swift */; };
 		E0284F62273B0B35009D8650 /* SerialControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0284F61273B0B35009D8650 /* SerialControllerManager.swift */; };
+		E0AF91F627580E94000C40F2 /* Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AF91F527580E94000C40F2 /* Wrappers.swift */; };
 		E0FB09F42731C6740073C76F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0FB09F32731C6740073C76F /* Assets.xcassets */; };
 		E0FB09FF2731C6F70073C76F /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB09FE2731C6F70073C76F /* StatusBarView.swift */; };
 		E0FB0A012731C7460073C76F /* SerialUSBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FB0A002731C7460073C76F /* SerialUSBController.swift */; };
@@ -36,6 +37,7 @@
 		E0284F522734AF14009D8650 /* StatusBarMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarMenuView.swift; sourceTree = "<group>"; };
 		E0284F592734BDC6009D8650 /* LEDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEDController.swift; sourceTree = "<group>"; };
 		E0284F61273B0B35009D8650 /* SerialControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialControllerManager.swift; sourceTree = "<group>"; };
+		E0AF91F527580E94000C40F2 /* Wrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrappers.swift; sourceTree = "<group>"; };
 		E0FB09EC2731C6730073C76F /* Work Light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Work Light.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0FB09F32731C6740073C76F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0FB09F82731C6740073C76F /* work_light.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = work_light.entitlements; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				E00F3F6A273C869400188B65 /* Bool-Extension.swift */,
+				E0AF91F527580E94000C40F2 /* Wrappers.swift */,
 				E0284F60273B08AA009D8650 /* ORSSerial */,
 			);
 			path = Extensions;
@@ -318,6 +321,7 @@
 				E0FB0A052731C9BD0073C76F /* AppDelegate.swift in Sources */,
 				E0FB0A182731DF4D0073C76F /* main.swift in Sources */,
 				E00F3F6B273C869400188B65 /* Bool-Extension.swift in Sources */,
+				E0AF91F627580E94000C40F2 /* Wrappers.swift in Sources */,
 				E0284F532734AF14009D8650 /* StatusBarMenuView.swift in Sources */,
 				E0284F4F273244B8009D8650 /* LEDTypes.swift in Sources */,
 				E0FB09FF2731C6F70073C76F /* StatusBarView.swift in Sources */,
