@@ -95,23 +95,25 @@ class LEDController: NSObject {
     public func changeColor(to color: LEDColor) {
         if color == .buzzer { return }
 
-        if _ledPower == .off { // if power is off and we want to turn on a color, switch system on
-            _ledPower = .on
-            _ledState = .on
-        }
+        // if power is off and we want to turn on a color, switch system on
+        if _ledPower == .off { _ledPower = .on }
+
+        // if state is off and we want to turn on a color, switch system on (but if blinking, allow)
+        if _ledState == .off { _ledState = .on }
 
         ledColor = isBuzzerOn ? [color, .buzzer] : [color]
     }
 
     public func set(color: LEDColor, to state: LEDPower) {
-        if _ledPower == .off && state != .off { // if power is off and we want to turn on a color, switch system on
-            _ledPower = .on
-            _ledState = .on
-        }
-
-        if state == .off {
+        if state == .off { // -> OFF
             ledColor.removeAll { $0 == color }
-        } else {
+        } else { // -> ON
+            // if power is off and we want to turn on a color, switch system on
+            if _ledPower == .off { _ledPower = .on }
+
+            // if state is off and we want to turn on a color, switch system on (but if blinking, allow)
+            if _ledState == .off { _ledState = .on }
+
             if !ledColor.contains(color) {
                 ledColor.append(color)
             }
