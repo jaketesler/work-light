@@ -10,6 +10,69 @@ import SwiftUI
 
 // swiftlint:disable comma
 
+class NSSegmentedCellCustom: NSSegmentedCell {
+/*    override func drawSegment(_ segment: Int, inFrame frame: NSRect, with controlView: NSView) {
+        if selectedSegment != segment {
+            var color: NSColor
+            color = NSColor.systemGray.withAlphaComponent(0.2)
+            color.setFill()
+            controlView.layer?.masksToBounds = true
+            controlView.layer?.cornerRadius = 2.5
+            let customRect = controlView.frame
+                .offsetBy(dx: (controlView.alignmentRectInsets.left+controlView.alignmentRectInsets.right)/2,
+                          dy: (controlView.alignmentRectInsets.top+controlView.alignmentRectInsets.bottom)/2)
+                .offsetBy(dx: 0.0, dy: -2.0)
+                .insetBy(dx: -controlView.frame.width*3, dy: 1.0)
+//            let fframe = NSRect()
+
+            frame.frame(withWidth: 1000, using: .color)
+//            frame.fill()
+
+            // frame.origin // 3.0, 3.0; 36.0, 3.0; 69.0; 3.0
+
+//            if segment == 0 {
+//                frame
+//                    .insetBy(dx: -0.5, dy: -2)
+//                    .offsetBy(dx: 1.0, dy: 1.5)
+//                    .fill()
+//            } else if segment == 1 {
+//                frame
+//                    .insetBy(dx: 0.0, dy: -2)
+//                    .offsetBy(dx: 1.0, dy: 1.5)
+//                    .fill()
+//            } else if segment == 2 {
+//                frame
+//                    .insetBy(dx: 0.0, dy: -2)
+//                    .offsetBy(dx: 0.0, dy: 1.5)
+//                    .fill()
+//            }
+//
+//            if segment == 0 {
+//                frame
+//                    .insetBy(dx: 0.0, dy: -1.5)
+//                    .offsetBy(dx: 1.0, dy: 1.5)
+//                    .fill()
+//            } else if segment == 1 {
+//                frame
+//                    .insetBy(dx: 0.0, dy: -1.5)
+//                    .offsetBy(dx: 1.0, dy: 1.5)
+//                    .fill()
+//            } else if segment == 2 {
+//                frame
+//                    .insetBy(dx: 1.0, dy: -1.5)
+//                    .offsetBy(dx: 0.0, dy: 1.5)
+//                    .fill()
+//            }
+
+
+
+//            frame.offsetBy(dx: 0.0, dy: 2.0).fill()
+
+        }
+        super.drawSegment(segment, inFrame: frame, with: controlView)
+    }*/
+}
+
 class PopoverViewController: NSViewController {
     // MARK: - UI Elements
     @IBOutlet private weak var onOffToggle: NSSwitch!
@@ -19,6 +82,10 @@ class PopoverViewController: NSViewController {
     @IBOutlet private weak var greenOnly: NSButton!
     @IBOutlet private weak var amberOnly: NSButton!
     @IBOutlet private weak var redOnly: NSButton!
+
+    @IBOutlet private weak var greenBlinkSelector: NSSegmentedControl!
+    @IBOutlet private weak var amberBlinkSelector: NSSegmentedControl!
+    @IBOutlet private weak var redBlinkSelector: NSSegmentedControl!
 
     @IBOutlet private weak var greenToggle: NSSwitch!
     @IBOutlet private weak var amberToggle: NSSwitch!
@@ -42,6 +109,19 @@ class PopoverViewController: NSViewController {
     @IBAction func greenOnlyPushed(_ sender: Any) { ledController.changeColor(to: .green) }
     @IBAction func amberOnlyPushed(_ sender: Any) { ledController.changeColor(to: .amber) }
     @IBAction func redOnlyPushed(_ sender: Any)   { ledController.changeColor(to: .red) }
+
+
+    @IBAction func greenBlinkSelected(_ sender: NSSegmentedControl) {
+        ledController.set(color: .green, blink: sender.selectedSegment != 0, secondary: sender.selectedSegment == 2)
+    }
+
+    @IBAction func amberBlinkSelected(_ sender: NSSegmentedControl) {
+        ledController.set(color: .amber, blink: sender.selectedSegment != 0, secondary: sender.selectedSegment == 2)
+    }
+
+    @IBAction func redBlinkSelected(_ sender: NSSegmentedControl) {
+        ledController.set(color: .red, blink: sender.selectedSegment != 0, secondary: sender.selectedSegment == 2)
+    }
 
     @IBAction func greenSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .green, to: sender.state == .on) }
     @IBAction func amberSwitchToggled(_ sender: NSSwitch) { ledController.set(color: .amber, to: sender.state == .on) }
@@ -77,18 +157,61 @@ class PopoverViewController: NSViewController {
         colorDot.layer?.masksToBounds = true
         colorDot.layer?.cornerRadius = 12.0
         colorDot.layer?.backgroundColor = .init(red: 0, green: 0, blue: 0, alpha: 0)
+
+        greenBlinkSelector.selectedSegmentBezelColor = greenOnly.bezelColor
+        amberBlinkSelector.selectedSegmentBezelColor = greenOnly.bezelColor
+        redBlinkSelector.selectedSegmentBezelColor = greenOnly.bezelColor
+
+//        greenBlinkCell.controlView?.wantsLayer = true
+//        greenBlinkCell.controlView?.layer?.backgroundColor = NSColor.green.cgColor
+
+//        greenBlinkSelector.
+//        greenBlinkSelector.wantsLayer = true
+//        greenBlinkSelector.layer?.cornerRadius = 5
+//        greenBlinkSelector.layer?.masksToBounds = true
+//        greenBlinkSelector.layer?.backgroundColor = NSColor.green.cgColor
     }
 
     func update() {
         onOffToggle.animator().state  = ledController.power == .off ? .off : .on
-        blinkToggle.animator().state  = ledController.isBlinking ? .on : .off
+        blinkToggle.animator().state  = ledController.blinkEnabled ? .on : .off
         buzzerToggle.animator().state = ledController.isBuzzerOn ? .on : .off
 
         colorDot.layer?.backgroundColor = ledColorToSystemColor(ledController.color)
 
-        redToggle.animator().state   = ledController.color.contains(.red)   ? .on : .off
+        if ledController.blinkEnabled {
+            greenToggle.isHidden = true
+            amberToggle.isHidden = true
+            redToggle.isHidden = true
+
+            greenBlinkSelector.isHidden = false
+            amberBlinkSelector.isHidden = false
+            redBlinkSelector.isHidden = false
+        } else {
+            greenToggle.isHidden = false
+            amberToggle.isHidden = false
+            redToggle.isHidden = false
+
+            greenBlinkSelector.isHidden = true
+            amberBlinkSelector.isHidden = true
+            redBlinkSelector.isHidden = true
+        }
+
         greenToggle.animator().state = ledController.color.contains(.green) ? .on : .off
         amberToggle.animator().state = ledController.color.contains(.amber) ? .on : .off
+        redToggle.animator().state   = ledController.color.contains(.red)   ? .on : .off
+
+        greenBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.green)
+            ? 1
+            : (ledController.blinkingColors.colorsB.contains(.green) ? 2 : 0)
+
+        amberBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.amber)
+            ? 1
+            : (ledController.blinkingColors.colorsB.contains(.amber) ? 2 : 0)
+
+        redBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.red)
+            ? 1
+            : (ledController.blinkingColors.colorsB.contains(.red) ? 2 : 0)
 
         if ledController.deviceConnected {
             // device is connected

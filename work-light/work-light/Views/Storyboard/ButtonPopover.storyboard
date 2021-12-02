@@ -182,10 +182,10 @@
                                                 </textFieldCell>
                                             </textField>
                                             <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wM1-5d-Dr9" userLabel="Green Control">
-                                                <rect key="frame" x="334" y="0.0" width="96" height="24"/>
+                                                <rect key="frame" x="222" y="0.0" width="208" height="24"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8gV-d6-R51">
-                                                        <rect key="frame" x="-7" y="-3" width="64" height="32"/>
+                                                        <rect key="frame" x="-7" y="-5" width="64" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="50" id="D0G-O2-hZo"/>
                                                         </constraints>
@@ -199,21 +199,40 @@
                                                             <action selector="greenOnlyPushed:" target="bU7-R8-ocO" id="qYi-g5-bFv"/>
                                                         </connections>
                                                     </button>
+                                                    <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5SK-Be-Urh">
+                                                        <rect key="frame" x="56" y="0.0" width="108" height="24"/>
+                                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="7pE-hM-UkS" customClass="NSSegmentedCellCustom" customModule="Work_Light" customModuleProvider="target">
+                                                            <font key="font" metaFont="system"/>
+                                                            <segments>
+                                                                <segment label="Off" width="32"/>
+                                                                <segment label="A" width="32" tag="1"/>
+                                                                <segment label="B" width="32"/>
+                                                            </segments>
+                                                        </segmentedCell>
+                                                        <connections>
+                                                            <action selector="greenBlinkSelected:" target="bU7-R8-ocO" id="Swy-El-6IV"/>
+                                                        </connections>
+                                                    </segmentedControl>
                                                     <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="bPP-5J-ab2">
-                                                        <rect key="frame" x="56" y="0.0" width="42" height="25"/>
+                                                        <rect key="frame" x="168" y="-1" width="42" height="25"/>
                                                         <connections>
                                                             <action selector="greenSwitchToggled:" target="bU7-R8-ocO" id="Wx6-oA-gko"/>
                                                         </connections>
                                                     </switch>
                                                 </subviews>
                                                 <constraints>
+                                                    <constraint firstItem="8gV-d6-R51" firstAttribute="centerY" secondItem="wM1-5d-Dr9" secondAttribute="centerY" id="1xc-xK-o2g"/>
                                                     <constraint firstAttribute="height" constant="24" id="7T2-pH-PlY"/>
+                                                    <constraint firstItem="bPP-5J-ab2" firstAttribute="centerY" secondItem="wM1-5d-Dr9" secondAttribute="centerY" id="TIV-Aw-Ob0"/>
+                                                    <constraint firstItem="5SK-Be-Urh" firstAttribute="centerY" secondItem="wM1-5d-Dr9" secondAttribute="centerY" id="YdB-A9-Aqk"/>
                                                 </constraints>
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
+                                                    <integer value="1000"/>
                                                 </visibilityPriorities>
                                                 <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
@@ -242,10 +261,10 @@
                                                 </textFieldCell>
                                             </textField>
                                             <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hNN-dW-GhH" userLabel="Amber Control">
-                                                <rect key="frame" x="334" y="0.0" width="96" height="24"/>
+                                                <rect key="frame" x="222" y="0.0" width="208" height="24"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z67-8z-2hm">
-                                                        <rect key="frame" x="-7" y="-3" width="64" height="32"/>
+                                                        <rect key="frame" x="-7" y="-5" width="64" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="50" id="ws3-zD-a8R"/>
                                                         </constraints>
@@ -258,8 +277,22 @@
                                                             <action selector="amberOnlyPushed:" target="bU7-R8-ocO" id="cD2-qH-WwW"/>
                                                         </connections>
                                                     </button>
+                                                    <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D7y-Iq-WPi">
+                                                        <rect key="frame" x="56" y="0.0" width="108" height="24"/>
+                                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="8Jh-d7-i7m">
+                                                            <font key="font" metaFont="system"/>
+                                                            <segments>
+                                                                <segment label="Off" width="32"/>
+                                                                <segment label="A" width="32" selected="YES" tag="1"/>
+                                                                <segment label="B" width="32"/>
+                                                            </segments>
+                                                        </segmentedCell>
+                                                        <connections>
+                                                            <action selector="amberBlinkSelected:" target="bU7-R8-ocO" id="3uX-O0-uOH"/>
+                                                        </connections>
+                                                    </segmentedControl>
                                                     <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="ihe-bi-UEe">
-                                                        <rect key="frame" x="56" y="0.0" width="42" height="25"/>
+                                                        <rect key="frame" x="168" y="-1" width="42" height="25"/>
                                                         <connections>
                                                             <action selector="amberSwitchToggled:" target="bU7-R8-ocO" id="c5t-Iw-209"/>
                                                         </connections>
@@ -267,12 +300,17 @@
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="IPX-Qz-Nqv"/>
+                                                    <constraint firstItem="D7y-Iq-WPi" firstAttribute="centerY" secondItem="hNN-dW-GhH" secondAttribute="centerY" id="OGG-rb-4sP"/>
+                                                    <constraint firstItem="Z67-8z-2hm" firstAttribute="centerY" secondItem="hNN-dW-GhH" secondAttribute="centerY" id="iBA-pX-dPQ"/>
+                                                    <constraint firstItem="ihe-bi-UEe" firstAttribute="centerY" secondItem="hNN-dW-GhH" secondAttribute="centerY" id="lYa-Cz-q1x"/>
                                                 </constraints>
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
+                                                    <integer value="1000"/>
                                                 </visibilityPriorities>
                                                 <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
@@ -301,10 +339,10 @@
                                                 </textFieldCell>
                                             </textField>
                                             <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="27e-xE-YMM" userLabel="Red Control">
-                                                <rect key="frame" x="334" y="0.0" width="96" height="24"/>
+                                                <rect key="frame" x="222" y="0.0" width="208" height="24"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xT2-md-HY7">
-                                                        <rect key="frame" x="-7" y="-3" width="64" height="32"/>
+                                                        <rect key="frame" x="-7" y="-5" width="64" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="50" id="A4e-Pk-Bla"/>
                                                         </constraints>
@@ -317,21 +355,40 @@
                                                             <action selector="redOnlyPushed:" target="bU7-R8-ocO" id="gzz-v9-CWe"/>
                                                         </connections>
                                                     </button>
+                                                    <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uV0-N8-ihg">
+                                                        <rect key="frame" x="56" y="0.0" width="108" height="24"/>
+                                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="xm1-NM-wTg">
+                                                            <font key="font" metaFont="system"/>
+                                                            <segments>
+                                                                <segment label="Off" width="32"/>
+                                                                <segment label="A" width="32" selected="YES" tag="1"/>
+                                                                <segment label="B" width="32"/>
+                                                            </segments>
+                                                        </segmentedCell>
+                                                        <connections>
+                                                            <action selector="redBlinkSelected:" target="bU7-R8-ocO" id="Q9N-EW-UQm"/>
+                                                        </connections>
+                                                    </segmentedControl>
                                                     <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="OTS-Fb-34t">
-                                                        <rect key="frame" x="56" y="0.0" width="42" height="25"/>
+                                                        <rect key="frame" x="168" y="-1" width="42" height="25"/>
                                                         <connections>
                                                             <action selector="redSwitchToggled:" target="bU7-R8-ocO" id="bmX-cG-Ymo"/>
                                                         </connections>
                                                     </switch>
                                                 </subviews>
                                                 <constraints>
+                                                    <constraint firstItem="uV0-N8-ihg" firstAttribute="centerY" secondItem="27e-xE-YMM" secondAttribute="centerY" id="37s-nP-c8P"/>
                                                     <constraint firstAttribute="height" constant="24" id="Gp3-0U-Alh"/>
+                                                    <constraint firstItem="OTS-Fb-34t" firstAttribute="centerY" secondItem="27e-xE-YMM" secondAttribute="centerY" id="UGm-6P-fwf"/>
+                                                    <constraint firstItem="xT2-md-HY7" firstAttribute="centerY" secondItem="27e-xE-YMM" secondAttribute="centerY" id="yIo-wC-qmM"/>
                                                 </constraints>
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
+                                                    <integer value="1000"/>
                                                 </visibilityPriorities>
                                                 <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
@@ -403,15 +460,18 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="amberBlinkSelector" destination="D7y-Iq-WPi" id="Gvd-U3-0kR"/>
                         <outlet property="amberOnly" destination="Z67-8z-2hm" id="owm-kM-CZW"/>
                         <outlet property="amberToggle" destination="ihe-bi-UEe" id="NmS-Tn-B94"/>
                         <outlet property="blinkToggle" destination="nOr-8H-GNi" id="v2l-ZS-aLM"/>
                         <outlet property="buzzerToggle" destination="cSZ-zd-7T3" id="43H-b0-72L"/>
                         <outlet property="colorDot" destination="3K2-XS-uEz" id="IHD-q6-8Z7"/>
                         <outlet property="disconnectedLabel" destination="WkQ-gV-FoQ" id="iwR-8R-Kfb"/>
+                        <outlet property="greenBlinkSelector" destination="5SK-Be-Urh" id="OmK-3e-oks"/>
                         <outlet property="greenOnly" destination="8gV-d6-R51" id="Scy-AP-gLz"/>
                         <outlet property="greenToggle" destination="bPP-5J-ab2" id="uhB-tQ-ObL"/>
                         <outlet property="onOffToggle" destination="LNg-vk-2NA" id="ii7-y9-Y5f"/>
+                        <outlet property="redBlinkSelector" destination="uV0-N8-ihg" id="sti-Of-TPC"/>
                         <outlet property="redOnly" destination="xT2-md-HY7" id="G4e-nT-CiF"/>
                         <outlet property="redToggle" destination="OTS-Fb-34t" id="I49-S5-lrd"/>
                         <outlet property="statusLabel" destination="Vnl-jX-Lnm" id="dbp-dc-k5T"/>
