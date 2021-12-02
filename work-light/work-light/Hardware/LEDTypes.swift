@@ -7,7 +7,7 @@
 
 import Foundation
 
-// swiftlint:disable identifier_name large_tuple
+// swiftlint:disable identifier_name
 
 enum LEDColor: UInt8, CaseIterable, Comparable {
     case red    = 0x01
@@ -47,29 +47,14 @@ class LEDCommands {
             let amberBit    = Bool(rawData & ControlBits.amber)
             let greenBit    = Bool(rawData & ControlBits.green)
             let buzzerBit   = Bool(rawData & ControlBits.buzzer)
-            print(
-                (redBit ? "RED " : "noRed ") +
-                (amberBit ? "AMBER " : "noAmber ") +
-                (greenBit ? "GREEN " : "noGreen ") +
-                (buzzerBit ? "BUZZ " : "noBuzz ")
-            )
 
             let redBlink    = Bool(rawData & (ControlBits.red    << 4))
             let amberBlink  = Bool(rawData & (ControlBits.amber  << 4))
             let greenBlink  = Bool(rawData & (ControlBits.green  << 4))
             let buzzerBlink = Bool(rawData & (ControlBits.buzzer << 4))
-            print(
-                (redBlink ? "RED_bl " : "noRed_bl ") +
-                (amberBlink ? "AMBER_bl " : "noAmber_bl ") +
-                (greenBlink ? "GREEN_bl " : "noGreen_bl ") +
-                (buzzerBlink ? "BUZZ_bl " : "noBuzz_bl ")
-            )
 
             let powerOnOff  = Bool(rawData & 0xFF)
             let blinkActive = Bool(rawData & 0xF0)
-
-            if buzzerBlink { print("BuzzerBlink") }
-            if buzzerBit { print("BuzzerBit") }
 
             let power: LEDPower = powerOnOff ? .on : .off
 
@@ -97,9 +82,6 @@ class LEDCommands {
             if Bool(amberBit  && amberBlink)  { colorBlinkSetB.append(.amber) }
             if Bool(greenBit  && greenBlink)  { colorBlinkSetB.append(.green) }
             if Bool(buzzerBit && buzzerBlink) { colorBlinkSetB.append(.buzzer) }
-
-//            print(colorBlinkSetA)
-//            print(colorBlinkSetB)
 
             return DataSet(power: power, state: state, color: color, blinkA: colorBlinkSetA, blinkB: colorBlinkSetB)
         }

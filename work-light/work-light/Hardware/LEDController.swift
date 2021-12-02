@@ -17,7 +17,6 @@ class LEDController: NSObject {
         didSet {
             if portPath == nil {
                 ledPower = .off
-//                ledState = .off
                 ledColor = []
                 print("Serial disconnected")
             }
@@ -26,19 +25,14 @@ class LEDController: NSObject {
     }
 
     // MARK: LED State Tracking
-//    private var ledState : LEDState = .off {
-//        didSet { updateLEDControllerDelegates() }
-//    }
-//    private var _prevLEDBlinkState = false
+    private var ledPower: LEDPower = .off {
+        didSet { updateLEDControllerDelegates() }
+    }
 
     @Sorted private var ledColor: [LEDColor] = [] {
         didSet { updateLEDControllerDelegates() }
     }
     private var _prevLEDColorState: [LEDColor] = [.green] // This is also the initial state
-
-    private var ledPower: LEDPower = .off {
-        didSet { updateLEDControllerDelegates() }
-    }
 
     struct LEDColorsBlinking {
         @Sorted var colorsA: [LEDColor] = []
@@ -46,12 +40,12 @@ class LEDController: NSObject {
     }
 
     private var ledColorsBlinking = LEDColorsBlinking()
-
     private var _prevLEDColorBlinkState = LEDColorsBlinking()
 
     var blinkActive: Bool {
-        !(ledColorsBlinking.colorsA.isEmpty || ledColorsBlinking.colorsB.isEmpty)
+        !ledColorsBlinking.colorsA.isEmpty || !ledColorsBlinking.colorsB.isEmpty
     }
+
     public var blinkEnabled = false
 
     // MARK: - Initialization
@@ -75,9 +69,6 @@ class LEDController: NSObject {
         // if power is off and we want to turn on a color, switch system on
         if ledPower == .off { ledPower = .on }
 
-        // if state is off and we want to turn on a color, switch system on (but if blinking, allow)
-//        if ledState == .off { ledState = .on }
-
         ledColor = isBuzzerOn ? [color, .buzzer] : [color]
 
         ledColorsBlinking.colorsA = []
@@ -95,9 +86,6 @@ class LEDController: NSObject {
             // if power is off and we want to turn on a color, switch system on
             if ledPower == .off { ledPower = .on }
 
-            // if state is off and we want to turn on a color, switch system on (but if blinking, allow)
-//            if ledState == .off { ledState = .on }
-
             if blinkEnabled {
                 ledColorsBlinking.colorsB.removeAll { $0 == color }
                 if !ledColorsBlinking.colorsA.contains(color) {
@@ -105,14 +93,12 @@ class LEDController: NSObject {
                 }
                 blinkEnabled = false
                 pushSystemState()
-
             } else {
                 if !ledColor.contains(color) {
                     ledColor.append(color)
                     pushSystemState()
                 }
             }
-
         }
     }
 
@@ -125,18 +111,12 @@ class LEDController: NSObject {
             if blinkEnabled {
                 _prevLEDColorBlinkState = ledColorsBlinking
                 ledColorsBlinking = LEDColorsBlinking()
-
             } else {
                 // store color then clear
                 if !ledColor.isEmpty { _prevLEDColorState = ledColor }
                 ledColor = []
-
-                // store blink then clear
-//                _prevLEDBlinkState = ledState == .blink
-//                ledState = .off
             }
 
-            // ledPowerChanged
             ledPower = state
             turnOff() // this seems to be needed, otherwise blink can't be set while power is off
 
@@ -155,19 +135,12 @@ class LEDController: NSObject {
 
                 // Reset
                 _prevLEDColorBlinkState = LEDColorsBlinking() // needed?
-
-//                ledState = .blink
             } else {
                 if ledColor.isEmpty {
                     ledColor = _prevLEDColorState.isEmpty ? [.green] : _prevLEDColorState
                 }
                 _prevLEDColorState = [] // needed?
-
-//                if ledState == .off { // coundn't be blinking(True) in this state
-//                    ledState = _prevLEDBlinkState ? .blink : .on // Restore state
-//                }
             }
-
         }
 
         pushSystemState()
@@ -177,9 +150,10 @@ class LEDController: NSObject {
         if blink == blinkEnabled { return } // do nothing
 
         if blink { // -> Enable blink
+            if ledPower == .off { set(power: .on) }
+
             ledColorsBlinking.colorsA = ledColor
             ledColor = []
-//            ledState = .blink
             blinkEnabled = true
         } else {  // -> Disable blink
             blinkEnabled = false
@@ -190,7 +164,6 @@ class LEDController: NSObject {
 
                 ledColorsBlinking = LEDColorsBlinking()
             }
-//            ledState = (ledPower == .off) ? .off : .on
         }
 
         pushSystemState()
@@ -221,42 +194,27 @@ class LEDController: NSObject {
 
     // MARK: - Private Functions
     private func pushSystemState() {
-        // NOTE: This function cannot be used to turn the system off, because settings (e.g. blink) are cleared during data refresh,
-        //       and will not be retained in UI since actual received system state would be 'off' (rather than what config is)
+        // NOTE: This function cannot be used to turn the system off, because settings (e.g. blink)
+        //       are cleared during data refresh, and will not be retained in UI since actual received system state
+        //       would be 'off' (rather than what config is)
 
         if ledPower == .on {
+            let data: Data
+            turnOff()
+
             if blinkEnabled {
-                turnOff()
                 var rawData: [UInt8] = []
-                rawData.append(contentsOf: ledColorsBlinking.colorsA.map( { $0.rawValue | LEDState.off.rawValue }))
-                rawData.append(contentsOf: ledColorsBlinking.colorsB.map( { $0.rawValue | LEDState.on.rawValue }))
-                rawData.append(contentsOf: (ledColorsBlinking.colorsA + ledColorsBlinking.colorsB).map( { $0.rawValue | LEDState.blink.rawValue }))
-
-//                let rawData: [UInt8] = LEDColor.allCases.map { color in
-//                    (color.rawValue | (ledColor.contains(color) ?  ledState.rawValue : LEDState.off.rawValue))
-//                }
-                _ = serialController.send(serialData: Data(rawData))
-
+                rawData.append(contentsOf: ledColorsBlinking.colorsA.map { $0.rawValue | LEDState.off.rawValue })
+                rawData.append(contentsOf: ledColorsBlinking.colorsB.map { $0.rawValue | LEDState.on.rawValue })
+                rawData.append(contentsOf: (
+                    ledColorsBlinking.colorsA + ledColorsBlinking.colorsB).map { $0.rawValue | LEDState.blink.rawValue }
+                )
+                data = Data(rawData)
             } else {
-                turnOff() // seems necessary when using bad code
-                print(ledColor)
-//                let data = Data([bitwise_or(ledColor) | ledState.rawValue] as [UInt8]) // TODO: bad code
-                let data = Data([bitwise_or(ledColor) | LEDState.on.rawValue] as [UInt8]) // TODO: bad code
-                _ = serialController.send(serialData: data)
+                data = Data([bitwise_or(ledColor) | LEDState.on.rawValue] as [UInt8])
             }
-
+            _ = serialController.send(serialData: data)
         }
-
-        // Okay so how this works is:
-        //   Set some colors ON (this is the first half), set some colors OFF (other side). Then set them all to blink.
-        //   Order DNM, as long as the 'on'/'off' is before the 'blink' for the respective color.
-//        let rawData: [UInt8] = [(LEDColor.green.rawValue | LEDState.off.rawValue),
-//                                (LEDColor.green.rawValue | LEDState.blink.rawValue),
-//                                (LEDColor.red.rawValue | LEDState.on.rawValue),
-//                                (LEDColor.amber.rawValue | LEDState.on.rawValue),
-//                                (LEDColor.amber.rawValue | LEDState.blink.rawValue),
-//                                (LEDColor.red.rawValue | LEDState.blink.rawValue)]
-//        _ = serialController.send(serialData: Data(rawData))
 
         updateLEDControllerDelegates()
     }
@@ -282,7 +240,6 @@ class LEDController: NSObject {
         let dataSet = LEDCommands.Data.rawDataToState(rawData)
 
         if ledPower != dataSet.power { ledPower = dataSet.power }
-//        if ledState != dataSet.state { ledState = dataSet.state }
 
         if !blinkEnabled {
             if ledColor != dataSet.color { ledColor = dataSet.color }

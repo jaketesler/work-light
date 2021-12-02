@@ -201,7 +201,7 @@
                                                     </button>
                                                     <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5SK-Be-Urh">
                                                         <rect key="frame" x="56" y="0.0" width="108" height="24"/>
-                                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="7pE-hM-UkS" customClass="NSSegmentedCellCustom" customModule="Work_Light" customModuleProvider="target">
+                                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="7pE-hM-UkS">
                                                             <font key="font" metaFont="system"/>
                                                             <segments>
                                                                 <segment label="Off" width="32"/>
