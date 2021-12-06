@@ -10,6 +10,8 @@ import SwiftUI
 
 // swiftlint:disable comma
 
+// swiftlint:disable vertical_whitespace_closing_braces
+
 class PopoverViewController: NSViewController {
     // MARK: - UI Elements
     @IBOutlet private weak var onOffToggle: NSSwitch!
@@ -37,6 +39,9 @@ class PopoverViewController: NSViewController {
     @IBOutlet private weak var disconnectedLabel: NSTextField!
 
     @IBOutlet private weak var colorDot: NSView!
+    private lazy var colorDotLeftLayer = getLeftHalf()
+    private lazy var colorDotRightLayer = getRightHalf()
+    private lazy var centerLine = getCenterLine()
 
     // MARK: - UI Actions
     // swiftlint:disable line_length
@@ -95,17 +100,36 @@ class PopoverViewController: NSViewController {
         colorDot.layer?.cornerRadius = 12.0
         colorDot.layer?.backgroundColor = .init(red: 0, green: 0, blue: 0, alpha: 0)
 
+//        colorDotLeftLayer.anchorPoint = .zero
+//        colorDotRightLayer.anchorPoint = .zero
+
+//        let layerBounds = CGRect(x: 0.0, y: 0.0, width: colorDot.bounds.width/2, height: colorDot.bounds.height)
+//        colorDotLeftLayer.bounds = layerBounds
+//        colorDotRightLayer.bounds = layerBounds
+//
+//        colorDotLeftLayer.position = .init(x: 0.0, y: 0.0)
+//        colorDotRightLayer.position = .init(x: colorDot.bounds.width/2, y: 0.0)
+
+//        colorDotLeftLayer.masksToBounds = true
+//        colorDotRightLayer.masksToBounds = true
+//        colorDotLeftLayer.cornerRadius = 12.0
+//        colorDotRightLayer.cornerRadius = 12.0
+
+        colorDot.layer?.addSublayer(colorDotLeftLayer)
+        colorDot.layer?.addSublayer(colorDotRightLayer)
+        colorDot.layer?.addSublayer(centerLine)
+
         greenBlinkSelector.selectedSegmentBezelColor = greenOnly.bezelColor
         amberBlinkSelector.selectedSegmentBezelColor = greenOnly.bezelColor
         redBlinkSelector.selectedSegmentBezelColor = greenOnly.bezelColor
+
+//        colorDot.layer?.addSublayer(getInnerGrayCircle())
     }
 
     func update() {
         onOffToggle.animator().state  = ledController.power == .off ? .off : .on
         blinkToggle.animator().state  = ledController.blinkEnabled ? .on : .off
         buzzerToggle.animator().state = ledController.isBuzzerOn ? .on : .off
-
-        colorDot.layer?.backgroundColor = ledColorToSystemColor(ledController.color)
 
         if ledController.blinkEnabled {
             greenToggle.isHidden = true
@@ -121,21 +145,20 @@ class PopoverViewController: NSViewController {
             allSelectors.forEach { $0.isHidden = true }
         }
 
+        enableColorDot()
+
         greenToggle.animator().state = ledController.color.contains(.green) ? .on : .off
         amberToggle.animator().state = ledController.color.contains(.amber) ? .on : .off
         redToggle.animator().state   = ledController.color.contains(.red)   ? .on : .off
 
         greenBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.green)
-            ? 1
-            : (ledController.blinkingColors.colorsB.contains(.green) ? 2 : 0)
+            ? 1 : (ledController.blinkingColors.colorsB.contains(.green) ? 2 : 0)
 
         amberBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.amber)
-            ? 1
-            : (ledController.blinkingColors.colorsB.contains(.amber) ? 2 : 0)
+            ? 1 : (ledController.blinkingColors.colorsB.contains(.amber) ? 2 : 0)
 
         redBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.red)
-            ? 1
-            : (ledController.blinkingColors.colorsB.contains(.red) ? 2 : 0)
+            ? 1 : (ledController.blinkingColors.colorsB.contains(.red) ? 2 : 0)
 
         if ledController.deviceConnected {
             // device is connected
@@ -160,8 +183,7 @@ class PopoverViewController: NSViewController {
 
         allSelectors.forEach { $0.isEnabled = true }
 
-        colorDot.layer?.borderColor = .clear
-        colorDot.layer?.borderWidth = 0.0
+        enableColorDot()
 
         (self.view as! NSViewInteractive).isUserInteractionEnabled = true
     }
@@ -177,29 +199,161 @@ class PopoverViewController: NSViewController {
             button.bezelColor = nil
         }
 
-        colorDot.layer?.borderColor = .black
-        colorDot.layer?.borderWidth = 0.6
-        colorDot.layer?.backgroundColor = .clear
+        setColorDot(.clear)
+        //setLayer(colorDot.layer, backgroundColor: .clear)
 
         (self.view as! NSViewInteractive).isUserInteractionEnabled = false
     }
+
+    private func setColorDot(left: NSColor, right rightColor: NSColor?) {
+        if let right = rightColor { // two-color mode
+//            colorDot.layer?.borderColor = .clear
+//            colorDot.layer?.borderWidth = 0.0
+
+            setLayer(colorDot.layer, backgroundColor: .clear)
+
+            if left == .clear && right == .clear { // if both sides are empty
+                for layer in [colorDotLeftLayer, colorDotRightLayer] {
+                    layer.isHidden = true
+                    layer.strokeColor = .clear
+                    layer.lineWidth = 0.5
+                    layer.fillColor = .clear
+                }
+
+                setLayer(colorDot.layer, backgroundColor: .clear)
+                colorDot.layer?.borderColor = .black
+                colorDot.layer?.borderWidth = 0.5
+
+                centerLine.fillColor = .black
+
+            } else { // one or both sides are colored
+                colorDotLeftLayer.isHidden = false
+                colorDotRightLayer.isHidden = false
+
+                setLayer(colorDotLeftLayer, backgroundColor: left)
+                setLayer(colorDotRightLayer, backgroundColor: right)
+                centerLine.fillColor = .clear
+
+                colorDot.layer?.borderColor = .clear
+                colorDot.layer?.borderWidth = 0.0
+            }
+
+//            colorDot.layer?.borderColor = .clear
+//            colorDot.layer?.borderWidth = 0.0
+        } else { // single-color mode
+            for layer in [colorDotLeftLayer, colorDotRightLayer] {
+                layer.isHidden = true
+//                setLayer(layer, backgroundColor: .clear) // is this needed??
+            }
+
+            setLayer(colorDot.layer, backgroundColor: left)
+        }
+    }
+    private func setColorDot(_ color: NSColor) { setColorDot(left: color, right: nil) }
+
+    private func enableColorDot() {
+        if ledController.blinkEnabled {
+            let leftColor = ledController.blinkingColors.colorsA.isEmpty
+                ? .clear
+                : ledColorToSystemColor(ledController.blinkingColors.colorsA)
+            let rightColor = ledController.blinkingColors.colorsB.isEmpty
+                ? .clear
+                : ledColorToSystemColor(ledController.blinkingColors.colorsB)
+
+            setColorDot(left: leftColor, right: rightColor)
+        } else {
+            setColorDot(ledColorToSystemColor(ledController.color))
+        }
+    }
+
+    private func setLayer(_ caLayer: CALayer?, backgroundColor color: NSColor) {
+        if let layer = caLayer as? CAShapeLayer { // left/right sides
+            if color == .clear {
+                layer.strokeColor = .black
+                layer.lineWidth = 1.0
+            } else {
+                layer.strokeColor = .clear
+                layer.lineWidth = 0.0
+            }
+            layer.fillColor = color.cgColor
+
+        } else if let layer = caLayer { // whole colorDot
+            if color == .clear {
+                layer.borderColor = .black
+                layer.borderWidth = 0.5
+            } else {
+                layer.borderColor = .clear
+                layer.borderWidth = 0.5
+            }
+            layer.backgroundColor = color.cgColor
+        }
+    }
+
+    func getLeftHalf() -> CAShapeLayer {
+        let center = CGPoint(x: colorDot.bounds.width / 2, y: colorDot.bounds.height/2)
+        let bezierPath = NSBezierPath()
+        bezierPath.move(to: center)
+        bezierPath.addArc(withCenter: center,
+                          radius: colorDot.bounds.width / 2,
+                          startAngle: 0.5 * .pi,
+                          endAngle: 1.5 * .pi,
+                          clockwise: true)
+        bezierPath.close()
+        let innerGrayCircle = CAShapeLayer()
+        innerGrayCircle.path = bezierPath.cgPath
+        innerGrayCircle.fillColor = NSColor.clear.cgColor
+
+        return innerGrayCircle
+    }
+
+    func getRightHalf() -> CAShapeLayer {
+        let center = CGPoint(x: colorDot.bounds.width / 2, y: colorDot.bounds.height/2)
+        let bezierPath = NSBezierPath()
+        bezierPath.move(to: center)
+        bezierPath.addArc(withCenter: center,
+                          radius: colorDot.bounds.width / 2,
+                          startAngle: 0.5 * .pi,
+                          endAngle: 1.5 * .pi,
+                          clockwise: false)
+        bezierPath.close()
+        let innerGrayCircle = CAShapeLayer()
+        innerGrayCircle.path = bezierPath.cgPath
+        innerGrayCircle.fillColor = NSColor.clear.cgColor
+        return innerGrayCircle
+    }
+
+    func getCenterLine() -> CAShapeLayer {
+        let center = CGPoint(x: colorDot.bounds.width / 2 - 0.25, y: colorDot.bounds.height)
+        let bezierPath = NSBezierPath()
+        bezierPath.move(to: center)
+        bezierPath.addLine(to: CGPoint(x: colorDot.bounds.width / 2 - 0.25, y: 0))
+        bezierPath.addLine(to: CGPoint(x: colorDot.bounds.width / 2 + 0.25, y: 0))
+        bezierPath.addLine(to: CGPoint(x: colorDot.bounds.width / 2 + 0.25, y: colorDot.bounds.height))
+        bezierPath.close()
+        let innerGrayCircle = CAShapeLayer()
+        innerGrayCircle.path = bezierPath.cgPath
+        innerGrayCircle.fillColor = NSColor.clear.cgColor
+        return innerGrayCircle
+    }
+
+
     // swiftlint:enable force_cast
 
     // MARK: - Utilities
-    func ledColorToSystemColor(_ ledColor: [LEDColor]) -> CGColor {
+    func ledColorToSystemColor(_ ledColor: [LEDColor]) -> NSColor {
         let color = ledColor.filter { $0 != .buzzer }
         switch color {
-            case [.red]:   return NSColor.systemRed.cgColor
-            case [.amber]: return NSColor.systemOrange.cgColor
-            case [.green]: return NSColor.systemGreen.cgColor
+            case [.red]:   return NSColor.systemRed
+            case [.amber]: return NSColor.systemOrange
+            case [.green]: return NSColor.systemGreen
 
-            case [.red, .amber]:   return colorBlend(.systemRed,   .systemOrange).cgColor
-            case [.red, .green]:   return colorBlend(.systemGreen, .systemYellow, weightA: 0.4).cgColor
-            case [.amber, .green]: return colorBlend(.systemGreen, .systemOrange, weightA: 0.6).cgColor
+            case [.red, .amber]:   return colorBlend(.systemRed,   .systemOrange)
+            case [.red, .green]:   return colorBlend(.systemGreen, .systemYellow, weightA: 0.4)
+            case [.amber, .green]: return colorBlend(.systemGreen, .systemOrange, weightA: 0.6)
 
-            case [.red, .amber, .green]: return NSColor.systemYellow.cgColor
+            case [.red, .amber, .green]: return NSColor.systemYellow
 
-            default: return NSColor.black.cgColor
+            default: return NSColor.clear
         }
     }
 
@@ -256,3 +410,128 @@ class NSViewInteractive: NSView {
         isUserInteractionEnabled ? super.hitTest(point) : nil
     }
 }
+
+// swiftlint:disable all
+
+/*
+
+ Erica Sadun, http://ericasadun.com
+ UIKit Compatibility for NSBezierPath
+
+ */
+
+#if canImport(UIKit)
+import UIKit
+#else
+import Cocoa
+#endif
+
+#if canImport(Cocoa)
+extension NSBezierPath {
+    /// Appends a straight line to the receiver’s path.
+    open func addLine(to point: CGPoint) {
+        self.line(to: point)
+    }
+
+    /// Adds a Bezier cubic curve to the receiver’s path.
+    open func addCurve(to point: CGPoint, controlPoint1: CGPoint, controlPoint2: CGPoint) {
+        self.curve(to: point, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
+    }
+
+    /// Appends a quadratic Bézier curve to the receiver’s path.
+    open func addQuadCurve(to point: CGPoint, controlPoint: CGPoint) {
+        let (d1x, d1y) = (controlPoint.x - currentPoint.x, controlPoint.y - currentPoint.y)
+        let (d2x, d2y) = (point.x - controlPoint.x, point.y - controlPoint.y)
+        let cp1 = CGPoint(x: controlPoint.x - d1x / 3.0, y: controlPoint.y - d1y / 3.0)
+        let cp2 = CGPoint(x: controlPoint.x + d2x / 3.0, y: controlPoint.y + d2y / 3.0)
+        self.curve(to: point, controlPoint1: cp1, controlPoint2: cp2)
+    }
+
+    /// Appends an arc to the receiver’s path.
+    open func addArc(withCenter center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, clockwise: Bool) {
+        let startAngle = startAngle * 180.0 / CGFloat.pi
+        let endAngle = endAngle * 180.0 / CGFloat.pi
+        appendArc(withCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: !clockwise)
+    }
+
+    /// Creates and returns a new BezierPath object initialized with a rounded rectangular path.
+    public convenience init(roundedRect: CGRect, cornerRadius: CGFloat) {
+        self.init(roundedRect: roundedRect, xRadius: cornerRadius, yRadius: cornerRadius)
+    }
+
+    /// Transforms all points in the path using the specified affine transform matrix.
+    open func apply(_ theTransform: CGAffineTransform) {
+        let t = AffineTransform(m11: theTransform.a, m12: theTransform.b,
+                                m21: theTransform.c, m22: theTransform.d,
+                                tX: theTransform.tx, tY: theTransform.ty)
+        transform(using: t)
+    }
+}
+
+extension NSBezierPath {
+    /// Creates and returns a new CGPath object initialized with the contents of the Bezier Path
+    /// - Note: Implemented to match the UIKit version
+    public var cgPath: CGPath {
+
+        // Create a new cgPath to work with
+        let path = CGMutablePath()
+
+        // Build an adaptable set of control points for any element type
+        var points: [CGPoint] = Array<CGPoint>(repeating: .zero, count: 3)
+
+        // Iterate through the path elements and extend the cgPath
+        for idx in 0 ..< self.elementCount {
+            let type = self.element(at: idx, associatedPoints: &points)
+            switch type {
+            case .moveTo:
+                path.move(to: points[0])
+            case .lineTo:
+                path.addLine(to: points[0])
+            case .curveTo:
+                path.addCurve(to: points[2], control1: points[0], control2: points[1])
+            case .closePath:
+                path.closeSubpath()
+            }
+        }
+
+        return path
+    }
+
+    /// Creates and returns a new UIBezierPath object initialized with the contents of a Core Graphics path.
+    /// - Warning: To match UIKit, this cannot be a failable initializer
+    public convenience init(cgPath: CGPath) {
+
+        // Establish self and fetch reference
+        self.init(); var selfref = self
+
+        // Apply elements from cgPath argument
+        cgPath.apply(info: &selfref, function: {
+            (selfPtr, elementPtr: UnsafePointer<CGPathElement>) in
+
+            // Unwrap pointer
+            guard let selfPtr = selfPtr else {
+                fatalError("init(cgPath: CGPath): Unable to unwrap pointer to self")
+            }
+
+            // Bind and fetch path and element
+            let pathPtr = selfPtr.bindMemory(to: NSBezierPath.self, capacity: 1)
+            let path = pathPtr.pointee
+            let element = elementPtr.pointee
+
+            // Update path with element
+            switch element.type {
+            case .moveToPoint:
+                path.move(to: element.points[0])
+            case .addLineToPoint:
+                path.addLine(to: element.points[0])
+            case .addQuadCurveToPoint:
+                path.addQuadCurve(to: element.points[1], controlPoint: element.points[0])
+            case .addCurveToPoint:
+                path.addCurve(to: element.points[2], controlPoint1: element.points[0], controlPoint2: element.points[1])
+            case .closeSubpath:
+                path.close()
+            }
+        })
+    }
+}
+#endif
