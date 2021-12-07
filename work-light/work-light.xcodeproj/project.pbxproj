@@ -16,6 +16,7 @@
 		E0284F62273B0B35009D8650 /* SerialControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0284F61273B0B35009D8650 /* SerialControllerManager.swift */; };
 		E09A119F275EA925007CBD1C /* Data-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09A119E275EA925007CBD1C /* Data-Extension.swift */; };
 		E09A11A1275F0AC9007CBD1C /* NSBezierPath-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09A11A0275F0AC9007CBD1C /* NSBezierPath-Extension.swift */; };
+		E09A11A3275F0B68007CBD1C /* PopoverViewController-Extension-CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09A11A2275F0B68007CBD1C /* PopoverViewController-Extension-CALayer.swift */; };
 		E09A11A5275F0C63007CBD1C /* NSColor-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09A11A4275F0C63007CBD1C /* NSColor-Extension.swift */; };
 		E0AF91F627580E94000C40F2 /* Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AF91F527580E94000C40F2 /* Wrappers.swift */; };
 		E0FB09F42731C6740073C76F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0FB09F32731C6740073C76F /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 		E0284F61273B0B35009D8650 /* SerialControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialControllerManager.swift; sourceTree = "<group>"; };
 		E09A119E275EA925007CBD1C /* Data-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Data-Extension.swift"; path = "work-light/Hardware/Data-Extension.swift"; sourceTree = SOURCE_ROOT; };
 		E09A11A0275F0AC9007CBD1C /* NSBezierPath-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBezierPath-Extension.swift"; sourceTree = "<group>"; };
+		E09A11A2275F0B68007CBD1C /* PopoverViewController-Extension-CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PopoverViewController-Extension-CALayer.swift"; sourceTree = "<group>"; };
 		E09A11A4275F0C63007CBD1C /* NSColor-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor-Extension.swift"; sourceTree = "<group>"; };
 		E0AF91F527580E94000C40F2 /* Wrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrappers.swift; sourceTree = "<group>"; };
 		E0FB09EC2731C6730073C76F /* Work Light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Work Light.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				E0FB0A152731D9130073C76F /* PopoverViewController.swift */,
+				E09A11A2275F0B68007CBD1C /* PopoverViewController-Extension-CALayer.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				E00F3F6B273C869400188B65 /* Bool-Extension.swift in Sources */,
 				E0AF91F627580E94000C40F2 /* Wrappers.swift in Sources */,
 				E0284F532734AF14009D8650 /* StatusBarMenuView.swift in Sources */,
+				E09A11A3275F0B68007CBD1C /* PopoverViewController-Extension-CALayer.swift in Sources */,
 				E09A119F275EA925007CBD1C /* Data-Extension.swift in Sources */,
 				E09A11A1275F0AC9007CBD1C /* NSBezierPath-Extension.swift in Sources */,
 				E0284F4F273244B8009D8650 /* LEDTypes.swift in Sources */,
