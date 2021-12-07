@@ -41,7 +41,7 @@
 		E0284F522734AF14009D8650 /* StatusBarMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarMenuView.swift; sourceTree = "<group>"; };
 		E0284F592734BDC6009D8650 /* LEDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEDController.swift; sourceTree = "<group>"; };
 		E0284F61273B0B35009D8650 /* SerialControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialControllerManager.swift; sourceTree = "<group>"; };
-		E09A119E275EA925007CBD1C /* Data-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Data-Extension.swift"; path = "work-light/Hardware/Data-Extension.swift"; sourceTree = SOURCE_ROOT; };
+		E09A119E275EA925007CBD1C /* Data-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Data-Extension.swift"; path = "work-light/Extensions/Data-Extension.swift"; sourceTree = SOURCE_ROOT; };
 		E09A11A0275F0AC9007CBD1C /* NSBezierPath-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBezierPath-Extension.swift"; sourceTree = "<group>"; };
 		E09A11A2275F0B68007CBD1C /* PopoverViewController-Extension-CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PopoverViewController-Extension-CALayer.swift"; sourceTree = "<group>"; };
 		E09A11A4275F0C63007CBD1C /* NSColor-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor-Extension.swift"; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		E0284F5D273B0850009D8650 /* Hardware */ = {
+		E0284F5D273B0850009D8650 /* Drivers */ = {
 			isa = PBXGroup;
 			children = (
 				E0284F592734BDC6009D8650 /* LEDController.swift */,
@@ -116,7 +116,7 @@
 				E0FB0A002731C7460073C76F /* SerialUSBController.swift */,
 				E0284F61273B0B35009D8650 /* SerialControllerManager.swift */,
 			);
-			path = Hardware;
+			path = Drivers;
 			sourceTree = "<group>";
 		};
 		E0284F5E273B0865009D8650 /* Storyboard */ = {
@@ -131,8 +131,8 @@
 		E0284F5F273B08A6009D8650 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E09A119E275EA925007CBD1C /* Data-Extension.swift */,
 				E00F3F6A273C869400188B65 /* Bool-Extension.swift */,
+				E09A119E275EA925007CBD1C /* Data-Extension.swift */,
 				E09A11A0275F0AC9007CBD1C /* NSBezierPath-Extension.swift */,
 				E09A11A4275F0C63007CBD1C /* NSColor-Extension.swift */,
 				E0AF91F527580E94000C40F2 /* Wrappers.swift */,
@@ -172,12 +172,12 @@
 			isa = PBXGroup;
 			children = (
 				E0FB0A042731C9BD0073C76F /* AppDelegate.swift */,
+				E0FB0A172731DF4D0073C76F /* main.swift */,
 				E0284F5B273B0833009D8650 /* ViewControllers */,
 				E0284F5C273B0843009D8650 /* Views */,
-				E0284F5D273B0850009D8650 /* Hardware */,
-				E0FB0A172731DF4D0073C76F /* main.swift */,
+				E0284F5D273B0850009D8650 /* Drivers */,
 				E0284F5F273B08A6009D8650 /* Extensions */,
-				E0FB0A0E2731CD550073C76F /* User Interface */,
+				E0FB0A0E2731CD550073C76F /* UI Assets */,
 				E0FB0A0C2731CD4B0073C76F /* Info.plist */,
 				E0FB09F82731C6740073C76F /* work_light.entitlements */,
 				E0FB0A1A2731F0450073C76F /* Podfile */,
@@ -186,12 +186,12 @@
 			path = "work-light";
 			sourceTree = "<group>";
 		};
-		E0FB0A0E2731CD550073C76F /* User Interface */ = {
+		E0FB0A0E2731CD550073C76F /* UI Assets */ = {
 			isa = PBXGroup;
 			children = (
 				E0FB09F32731C6740073C76F /* Assets.xcassets */,
 			);
-			path = "User Interface";
+			path = "UI Assets";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
