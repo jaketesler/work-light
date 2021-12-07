@@ -57,7 +57,7 @@
 		B2304EA7756C4AC9121479F5963ECE9B /* Pods-work-light-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-work-light-umbrella.h"; sourceTree = "<group>"; };
 		B2B87AA44375CABF238BC3411D1FF4E9 /* ORSSerialPort.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ORSSerialPort.release.xcconfig; sourceTree = "<group>"; };
 		BBCA01EF274A1E1C0FA7B8FCBE146795 /* ORSSerialBuffer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ORSSerialBuffer.m; path = Source/ORSSerialBuffer.m; sourceTree = "<group>"; };
-		BD6E0A1922C08233B8DEA0798ACD1C62 /* Pods-work-light */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-work-light"; path = Pods_work_light.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD6E0A1922C08233B8DEA0798ACD1C62 /* Pods_work_light.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_work_light.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C37979C098233AE95BE9F8C5041BDB8A /* ORSSerialPacketDescriptor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ORSSerialPacketDescriptor.m; path = Source/ORSSerialPacketDescriptor.m; sourceTree = "<group>"; };
 		C3BEE6FC0AFA29FE31260E917046989C /* ORSSerialBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ORSSerialBuffer.h; path = Source/ORSSerialBuffer.h; sourceTree = "<group>"; };
 		CC57C210646CC8C87D6AA4BB15169CFB /* Pods-work-light-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-work-light-dummy.m"; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				2369824A15DEC10A697AB353D94F7003 /* ORSSerial.framework */,
-				BD6E0A1922C08233B8DEA0798ACD1C62 /* Pods-work-light */,
+				BD6E0A1922C08233B8DEA0798ACD1C62 /* Pods_work_light.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -255,7 +255,7 @@
 			);
 			name = "Pods-work-light";
 			productName = Pods_work_light;
-			productReference = BD6E0A1922C08233B8DEA0798ACD1C62 /* Pods-work-light */;
+			productReference = BD6E0A1922C08233B8DEA0798ACD1C62 /* Pods_work_light.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -265,7 +265,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1310;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 13.0";
@@ -342,7 +342,6 @@
 			baseConfigurationReference = 9400780A1CDAA32ED1D2BCBD8D39D8FA /* Pods-work-light.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -441,7 +440,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B2B87AA44375CABF238BC3411D1FF4E9 /* ORSSerialPort.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -543,7 +541,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9F5F36B8DFA6FF6641EAFE1E05030C5 /* ORSSerialPort.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -579,7 +576,6 @@
 			baseConfigurationReference = D3E9EEF848461340CB026CEC0321F410 /* Pods-work-light.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
