@@ -222,7 +222,12 @@ class PopoverViewController: NSViewController {
     private func setColorDot(_ color: NSColor) { setColorDot(left: color, right: nil) }
 
     private func enableColorDot() {
-        if ledController.blinkEnabled {
+        if ledController.power == .off { // off -> no color
+            setLayer(colorDotLeftLayer,  color: .clear, borderColor: .clear, borderWidth: 0.0)
+            setLayer(colorDotRightLayer, color: .clear, borderColor: .clear, borderWidth: 0.0)
+
+            updateDotView(showBorder: true, showCenterLine: false)
+        } else if ledController.blinkEnabled {
             let leftColor = ledController.blinkingColors.colorsA.isEmpty
                 ? .clear
                 : ledColorToSystemColor(ledController.blinkingColors.colorsA)
