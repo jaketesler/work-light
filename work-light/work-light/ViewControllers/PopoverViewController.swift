@@ -10,7 +10,7 @@ import SwiftUI
 
 // swiftlint:disable comma
 
-// swiftlint:disable vertical_whitespace_closing_braces
+// swiftlint:disable vertical_whitespace_closing_braces vertical_whitespace
 
 class PopoverViewController: NSViewController {
     // MARK: - UI Elements
@@ -42,6 +42,7 @@ class PopoverViewController: NSViewController {
     private lazy var colorDotLeftLayer = getLeftHalf()
     private lazy var colorDotRightLayer = getRightHalf()
     private lazy var centerLine = getCenterLine()
+    private lazy var borderLayer = getBorderLayer()
 
     // MARK: - UI Actions
     // swiftlint:disable line_length
@@ -72,6 +73,17 @@ class PopoverViewController: NSViewController {
 
     // MARK: - Variables
     private var ledController = LEDController.shared
+//    private var uiEnabled = false {
+//        didSet {
+//            if uiEnabled != oldValue {
+//                uiEnabled ? enableUI() : disableUI()
+//            }
+//        }
+//    }
+    private var colorLeft: NSColor = .clear
+    private var colorRight: NSColor?
+    private var colorUpdating = false
+//    private var waitForUpdateLock = false
 
     // MARK: - ViewController
     override func viewDidLoad() {
@@ -115,9 +127,11 @@ class PopoverViewController: NSViewController {
 //        colorDotLeftLayer.cornerRadius = 12.0
 //        colorDotRightLayer.cornerRadius = 12.0
 
+
         colorDot.layer?.addSublayer(colorDotLeftLayer)
         colorDot.layer?.addSublayer(colorDotRightLayer)
         colorDot.layer?.addSublayer(centerLine)
+        colorDot.layer?.addSublayer(borderLayer)
 
         greenBlinkSelector.selectedSegmentBezelColor = greenOnly.bezelColor
         amberBlinkSelector.selectedSegmentBezelColor = greenOnly.bezelColor
@@ -127,9 +141,9 @@ class PopoverViewController: NSViewController {
     }
 
     func update() {
-        onOffToggle.animator().state  = ledController.power == .off ? .off : .on
-        blinkToggle.animator().state  = ledController.blinkEnabled ? .on : .off
-        buzzerToggle.animator().state = ledController.isBuzzerOn ? .on : .off
+         onOffToggle.animator().state  = ledController.power == .off ? .off : .on
+         blinkToggle.animator().state  = ledController.blinkEnabled ? .on : .off
+         buzzerToggle.animator().state = ledController.isBuzzerOn ? .on : .off
 
         if ledController.blinkEnabled {
             greenToggle.isHidden = true
@@ -145,28 +159,30 @@ class PopoverViewController: NSViewController {
             allSelectors.forEach { $0.isHidden = true }
         }
 
-        enableColorDot()
+//        enableColorDot() // called in enableUI()
 
-        greenToggle.animator().state = ledController.color.contains(.green) ? .on : .off
-        amberToggle.animator().state = ledController.color.contains(.amber) ? .on : .off
-        redToggle.animator().state   = ledController.color.contains(.red)   ? .on : .off
+         greenToggle.animator().state = ledController.color.contains(.green) ? .on : .off
+         amberToggle.animator().state = ledController.color.contains(.amber) ? .on : .off
+         redToggle.animator().state   = ledController.color.contains(.red)   ? .on : .off
 
-        greenBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.green)
+         greenBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.green)
             ? 1 : (ledController.blinkingColors.colorsB.contains(.green) ? 2 : 0)
 
-        amberBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.amber)
+         amberBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.amber)
             ? 1 : (ledController.blinkingColors.colorsB.contains(.amber) ? 2 : 0)
 
-        redBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.red)
+         redBlinkSelector.animator().selectedSegment = ledController.blinkingColors.colorsA.contains(.red)
             ? 1 : (ledController.blinkingColors.colorsB.contains(.red) ? 2 : 0)
 
         if ledController.deviceConnected {
             // device is connected
             disconnectedLabel.isHidden = true
+//            uiEnabled = true
             enableUI()
         } else {
             // device is not connected
             disconnectedLabel.isHidden = false
+//            uiEnabled = false
             disableUI()
         }
     }
@@ -200,54 +216,104 @@ class PopoverViewController: NSViewController {
         }
 
         setColorDot(.clear)
-        //setLayer(colorDot.layer, backgroundColor: .clear)
+        // setLayer(colorDot.layer, backgroundColor: .clear)
 
         (self.view as! NSViewInteractive).isUserInteractionEnabled = false
     }
 
     private func setColorDot(left: NSColor, right rightColor: NSColor?) {
+        CATransaction.begin()
+//        CATransaction.setAnimationDuration(2.0)
+//        CATransaction.setDisableActions(true)
+
+        if !ledController.blinkEnabled {
+            if left == .clear {
+                borderLayer.strokeColor = NSColor.black.cgColor
+                borderLayer.lineWidth = 1.0
+            } else {
+                borderLayer.strokeColor = .clear
+                borderLayer.lineWidth = 0.0
+            }
+
+            centerLine.fillColor = NSColor.clear.cgColor
+
+            [colorDotLeftLayer, colorDotRightLayer].forEach { layer in
+//                setLayer(layer, backgroundColor: left)
+                layer.strokeColor = .clear
+                layer.lineWidth = 0.0
+                layer.fillColor = left.cgColor
+            }
+
+            CATransaction.commit()
+            return
+        }
+
         if let right = rightColor { // two-color mode
-//            colorDot.layer?.borderColor = .clear
-//            colorDot.layer?.borderWidth = 0.0
-
-            setLayer(colorDot.layer, backgroundColor: .clear)
-
             if left == .clear && right == .clear { // if both sides are empty
-                for layer in [colorDotLeftLayer, colorDotRightLayer] {
-                    layer.isHidden = true
+                // colorDot.layer?.backgroundColor = .clear
+
+//                centerLine.isHidden = false
+
+//                borderLayer.isHidden = false
+                borderLayer.strokeColor = NSColor.black.cgColor
+                borderLayer.lineWidth = 1.0
+
+                [colorDotLeftLayer, colorDotRightLayer].forEach { layer in
                     layer.strokeColor = .clear
-                    layer.lineWidth = 0.5
+                    layer.lineWidth = 0.0
                     layer.fillColor = .clear
                 }
 
-                setLayer(colorDot.layer, backgroundColor: .clear)
-                colorDot.layer?.borderColor = .black
-                colorDot.layer?.borderWidth = 0.5
-
-                centerLine.fillColor = .black
+                centerLine.fillColor = NSColor.black.cgColor
 
             } else { // one or both sides are colored
-                colorDotLeftLayer.isHidden = false
-                colorDotRightLayer.isHidden = false
+                if left == .clear { // push left to back
+                    colorDot.layer?.insertSublayer(colorDotRightLayer, above: colorDotLeftLayer)
+                    centerLine.fillColor = NSColor.black.cgColor
+                } else if right == .clear { // push right to back
+                    colorDot.layer?.insertSublayer(colorDotLeftLayer, above: colorDotRightLayer)
+                    centerLine.fillColor = NSColor.black.cgColor
+                } else {
+                    centerLine.fillColor = NSColor.clear.cgColor
+                }
+
+                borderLayer.strokeColor = .clear
+                borderLayer.lineWidth = 0.0
 
                 setLayer(colorDotLeftLayer, backgroundColor: left)
                 setLayer(colorDotRightLayer, backgroundColor: right)
-                centerLine.fillColor = .clear
-
-                colorDot.layer?.borderColor = .clear
-                colorDot.layer?.borderWidth = 0.0
             }
-
-//            colorDot.layer?.borderColor = .clear
-//            colorDot.layer?.borderWidth = 0.0
         } else { // single-color mode
-            for layer in [colorDotLeftLayer, colorDotRightLayer] {
+            /*
+            [colorDotLeftLayer, colorDotRightLayer].forEach { layer in
                 layer.isHidden = true
 //                setLayer(layer, backgroundColor: .clear) // is this needed??
             }
 
-            setLayer(colorDot.layer, backgroundColor: left)
+            centerLine.isHidden = true
+
+//            setLayer(colorDot.layer, backgroundColor: left)
+            borderLayer.isHidden = left != .clear
+            colorDot.layer?.backgroundColor = left.cgColor
+            */
+
+            if left == .clear {
+                borderLayer.strokeColor = NSColor.black.cgColor
+                borderLayer.lineWidth = 1.0
+            } else {
+                borderLayer.strokeColor = .clear
+                borderLayer.lineWidth = 0.0
+            }
+
+            centerLine.fillColor = NSColor.clear.cgColor
+
+            [colorDotLeftLayer, colorDotRightLayer].forEach { layer in
+                setLayer(layer, backgroundColor: left)
+            }
+
         }
+
+        CATransaction.commit()
     }
     private func setColorDot(_ color: NSColor) { setColorDot(left: color, right: nil) }
 
@@ -270,27 +336,30 @@ class PopoverViewController: NSViewController {
         if let layer = caLayer as? CAShapeLayer { // left/right sides
             if color == .clear {
                 layer.strokeColor = .black
-                layer.lineWidth = 1.0
+//                layer.lineWidth = 1.0
             } else {
-                layer.strokeColor = .clear
-                layer.lineWidth = 0.0
+                layer.strokeColor = color.cgColor
+//                layer.lineWidth = 0.0
             }
+            layer.lineWidth = 1.0
             layer.fillColor = color.cgColor
 
-        } else if let layer = caLayer { // whole colorDot
+        } /* else if let layer = caLayer { // whole colorDot
             if color == .clear {
-                layer.borderColor = .black
-                layer.borderWidth = 0.5
+                borderLayer.isHidden = false
+//                layer.borderColor = .black
+//                layer.borderWidth = 0.5
             } else {
-                layer.borderColor = .clear
-                layer.borderWidth = 0.5
+                borderLayer.isHidden = true
+//                layer.borderColor = .clear
+//                layer.borderWidth = 0.5
             }
             layer.backgroundColor = color.cgColor
-        }
+        }*/
     }
 
     func getLeftHalf() -> CAShapeLayer {
-        let center = CGPoint(x: colorDot.bounds.width / 2, y: colorDot.bounds.height/2)
+        let center = CGPoint(x: colorDot.bounds.width / 2, y: colorDot.bounds.height / 2)
         let bezierPath = NSBezierPath()
         bezierPath.move(to: center)
         bezierPath.addArc(withCenter: center,
@@ -307,7 +376,7 @@ class PopoverViewController: NSViewController {
     }
 
     func getRightHalf() -> CAShapeLayer {
-        let center = CGPoint(x: colorDot.bounds.width / 2, y: colorDot.bounds.height/2)
+        let center = CGPoint(x: colorDot.bounds.width / 2, y: colorDot.bounds.height / 2)
         let bezierPath = NSBezierPath()
         bezierPath.move(to: center)
         bezierPath.addArc(withCenter: center,
@@ -322,6 +391,23 @@ class PopoverViewController: NSViewController {
         return innerGrayCircle
     }
 
+    func getBorderLayer() -> CAShapeLayer {
+        let bezierPath = NSBezierPath()
+        bezierPath.appendOval(in: NSRect(x: 0, y: 0, width: colorDot.bounds.width, height: colorDot.bounds.height))
+        bezierPath.close()
+
+        let innerGrayCircle = CAShapeLayer()
+        innerGrayCircle.path = bezierPath.cgPath
+        innerGrayCircle.fillColor = NSColor.clear.cgColor
+        innerGrayCircle.backgroundColor = NSColor.clear.cgColor
+
+        innerGrayCircle.lineWidth = 1.0
+//        innerGrayCircle.strokeColor = .black
+        innerGrayCircle.strokeColor = NSColor.blue.cgColor
+
+        return innerGrayCircle
+    }
+
     func getCenterLine() -> CAShapeLayer {
         let center = CGPoint(x: colorDot.bounds.width / 2 - 0.25, y: colorDot.bounds.height)
         let bezierPath = NSBezierPath()
@@ -332,7 +418,7 @@ class PopoverViewController: NSViewController {
         bezierPath.close()
         let innerGrayCircle = CAShapeLayer()
         innerGrayCircle.path = bezierPath.cgPath
-        innerGrayCircle.fillColor = NSColor.clear.cgColor
+        innerGrayCircle.fillColor = NSColor.black.cgColor
         return innerGrayCircle
     }
 

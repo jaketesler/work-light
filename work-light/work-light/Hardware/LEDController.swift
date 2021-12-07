@@ -25,18 +25,21 @@ class LEDController: NSObject {
     }
 
     // MARK: LED State Tracking
-    private var ledPower: LEDPower = .off {
-        didSet { updateLEDControllerDelegates() }
-    }
+    private var ledPower: LEDPower = .off
+//    { didSet { if ledPower != oldValue { updateLEDControllerDelegates() } } }
 
-    @Sorted private var ledColor: [LEDColor] = [] {
-        didSet { updateLEDControllerDelegates() }
-    }
+    @Sorted private var ledColor: [LEDColor] = []
+//    { didSet { if ledColor != oldValue { updateLEDControllerDelegates() } } }
+
     private var _prevLEDColorState: [LEDColor] = [.green] // This is also the initial state
 
     struct LEDColorsBlinking {
-        @Sorted var colorsA: [LEDColor] = []
-        @Sorted var colorsB: [LEDColor] = []
+        @Sorted var colorsA: [LEDColor] = [] {
+            didSet { print("colorsA: \(colorsA)") }
+        }
+        @Sorted var colorsB: [LEDColor] = [] {
+            didSet { print("colorsB: \(colorsB)") }
+        }
     }
 
     private var ledColorsBlinking = LEDColorsBlinking()
@@ -179,14 +182,20 @@ class LEDController: NSObject {
 
             if !secondary {
                 ledColorsBlinking.colorsB.removeAll { $0 == color }
+                print("185 change B")
                 ledColorsBlinking.colorsA.append(color)
+                print("187 change A")
             } else {
                 ledColorsBlinking.colorsA.removeAll { $0 == color }
+                print("190 change A")
                 ledColorsBlinking.colorsB.append(color)
+                print("192 change B")
             }
         } else {
             ledColorsBlinking.colorsA.removeAll { $0 == color }
+            print("196 change A")
             ledColorsBlinking.colorsB.removeAll { $0 == color }
+            print("198 change B")
         }
 
         pushSystemState()
@@ -216,7 +225,7 @@ class LEDController: NSObject {
             _ = serialController.send(serialData: data)
         }
 
-        updateLEDControllerDelegates()
+//        updateLEDControllerDelegates() // This is unnecessary since the data update will call this after device has settled
     }
 
     private func updateLEDControllerDelegates() {
@@ -238,6 +247,7 @@ class LEDController: NSObject {
 
     private func updateDriverState(rawData: UInt32) {
         let dataSet = LEDCommands.Data.rawDataToState(rawData)
+        print(dataSet)
 
         if ledPower != dataSet.power { ledPower = dataSet.power }
 
@@ -247,8 +257,6 @@ class LEDController: NSObject {
             ledColorsBlinking.colorsA = dataSet.blinkA
             ledColorsBlinking.colorsB = dataSet.blinkB
         }
-
-        updateLEDControllerDelegates()
     }
 
     // MARK: Utilities
@@ -274,9 +282,33 @@ extension LEDController: SerialPortDelegate {
     func serialPortDelegate(_ port: String?, didReceive data: Data) {
         guard let dataString = String(data: data, encoding: .utf8) else { return }
 
+//        var scalars: [String.UnicodeScalarView.Element] = []
+//        dataString.unicodeScalars.forEach { element in
+//            if !scalars.contains(element) { scalars.append(element) }
+//        }
+
+//        var scalars: [UInt32] = []
+//        dataString.unicodeScalars.forEach { element in
+//            if !scalars.contains(element.value) { scalars.append(element.value) }
+//        }
+
+//        let scalarsCopy = scalars
+//
+//        if scalars.reduce(into: 0, { partialResult, scalar in partialResult += scalar.value }) > 0 { // value greater than 0 present
+//            scalars.removeAll(where: {$0.value == 0}) // remove all 0-based values
+//        }
+//        print(scalarsCopy, "->", scalars)
+
+//        scalars.forEach { element in
         dataString.unicodeScalars.forEach { element in
             updateDriverState(rawData: element.value as UInt32)
         }
+
+//        scalars.forEach { value in
+//            updateDriverState(rawData: value as UInt32)
+//        }
+
+        updateLEDControllerDelegates() // Finished -> Update Delegates
     }
 }
 

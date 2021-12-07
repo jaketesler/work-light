@@ -12,7 +12,9 @@ struct Sorted<T: Comparable> {
     private var value: [T]
     var wrappedValue: [T] {
         get { value }
-        set { value = newValue.sorted() }
+        set {
+//            print("SET: \(newValue)")
+            value = newValue.sorted() }
     }
 
     init(wrappedValue: [T] = []) {
