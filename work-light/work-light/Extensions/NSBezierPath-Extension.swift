@@ -77,6 +77,8 @@ extension NSBezierPath {
                 path.addCurve(to: points[2], control1: points[0], control2: points[1])
             case .closePath:
                 path.closeSubpath()
+            @unknown default:
+                fatalError()
             }
         }
 
@@ -116,6 +118,8 @@ extension NSBezierPath {
                 path.addCurve(to: element.points[2], controlPoint1: element.points[0], controlPoint2: element.points[1])
             case .closeSubpath:
                 path.close()
+            @unknown default:
+                fatalError()
             }
         })
     }

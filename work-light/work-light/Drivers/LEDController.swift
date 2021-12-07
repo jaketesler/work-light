@@ -216,7 +216,7 @@ class LEDController: NSObject {
             _ = serialController.send(serialData: data)
         }
 
-//        updateLEDControllerDelegates() // This is unnecessary since the data update will call this after device has settled
+        // updateLEDControllerDelegates() // Not unnecessary since data update will call this after device has settled
     }
 
     private func updateLEDControllerDelegates() {

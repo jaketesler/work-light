@@ -42,6 +42,9 @@ class LEDCommands {
     }
 
     class Data {
+        // swiftlint:disable cyclomatic_complexity
+        // Cyclomatic of 13 is unavoidable
+
         static func rawDataToState(_ rawData: UInt32) -> DataSet {
             let redBit      = Bool(rawData & ControlBits.red)
             let amberBit    = Bool(rawData & ControlBits.amber)
@@ -85,6 +88,8 @@ class LEDCommands {
 
             return DataSet(power: power, state: state, color: color, blinkA: colorBlinkSetA, blinkB: colorBlinkSetB)
         }
+
+        // swiftlint:enable cyclomatic_complexity
     }
 
     struct DataSet {
