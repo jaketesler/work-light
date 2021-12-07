@@ -161,6 +161,9 @@ class LEDController: NSObject {
 
                 ledColorsBlinking = LEDColorsBlinking()
             }
+
+            // Fix for UI bug: state won't update since device is off (no state pushed -> no state returned)
+            if ledPower == .off { updateLEDControllerDelegates() }
         }
 
         pushSystemState()
