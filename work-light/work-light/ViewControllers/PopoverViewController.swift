@@ -243,8 +243,14 @@ class PopoverViewController: NSViewController {
 
     private func updateDotView(leftColor: NSColor? = nil, rightColor: NSColor? = nil,
                                showBorder: Bool? = nil, showCenterLine: Bool? = nil) {
-        if let left  = leftColor  { setLayer(colorDotLeftLayer,  color: left) }
-        if let right = rightColor { setLayer(colorDotRightLayer, color: right) }
+        if let left = leftColor,
+           let right = rightColor {
+            setLayer(colorDotLeftLayer,   color: left,  borderWidth: left  != .clear ? 0.0 : nil)
+            setLayer(colorDotRightLayer,  color: right, borderWidth: right != .clear ? 0.0 : nil)
+        } else {
+            if let left  = leftColor  { setLayer(colorDotLeftLayer,  color: left) }
+            if let right = rightColor { setLayer(colorDotRightLayer, color: right) }
+        }
 
         if let border = showBorder {
             if border {
@@ -266,9 +272,9 @@ class PopoverViewController: NSViewController {
     }
 
     private func setLayer(_ layer: CAShapeLayer, color: NSColor,
-                          borderColor: NSColor? = nil, borderWidth: CGFloat = 1.0) {
+                          borderColor: NSColor? = nil, borderWidth: CGFloat? = 1.0) {
         layer.fillColor = color.cgColor
-        layer.lineWidth = borderWidth
+        layer.lineWidth = borderWidth ?? 1.0
 
         if let border = borderColor {
             layer.strokeColor = border.cgColor
